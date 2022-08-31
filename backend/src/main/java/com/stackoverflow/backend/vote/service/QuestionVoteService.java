@@ -1,0 +1,60 @@
+package com.stackoverflow.backend.vote.service;
+
+
+import com.stackoverflow.backend.exception.CustomException;
+import com.stackoverflow.backend.exception.ErrorMessage;
+import com.stackoverflow.backend.question.domain.Question;
+import com.stackoverflow.backend.question.domain.QuestionRepository;
+import com.stackoverflow.backend.vote.domain.QuestionVote;
+import com.stackoverflow.backend.vote.domain.QuestionVoteDTO;
+import com.stackoverflow.backend.vote.domain.QuestionVoteRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+
+@Service
+@RequiredArgsConstructor
+public class QuestionVoteService {
+    private final QuestionVoteRepository questionVoteRepository;
+    private final QuestionRepository questionRepository;
+
+    public void voteQuestion(QuestionVoteDTO questionVoteDTO) {
+        Question question = checkQuestion(questionVoteDTO);
+        Long questionVoteId = findMemberVote(questionVoteDTO, question);
+        if (questionVoteId!=0L) {
+            questionVoteRepository.save(new QuestionVote(
+                    questionVoteId, questionVoteDTO.getMember(),
+                    questionVoteDTO.getVote(),question));
+        } else {
+            questionVoteRepository.save(new QuestionVote(
+                    questionVoteDTO.getMember(),questionVoteDTO.getVote(),question));
+        }
+    }
+
+    public void voteQuestionCancel(QuestionVoteDTO.Cancel questionVoteDTO) {
+        Question question = questionRepository.findById(questionVoteDTO.getQuestionId())
+                .orElseThrow(()->new CustomException(ErrorMessage.QUESTION_NOT_FOUND));
+        try{
+            questionVoteRepository.deleteById(
+                    questionVoteRepository.findByQuestionAndMember(question, questionVoteDTO.getMember()).getId());
+        } catch (Exception e){
+            throw new CustomException(ErrorMessage.VOTE_NOT_FOUND);
+        }
+    }
+
+    private Long findMemberVote(QuestionVoteDTO questionVoteDTO, Question question) {
+        Long questionVoteId = 0L;
+        for (QuestionVote questionVotes: question.getQuestionVoteList()){
+            if (questionVotes.getMember().equals(questionVoteDTO.getMember())){
+                if (questionVotes.getVote()== questionVoteDTO.getVote()) throw new CustomException(ErrorMessage.VOTE_CONFLICT);
+                else questionVoteId = questionVotes.getId();
+            }
+        }
+        return questionVoteId;
+    }
+
+    private Question checkQuestion(QuestionVoteDTO questionVoteDTO) {
+        return questionRepository.findById(questionVoteDTO.getQuestionId())
+                .orElseThrow(()->new CustomException(ErrorMessage.QUESTION_NOT_FOUND));
+    }
+}

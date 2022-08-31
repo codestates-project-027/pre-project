@@ -1,0 +1,70 @@
+{
+  "posts": [
+    {
+      "title": "asef",
+      "body": "sefse",
+      "tags": "fasef",
+      "author": "author",
+      "createdAt": "8/29/2022",
+      "vote": 0,
+      "answer": 0,
+      "view": 0,
+      "id": 2,
+      "answerList": [
+        {
+          "id": 1,
+          "answerContent": "answer title",
+          "author": "author",
+          "createdAt": "date",
+          "vote": 3,
+          "commentList": [
+            {
+              "id": 1,
+              "commentContent": "comment title",
+              "author": "author",
+              "createdAt": "date"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "f",
+      "body": "g",
+      "tags": "h",
+      "author": "author",
+      "createdAt": "8/30/2022",
+      "vote": 0,
+      "answer": 0,
+      "view": 0,
+      "id": 3
+    },
+    {
+      "title": "a",
+      "body": "a",
+      "tags": "a",
+      "author": "author",
+      "createdAt": "8/30/2022",
+      "vote": 0,
+      "answer": 0,
+      "view": 0,
+      "id": 4
+    },
+    {
+      "title": "uil",
+      "body": "uilui",
+      "tags": "uil",
+      "author": "author",
+      "createdAt": "8/30/2022",
+      "vote": 0,
+      "answer": 0,
+      "view": 0,
+      "id": 5
+    }
+  ],
+  "edit": [
+    {
+      "id": 1
+    }
+  ]
+}
