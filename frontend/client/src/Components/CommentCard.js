@@ -10,21 +10,25 @@ import {
 } from 'react-icons/bs';
 
 const CommentCard = () => {
+  const url = '/question/'; //서버경로 수정
+  const [data, setData] = useState([]);
   const [answerData, setAnswerData] = useState([]);
+  const [commentData, setCommentData] = useState([]);
   const { id } = useParams();
 
   const getData = async () => {
-    //answerData = 가져온 answer data [{}]
-    const getResponse = await axios('/question?page=1' + id);// 서버경로 수정
+    const getResponse = await axios(url + id); 
+    setData(getResponse.data);
     setAnswerData(getResponse.data.answerList); //JSON.stringify(answerData) = [{},{},{},{}]
     // console.log(JSON.stringify(answerData));
+        setCommentData(getResponse.data.answerList.commentList);
   };
 
   useEffect(() => {
     getData();
   }, []);
 
-  return <>this is comment</>;
+  return <>{commentData}</>;
 };
 
 const AnswerCardDefault = styled.div`

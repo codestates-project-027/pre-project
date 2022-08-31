@@ -16,14 +16,21 @@ const AskQuestionForm = () => {
   const [answer, setAnswer] = useState(0);
   const [view, setView] = useState(0);
 
-
   const navigate = useNavigate();
 
   const postData = async (e) => {
     e.preventDefault();
     // const post = { title, body, tags, author, createdAt, vote, answer, view };
-    const post = { title, contents, userName, tags:[JSON.parse(JSON.stringify(tags))] } ;
-    await axios.post(url, post).then(() => { navigate('/questionspage'); }); };
+    const post = {
+      title,
+      contents,
+      userName,
+      tags: [JSON.parse(JSON.stringify(tags))],
+    };
+    await axios.post(url, post).then(() => {
+      navigate('/questionspage');
+    });
+  };
 
   return (
     <Test>
@@ -69,7 +76,7 @@ const AskQuestionForm = () => {
             value={tags}
             onChange={(e) => setTags(e.target.value)}
             placeholder="e.g. (iphone android sql)"
-          />{console.log(tags)}
+          />
 
           <div className="wrapper-button">
             <Button1 onClick={postData}>Review your question</Button1>

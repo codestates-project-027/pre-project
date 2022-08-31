@@ -3,53 +3,35 @@ import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
 
-const EditPage = () => {
-  const url = '/question/';
+const AnswerEditPage = () => {
+  const url = '/answer/';
   const { id } = useParams();
   const navigate = useNavigate();
-  const prevTitle = localStorage.getItem('title');
-  const prevBody = localStorage.getItem('body');
-  const prevTags = localStorage.getItem('tags');
-  const [title, setTitle] = useState(prevTitle);
-  const [contents, setContents] = useState(prevBody);
-  const [tags, setTags] = useState(prevTags);
+  //   const prevAnswer = localStorage.getItem('answer');
+  const [contents, setContents] = useState('');
 
   const updatePost = async (e) => {
     e.preventDefault();
-    const updatePost = {
-      title,
-      contents,
-      tags: [JSON.parse(JSON.stringify(tags))],
-    };
+    const updatePost = { contents };
     await axios
       .patch(url + id, updatePost) //서버경로 수정
       .then(() => {
-        navigate('/questionspage');
+        navigate(-1);
       });
   };
 
-  const discardDraft = () => {
-    setTitle('');
-    setContents('');
-    setTags('');
+  const goBack = () => {
+    navigate(-1);
   };
 
   return (
     <>
       <EditGlobal>
         <div className="wrapper">
-          <div className="title">Edit question</div>
+          <div className="title">Edit Answer</div>
 
           <div className="main--wrapper">
-            <div className="main-first">Title</div>
-            <input
-              className="main"
-              type="text"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-            />
-
-            <div className="main-first">Body</div>
+            <div className="main-first">Answer</div>
             <textarea
               className="main"
               type="text"
@@ -57,18 +39,9 @@ const EditPage = () => {
               onChange={(e) => setContents(e.target.value)}
             />
 
-            <div className="main-first">Tag</div>
-            <input
-              className="main"
-              type="text"
-              value={tags}
-              onChange={(e) => setTags(e.target.value)}
-              placeholder="e.g. (iphone android sql)"
-            />
-
             <div className="wrapper-button">
-              <Button1 onClick={updatePost}>Review your question</Button1>
-              <Button2 onClick={discardDraft}>Discard draft</Button2>
+              <Button1 onClick={updatePost}>save edits</Button1>
+              <Button2 onClick={goBack}>cancel</Button2>
             </div>
           </div>
         </div>
@@ -81,7 +54,7 @@ const EditPage = () => {
   );
 };
 
-export default EditPage;
+export default AnswerEditPage;
 
 const EditGlobal = styled.div`
   display: flex;
@@ -130,7 +103,7 @@ const EditGlobal = styled.div`
 
   button {
     display: flex;
-    justify-content: flex-start;
+    justify-content: center;
     margin-top: 30px;
   }
 
@@ -173,7 +146,7 @@ const Button1 = styled.button`
   text-align: center;
   margin-left: 80px;
   background-color: rgb(67, 147, 247);
-  width: 150px;
+  width: 110px;
   border: none;
   height: 50px;
   border-radius: 2px;
@@ -184,13 +157,16 @@ const Button1 = styled.button`
 
 const Button2 = styled.button`
   display: flex;
-  margin-left: 30px;
   align-items: center;
   text-align: center;
+  margin-left: 20px;
   background-color: transparent;
-  width: 23%;
+  width: 110px;
   border: none;
-  height: 40px;
-  color: rgb(180, 59, 57);
+  height: 50px;
+  border-radius: 2px;
+  border: none;
+  color: rgb(67, 147, 247);
   cursor: pointer;
+  /* box-shadow : 5px 5px 10px 2px rgb(67, 147, 247); */
 `;

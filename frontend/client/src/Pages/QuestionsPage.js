@@ -8,14 +8,13 @@ import AskButton from '../Components/AskButton';
 
 const QuestionsPage = ({ isLogin }) => {
   const url = '/question?page=1';
-  
+
   const [data, setData] = useState([]);
-  const [answerData, setAnswerData] = useState([]); 
+  const [answerData, setAnswerData] = useState([]);
   //pagination
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(1);
   const offset = (page - 1) * limit;
-
 
   //GET 요청
   const getData = async () => {
@@ -93,7 +92,9 @@ const QuestionsPage = ({ isLogin }) => {
                     <div className="question--wrapper">
                       <div className="sidequestion--wrapper">
                         <div className="vote">{item.votes} votes</div>
-                        <div className="answerview">{answerData ? answerData.length : 0} answers</div>
+                        <div className="answerview">
+                          {answerData ? answerData.length : 0} answers
+                        </div>
                         <div className="answerview">{item.views} views</div>
                       </div>
                       <div className="mainquestion--wrapper">

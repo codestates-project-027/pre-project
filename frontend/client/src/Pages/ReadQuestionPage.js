@@ -13,7 +13,8 @@ import {
 } from 'react-icons/bs';
 
 const ReadQuestionPage = () => {
-  const url = '/question/' //서버경로 수정
+  const url = '/question/'; //서버경로 수정
+  const voteUrl = '/vote/question';
   const { id } = useParams();
   const postAnswerUrl = '/answer';
   const navigate = useNavigate();
@@ -22,63 +23,50 @@ const ReadQuestionPage = () => {
   const [questionId, setQuestionId] = useState(id);
   const [answerContents, setAnswerContents] = useState('');
   const [userName, setUserName] = useState('userName');
-  // const [author, setAuthor] = useState('author');
-  // const [createdAt, setCreatedAt] = useState(new Date().toLocaleDateString());
-  // const [vote, setVote] = useState(0);
-  // const [commentList, setCommentList]=useState(
-  //   {
-  //     "id":1,
-  //     "commentContent":"comment",
-  //     "author":"author",
-  //     "createdAt":"date"
-  //   })
-  //   const [answerList ,setAnswerList]= useState([
-  //     {answerContent:answerData, author, createdAt, vote, commentList}
-  //   ])
-
-  
+  const [votedUp, setVotedUp] = useState(false);
+  const [votedDown, setVotedDown] = useState(false);
 
   const getData = async () => {
-    const getResponse = await axios(url + id); 
+    const getResponse = await axios(url + id);
     setData(getResponse.data);
     setAnswerData(getResponse.data.answerList);
-    // setCommentData(getResponse.data.commentList);
+
   };
 
   const deleteData = async () => {
-    await axios.delete(url + id).then(() => { navigate('/questionspage'); });
+    await axios.delete(url + id).then(() => {
+      navigate('/questionspage');
+    });
   };
 
   //answer
   const postAnswer = async (e) => {
     e.preventDefault();
-    const answer = { questionId, contents:answerContents, userName};
+    const answer = { questionId, contents: answerContents, userName };
     await axios.post(postAnswerUrl, answer);
     window.location.reload();
   };
-  // const postAnswer = async (e) => {
-  //   e.preventDefault();
-  //   const answer = { "answerList": {answerContent, author:'author', createdAt : new Date().toLocaleDateString(), vote:0} };
-  //   await axios.post(`http://localhost:8080/posts/${id}`, answer);
-  //   window.location.reload();
-  // };
 
-  // const postAnswer = async (e) => {
-  //   e.preventDefault();
-  //   const answer = { title };
-  //   await axios.post(`http://localhost:8080/posts/${id}`, answer);
-  //   window.location.reload();
-  // };
+  //votes
+  const voteUp = async () => {
+    const up = { questionId: id, member: userName, vote: true };
+    await axios.post(voteUrl, up);
+    setVotedUp(true);
+    window.location.reload();
+  };
 
-  // const postAnswer = async (e) => {
-  //   e.preventDefault();
-  //   // const answer = {"answerList":{"answerContent":answerData }};
-  //   // 유효
-  //   //const post = { title, body, tags, author, createdAt, vote, answer, view};
-  //   const answer = {answerList};
-  //   await axios.post(`http://localhost:8080/posts/${id}`, answer);
-  //   window.location.reload();
-  // }
+  const voteDown = async () => {
+    const down = { questionId: id, member: userName, vote: false };
+    await axios.post(voteUrl, down);
+    setVotedDown(true);
+    window.location.reload();
+  };
+
+  const voteDelete = async () => {
+    const reset = { questionId: id, member: userName };
+    await axios.delete(voteUrl, reset);
+    window.location.reload();
+  };
 
   useEffect(() => {
     getData();
@@ -112,9 +100,19 @@ const ReadQuestionPage = () => {
 
           <div className="content--wrapper">
             <div className="icons">
-              <BsFillCaretUpFill size="27" className="bs click" />
-              <p className="bs">{data.vote}</p>
-              <BsFillCaretDownFill size="27" className="bs click" />
+              <BsFillCaretUpFill
+                onClick={voteUp}
+                size="27"
+                className="bs click"
+              />
+              <p className="bs" onClick={voteDelete}>
+                {data.votes}
+              </p>
+              <BsFillCaretDownFill
+                onClick={voteDown}
+                size="27"
+                className="bs click"
+              />
               <BsFillBookmarkStarFill size="15" className="bs add click" />
               <BsClockHistory size="15" className="bs add click" />
             </div>
@@ -216,6 +214,7 @@ const Div = styled.div`
   }
   p.bs {
     color: rgb(67, 67, 71);
+    cursor: pointer;
   }
   .bs {
     margin: 0px;
