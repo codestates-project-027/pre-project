@@ -230,11 +230,11 @@ const Div = styled.div`
     margin-left: 20px;
 
     pre.content {
+      width: 720px;
       display: -webkit-box;
       -webkit-box-orient: vertical;
       white-space: pre-wrap;
       line-height: 1.8;
-      word-break: break-all;
       word-wrap: break-word;
       font-family: Arial, Helvetica, sans-serif;
     }

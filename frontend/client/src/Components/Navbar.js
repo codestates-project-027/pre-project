@@ -117,27 +117,6 @@ const Searchbar = styled.input`
   border-radius: 2px;
 `;
 
-const LogInButton = styled.button`
-  width: 70px;
-  height: 35px;
-  background-color: rgb(219, 233, 242);
-  border-radius: 10%;
-  border: 1px solid rgb(38, 104, 144);
-  color: rgb(38, 104, 144);
-  cursor: pointer;
-`;
-const SignUpButton = styled.button`
-  font-weight: 600;
-  width: 85px;
-  height: 35px;
-  background-color: rgb(0, 139, 250);
-  border-radius: 10%;
-  border: none;
-  color: rgb(255, 255, 255);
-  margin-left: 3px;
-  cursor: pointer;
-`;
-
 const Stack = styled.div`
   margin-left: 5%;
   font-weight: 400;
