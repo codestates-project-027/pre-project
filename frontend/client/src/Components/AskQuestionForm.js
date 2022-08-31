@@ -17,6 +17,11 @@ const AskQuestionForm = () => {
   const [answer, setAnswer] = useState(0);
   const [view, setView] = useState(0);
 
+  // const setPreBody = (e) => {
+  //   const bodyContent={<pre>e.target.value</pre>}
+  //   setBody()
+  // }
+
   const navigate = useNavigate();
 
   const postData = async (e) => {

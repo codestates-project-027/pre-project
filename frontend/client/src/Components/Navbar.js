@@ -3,7 +3,7 @@ import { ReactComponent as Logo } from '../assets/LogoGlyphMd.svg';
 import { Link } from 'react-router-dom';
 import { HiSearch } from 'react-icons/hi';
 
-const Navbar = () => {
+const Navbar = ({isLogin, logoutHandler}) => {
   return (
     <NavCss>
       <Link to="/">
@@ -21,13 +21,30 @@ const Navbar = () => {
         <Searchbar placeholder="Search..." />
       </span>
       <div className="buttons">
-        <Link to="/login">
-          <LogInButton>Log in</LogInButton>
-        </Link>
-        <Link to="/signup">
-          <SignUpButton>Sign up</SignUpButton>
-        </Link>
+      {isLogin ? (
+          <>
+          
+            <LogoutBtn onClick={logoutHandler}>Log out</LogoutBtn>
+            <Link to="/mypage">
+            <MypageBtn>My Page</MypageBtn>
+            </Link>
+            </>
+        ) 
+        :
+         (
+          <>
+            
+            <Link to="/login">
+              <LoginBtn>Log in</LoginBtn>
+            </Link>
+            <Link to="/join">
+              <SignupBtn>Sign up</SignupBtn>
+            </Link>
+            
+          </>
+        )}
       </div>
+     
     </NavCss>
   );
 };
@@ -134,4 +151,47 @@ const Stack = styled.div`
 
 const OverFlow = styled.div`
   font-weight: bold;
+`;
+
+const LoginBtn = styled.button`
+  width: 70px;
+  height: 35px;
+  background-color: rgb(219, 233, 242);
+  border-radius: 10%;
+  border: 1px solid rgb(38, 104, 144);
+  color: rgb(38, 104, 144);
+  cursor: pointer;
+`;
+const SignupBtn = styled.button`
+  font-weight: 600;
+  width: 85px;
+  height: 35px;
+  background-color: rgb(0, 139, 250);
+  border-radius: 10%;
+  border: none;
+  color: rgb(255, 255, 255);
+  margin-left: 3px;
+  cursor: pointer;
+`;
+
+const LogoutBtn = styled.button`
+  width: 85px;
+  height: 35px;
+  background-color: rgb(219, 233, 242);
+  border-radius: 10%;
+  border: 1px solid rgb(38, 104, 144);
+  color: rgb(38, 104, 144);
+  cursor: pointer;
+`;
+
+const MypageBtn = styled.button`
+  font-weight: 600;
+  width: 85px;
+  height: 35px;
+  background-color: rgb(0, 139, 250);
+  border-radius: 10%;
+  border: none;
+  color: rgb(255, 255, 255);
+  margin-left: 3px;
+  cursor: pointer;
 `;
