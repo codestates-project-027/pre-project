@@ -38,3 +38,6 @@ out/
 
 ##환경변수
 **/application*.*
+
+###api문서
+**/index.html

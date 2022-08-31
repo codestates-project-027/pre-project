@@ -6,7 +6,9 @@ import { useNavigate } from 'react-router-dom';
 const AskQuestionForm = () => {
   const url = 'http://localhost:8080/posts';
   const [author, setAuthor] = useState('author');
-  const [createdAt, setCreatedAt] = useState(`${new Date().toLocaleDateString()}`);
+  const [createdAt, setCreatedAt] = useState(
+    `${new Date().toLocaleDateString()}`
+  );
 
   // const [data, setData] = useState([]);
   const [title, setTitle] = useState('');
@@ -17,11 +19,16 @@ const AskQuestionForm = () => {
   const [answer, setAnswer] = useState(0);
   const [view, setView] = useState(0);
 
+  // const setPreBody = (e) => {
+  //   const bodyContent={<pre>e.target.value</pre>}
+  //   setBody()
+  // }
+
   const navigate = useNavigate();
 
   const postData = async (e) => {
     e.preventDefault();
-    const post = { title, body, tags, author, createdAt, vote, answer, view};
+    const post = { title, body, tags, author, createdAt, vote, answer, view };
     await axios
       .post(url, post)
       // .then(setData((prev) => [...prev, body]))

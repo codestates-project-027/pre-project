@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import img from '../landingimg.png';
+import img from '../assets/landingimg.png';
 
 const LandingPage = () => {
   return (
