@@ -52,7 +52,6 @@ function App() {
         alert(err);
       });
   };
-  
 
   //GET
   const getData = async () => {
@@ -72,14 +71,17 @@ function App() {
   return (
     <BrowserRouter>
       <div className="App">
-        <Navbar isLogin={isLogin} logoutHandler={logoutHandler}/>
+        <Navbar isLogin={isLogin} logoutHandler={logoutHandler} />
 
         <ComponentsWrapper>
           <LeftSidebar />
 
           <RoutesWrapper>
             <Routes>
-              <Route path="/" element={<LandingPage isLogin={isLogin}/>}></Route>
+              <Route
+                path="/"
+                element={<LandingPage isLogin={isLogin} />}
+              ></Route>
 
               <Route
                 path="/questionspage"

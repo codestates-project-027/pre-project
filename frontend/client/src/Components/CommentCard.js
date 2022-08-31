@@ -24,11 +24,7 @@ const CommentCard = () => {
     getData();
   }, []);
 
-  return (
-    <>
-     this is comment
-    </>
-  );
+  return <>this is comment</>;
 };
 
 const AnswerCardDefault = styled.div`

@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 function Pagination({ total, limit, page, setPage }) {
   const numPages = Math.ceil(total / limit);
@@ -15,7 +15,7 @@ function Pagination({ total, limit, page, setPage }) {
             <Button
               key={i + 1}
               onClick={() => setPage(i + 1)}
-              aria-current={page === i + 1 ? "page" : null}
+              aria-current={page === i + 1 ? 'page' : null}
             >
               {i + 1}
             </Button>
@@ -41,12 +41,12 @@ const Button = styled.button`
   border-radius: 8px;
   padding: 8px;
   margin: 0;
-  color: rgba(109,115,122);
+  color: rgba(109, 115, 122);
   font-size: 1rem;
   background-color: white;
 
   &:hover {
-    color: rgb(229,136,62);
+    color: rgb(229, 136, 62);
     cursor: pointer;
     font-weight: bold;
   }
@@ -57,9 +57,10 @@ const Button = styled.button`
     background-color: white;
   }
 
-  &[aria-current] { //active
-    background: rgb(229,136,62);
-    color: rgb(255,255,255);
+  &[aria-current] {
+    //active
+    background: rgb(229, 136, 62);
+    color: rgb(255, 255, 255);
     font-weight: bold;
     cursor: revert;
     transform: revert;

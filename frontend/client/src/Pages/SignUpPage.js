@@ -1,9 +1,8 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { AiTwotoneTrophy } from 'react-icons/ai';
+import { AiTwotoneTrophy, AiFillTags } from 'react-icons/ai';
 import { RiQuestionnaireFill } from 'react-icons/ri';
-import { AiFillTags } from 'react-icons/ai';
 import { MdThumbsUpDown } from 'react-icons/md';
 
 const SignUpPage = () => {

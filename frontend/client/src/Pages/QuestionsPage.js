@@ -6,7 +6,7 @@ import OverflowBlog from '../assets/overflowblog.png';
 import Pagination from '../Components/Pagination';
 import AskButton from '../Components/AskButton';
 
-const QuestionsPage = ({isLogin}) => {
+const QuestionsPage = ({ isLogin }) => {
   const [data, setData] = useState([]);
   //pagination
   const [limit, setLimit] = useState(10);
@@ -47,16 +47,15 @@ const QuestionsPage = ({isLogin}) => {
           <div className="head--wrapper">
             <div className="head">
               All Questions
-              {isLogin? 
-              <Link to="/askquestionpage">
-                <AskButton>Ask Question</AskButton>
-              </Link> 
-              : 
-              <Link to="/login">
-                <LoginDesc>you can use after login</LoginDesc>
-              </Link> 
-              }
-
+              {isLogin ? (
+                <Link to="/askquestionpage">
+                  <AskButton>Ask Question</AskButton>
+                </Link>
+              ) : (
+                <Link to="/login">
+                  <LoginDesc>you can use after login</LoginDesc>
+                </Link>
+              )}
             </div>
           </div>
 
@@ -316,6 +315,6 @@ const LoginDesc = styled.button`
   background-color: rgba(227, 236, 243);
   color: rgba(110, 156, 159);
   border-radius: 2px;
-  border: 1px solid rgb(120,155,158, 0.5);
+  border: 1px solid rgb(120, 155, 158, 0.5);
   cursor: pointer;
-`
+`;

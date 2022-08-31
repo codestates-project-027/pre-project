@@ -1,8 +1,8 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 const AskButton = styled.button`
-width: 130px;
-height: 40px;
+  width: 130px;
+  height: 40px;
   margin: 5px;
   background-color: rgb(35, 150, 400);
   color: white;

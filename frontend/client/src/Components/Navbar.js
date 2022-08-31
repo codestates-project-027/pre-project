@@ -3,7 +3,7 @@ import { ReactComponent as Logo } from '../assets/LogoGlyphMd.svg';
 import { Link } from 'react-router-dom';
 import { HiSearch } from 'react-icons/hi';
 
-const Navbar = ({isLogin, logoutHandler}) => {
+const Navbar = ({ isLogin, logoutHandler }) => {
   return (
     <NavCss>
       <Link to="/">
@@ -21,30 +21,24 @@ const Navbar = ({isLogin, logoutHandler}) => {
         <Searchbar placeholder="Search..." />
       </span>
       <div className="buttons">
-      {isLogin ? (
+        {isLogin ? (
           <>
-          
             <LogoutBtn onClick={logoutHandler}>Log out</LogoutBtn>
             <Link to="/mypage">
-            <MypageBtn>My Page</MypageBtn>
+              <MypageBtn>My Page</MypageBtn>
             </Link>
-            </>
-        ) 
-        :
-         (
+          </>
+        ) : (
           <>
-            
             <Link to="/login">
               <LoginBtn>Log in</LoginBtn>
             </Link>
             <Link to="/join">
               <SignupBtn>Sign up</SignupBtn>
             </Link>
-            
           </>
         )}
       </div>
-     
     </NavCss>
   );
 };

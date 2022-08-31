@@ -67,7 +67,7 @@ const AnswerCard = () => {
                     </div>
                     <div className="two">
                       <div className="comment--wrapper">
-                      {/* <CommentCard/> */}
+                        {/* <CommentCard/> */}
                         <div className="comment--button">
                           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Add a comment
                         </div>
@@ -78,7 +78,6 @@ const AnswerCard = () => {
               ))
             : null}
         </div>
-        
       </AnswerCardDefault>
     </>
   );
@@ -165,7 +164,7 @@ const AnswerCardDefault = styled.div`
     color: rgb(182, 186, 191);
     font-weight: bold;
     /* justify-content: right; */
-  
+
     &:hover {
       color: rgb(107, 135, 166);
       cursor: pointer;

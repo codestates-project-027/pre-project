@@ -11,7 +11,7 @@ const AskQuestionPage = () => {
         <QSidebar />
       </Div>
     </>
-  )
+  );
 };
 
 export default AskQuestionPage;

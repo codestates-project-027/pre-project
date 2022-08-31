@@ -114,7 +114,7 @@ const ReadQuestionPage = () => {
               <BsClockHistory size="15" className="bs add click" />
             </div>
             <div className="content--comment--answer">
-              <div className="content">{data.body}</div>
+              <pre className="content">{data.body}</pre>
               <div className="tags--edit--delete">
                 <div className="tags">{data.tags}</div>
                 <div className="edit--delete">
@@ -228,15 +228,18 @@ const Div = styled.div`
     width: 750px;
     height: fit-content;
     margin-left: 20px;
-  }
-  .content {
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    line-height: 1.8;
 
-    word-wrap: break-word;
+    pre.content {
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      white-space: pre-wrap;
+      line-height: 1.8;
+      word-break: break-all;
+      word-wrap: break-word;
+      font-family: Arial, Helvetica, sans-serif;
+    }
   }
+
   .tags--edit--delete {
     display: flex;
     flex-direction: column;

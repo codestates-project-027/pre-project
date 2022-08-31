@@ -1,9 +1,9 @@
 {
   "posts": [
     {
-      "title": "asef",
-      "body": "sefse",
-      "tags": "fasef",
+      "title": "asegaseg",
+      "body": "Having the same issue on a self hosted agent but I'm not specifying password in the yml. just specifying the vstsFeed\n\n- checkout: self\n    submodules: true\n    persistCredentials: true\n\n- task: NuGetToolInstaller@1\ninputs:\n  versionSpec: 6.2.1\n\n- task: UseDotNet@2\ndisplayName: Using Dotnet Version 6.0.400\ninputs:\n  packageType: 'sdk'\n  version: '6.0.400'\n\n- task: DotNetCoreCLI@2\ndisplayName: Restore Nuget packages \ninputs:\n  command: 'restore'\n  projects: '**/*.sln'\n  feedsToUse: 'select'\n  vstsFeed: 'ba05a72a-c4fd-43a8-9505-a97db9bf4d00/6db9ddb0-5c18-4a24-a985-75924292d079'\n\n\n\n \nand it fails with following error error NU1301: Unable to load the service index for source\n\nNuget feed is on another project of the same organization. I can see that pipeline produces a temp nuget config where it specifies username and password for this feed during run. Been breaking my head for the last 72 hours non-stop to find what is the issue. Azure pipelines and nuget sucks. 99% of the problems we had so far waaas with nuget not working smoothly with azure pipelines. Microsoft has to take a step back and resolve pipelines and nuget ssues.",
+      "tags": "azure-devops",
       "author": "author",
       "createdAt": "8/29/2022",
       "vote": 0,
@@ -13,7 +13,22 @@
       "answerList": [
         {
           "id": 1,
-          "answerContent": "answer title",
+          "answerContent": "From your description, you are using the Nuget feed on another project of the same organization. You need to check the following points: Check the permission of the Build Service account.Here are the steps: Step1: Navigate to Artifacts ->Target Feed ->Feed Settings -> Permission. Step2: Grant the Build service account Contributor Role . Build service account name: ProjectnamethePipelinelocated Build Service (Organization name)",
+          "author": "author",
+          "createdAt": "date",
+          "vote": 3,
+          "commentList": [
+            {
+              "id": 1,
+              "commentContent": "comment title",
+              "author": "author",
+              "createdAt": "date"
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "answerContent": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum",
           "author": "author",
           "createdAt": "date",
           "vote": 3,
@@ -29,9 +44,9 @@
       ]
     },
     {
-      "title": "1",
-      "body": "g2",
-      "tags": "3",
+      "title": "Is saving by a specific entity id idempotent in Datastore?",
+      "body": "Are entity id's idempotent when saving multiple entities with the same id?\n\nI want to ensure only one entity of a specific id exists in my Datastore. I was thinking that I could give it a String id that I create (based off of other data) and if in the future the same entity gets saved again with the same id, the entity will just get overwritten (but two entities will not ever exists).\n\nAm I correct in my thinking or does it not work that way?",
+      "tags": "google-cloud-datastore",
       "author": "author",
       "createdAt": "8/30/2022",
       "vote": 0,
@@ -40,9 +55,9 @@
       "id": 3
     },
     {
-      "title": "a",
-      "body": "a",
-      "tags": "a",
+      "title": "How can I find not same data using mysql regexp in multiline text?",
+      "body": "I tried to find the data using regexp in multiline text. My regexp is 'Audit Policy,[A-Za-z0-9|[:space:]]+,Success and Failure'.\n\n# query\nSELECT *\n  FROM docs\n WHERE content not regexp 'Audit Policy,[A-Za-z0-9|[:space:]]+,Success and Failure';\n\n# data\n'Audit Policy,Audit account logon events,No Auditing\nAudit Policy,Audit account management,Success and Failure\nAudit Policy,Audit logon events,No Auditing\nAudit Policy,Audit object access,Success and Failure'\nI think I can search the whole data included in 'Audit Policy,Audit logon events,No Auditing' when I run the below code but it's not that work. Is there a way to get that line only using SQL queries?\n\nSQL Fiddle: http://sqlfiddle.com/#!9/8adc4b/2\n\nMy sql version is 5.7.25 / the data column type is varchar.",
+      "tags": "mysql",
       "author": "author",
       "createdAt": "8/30/2022",
       "vote": 0,
@@ -51,9 +66,9 @@
       "id": 4
     },
     {
-      "title": "1234",
-      "body": "1234",
-      "tags": "1234",
+      "title": "Issue with One Way Binding Using Knockoutjs",
+      "body": "0\n\n\nI'm currently using Knockoutjs in one of my projects. I'm trying to do one-way binding in my HTML to a span tag but I'm not having any luck. I'm getting my data from an ajax call and I can see my property PersonName being populated with the returned value in the browser devloper tools; however, my UI isn't showing that value. If I make the property an observable then it shows. I have the following code:\n\nfunction MyObjectModel() {\nvar self = this;\n\nself.PersonName = \"\";\nself.Instructions = \"\";\nself.HasDetails = false;\n\nself.isLoaded = ko.observable(false);\nself.loadingMessage = ko.observable(\"\");\n\nfunction init() {\n    $.ajax({\n        url: <url to api>,\n        type: 'GET',\n        beforeSend: () => {\n            ... \n    })\n        .done((data) => {\n            if (!account.handleInvalidSessionResponse(data, true)) {\n                self.PersonName = data.PersonName;\n                self.Instructions = data.Instructions;\n                self.HasDetails = data.HasDetails;\n            }\n        })\n        .catch((jqXHR, errorThrown, textStatus) => {\n            ...\n        })\n        .always(() => {\n            ...\n        })\n}\ninit();\n}\n\n$(function () {\nvar viewModel = new MyObjectModel();\nko.applyBindings(viewModel, document.querySelector(\"[main-myObjectDetail]\"));\n});\n\nMy UI has this tag\n\n<span data-bind=\"text: PersonName\"></span>",
+      "tags": "knockout.js",
       "author": "author",
       "createdAt": "8/31/2022",
       "vote": 0,
