@@ -13,12 +13,12 @@ const QuestionsPage = ({ isLogin }) => {
   const [page, setPage] = useState(1);
   const offset = (page - 1) * limit;
 
-  const url = 'http://localhost:8080/posts';
+  const url = '/question?page=1';
 
   //GET 요청
   const getData = async () => {
     const getResponse = await axios(url);
-    setData(getResponse.data);
+    setData(getResponse.data.content);
   };
 
   useEffect(() => {
@@ -84,7 +84,7 @@ const QuestionsPage = ({ isLogin }) => {
             </div>
 
             <div className="questions-wrapper">
-              {data.slice(offset, offset + limit).map((item) => (
+              {data.map((item) => (
                 <div style={{ width: '100%' }} key={item.id}>
                   <QuestionCard>
                     <div className="question--wrapper">

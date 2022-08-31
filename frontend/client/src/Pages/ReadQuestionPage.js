@@ -34,14 +34,14 @@ const ReadQuestionPage = () => {
   const { id } = useParams();
 
   const getData = async () => {
-    const getResponse = await axios('http://localhost:8080/posts/' + id);
+    const getResponse = await axios('/question?page=1' + id); //서버경로 수정
     setData(getResponse.data);
     setAnswerData(getResponse.data.answerList);
     // setCommentData(getResponse.data.commentList);
   };
 
   const deleteData = async () => {
-    await axios.delete(`http://localhost:8080/posts/${id}`).then(() => {
+    await axios.delete(`/question?page=1/${id}`).then(() => { //서버경로 수정
       navigate('/questionspage');
     });
   };

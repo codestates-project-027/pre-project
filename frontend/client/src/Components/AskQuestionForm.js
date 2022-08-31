@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const AskQuestionForm = () => {
-  const url = 'http://localhost:8080/posts';
+  const url = '/question?page=1'; //서버경로 수정
   const [author, setAuthor] = useState('author');
   const [createdAt, setCreatedAt] = useState(
     `${new Date().toLocaleDateString()}`

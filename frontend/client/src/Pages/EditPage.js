@@ -17,7 +17,7 @@ const EditPage = (data) => {
     e.preventDefault();
     const updatePost = { title, body, tags };
     await axios
-      .patch(`http://localhost:8080/posts/${id}`, updatePost)
+      .patch(`/question?page=1/${id}`, updatePost) //서버경로 수정
       .then(() => {
         navigate('/questionspage');
       });
