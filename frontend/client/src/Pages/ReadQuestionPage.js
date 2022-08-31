@@ -14,10 +14,14 @@ import {
 
 const ReadQuestionPage = () => {
   const url = '/question/' //서버경로 수정
+  const { id } = useParams();
+  const postAnswerUrl = '/answer';
   const navigate = useNavigate();
   const [data, setData] = useState([]);
   const [answerData, setAnswerData] = useState([]); //불러온 answer data
-
+  const [questionId, setQuestionId] = useState(id);
+  const [answerContents, setAnswerContents] = useState('');
+  const [userName, setUserName] = useState('userName');
   // const [author, setAuthor] = useState('author');
   // const [createdAt, setCreatedAt] = useState(new Date().toLocaleDateString());
   // const [vote, setVote] = useState(0);
@@ -32,7 +36,7 @@ const ReadQuestionPage = () => {
   //     {answerContent:answerData, author, createdAt, vote, commentList}
   //   ])
 
-  const { id } = useParams();
+  
 
   const getData = async () => {
     const getResponse = await axios(url + id); 
@@ -48,6 +52,8 @@ const ReadQuestionPage = () => {
   //answer
   const postAnswer = async (e) => {
     e.preventDefault();
+    const answer = { questionId, contents:answerContents, userName};
+    await axios.post(postAnswerUrl, answer);
     window.location.reload();
   };
   // const postAnswer = async (e) => {
@@ -143,7 +149,7 @@ const ReadQuestionPage = () => {
 
                 <textarea
                   type="text"
-                  onChange={(e) => setAnswerData(e.target.value)}
+                  onChange={(e) => setAnswerContents(e.target.value)}
                 />
               </div>
 

@@ -16,7 +16,7 @@ const AnswerCard = () => {
 
   const getData = async () => {
     //answerData = 가져온 answer data [{}]
-    const getResponse = await axios('/question?page=1' + id); //서버경로 수정
+    const getResponse = await axios('http://localhost:8080/posts/' + id);
     setAnswerData(getResponse.data.answerList); //JSON.stringify(answerData) = [{},{},{},{}]
     // console.log(JSON.stringify(answerData));
   };
