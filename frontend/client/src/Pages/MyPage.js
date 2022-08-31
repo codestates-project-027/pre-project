@@ -1,8 +1,9 @@
 import axios from 'axios';
 import React from 'react';
 import styled from 'styled-components';
+import NotFoundPage from './NotFoundPage';
 
-export default function Mypage({ userInfo, setIsLogin, setUserInfo }) {
+export default function Mypage({ userInfo, setIsLogin, setUserInfo, isLogin }) {
   const logoutHandler = () => {
     return axios
       .post('https://localhost:4000/logout')
@@ -17,31 +18,35 @@ export default function Mypage({ userInfo, setIsLogin, setUserInfo }) {
 
   return (
     <>
-      <LoginGlobalStyle>
-        <div className="container">
-          <div className="left-box">
-            <span>Welcome {`${userInfo.name}(${userInfo.userId})`}</span>
-          </div>
-          <div className="right-box">
-            <h1>My Page</h1>
-            <div className="input-field">
-              <h3>내 정보</h3>
-              <div className="userinfo-field">
-                <div>{`💻 ${userInfo.position}`}</div>
-                <div>{`📩 ${userInfo.email}`}</div>
-                <div>{`📍 ${userInfo.location}`}</div>
-                {/* <article>
-              <h3>Bio</h3>
-              <span>{userInfo.bio}</span>
-            </article> */}
+      {isLogin ? (
+        <LoginGlobalStyle>
+          <div className="container">
+            <div className="left-box">
+              <span>Welcome {`${userInfo.name}(${userInfo.userId})`}</span>
+            </div>
+            <div className="right-box">
+              <h1>My Page</h1>
+              <div className="input-field">
+                <h3>내 정보</h3>
+                <div className="userinfo-field">
+                  <div>{`💻 ${userInfo.position}`}</div>
+                  <div>{`📩 ${userInfo.email}`}</div>
+                  <div>{`📍 ${userInfo.location}`}</div>
+                  {/* <article>
+            <h3>Bio</h3>
+            <span>{userInfo.bio}</span>
+          </article> */}
+                </div>
+                <button className="logout-btn" onClick={logoutHandler}>
+                  LOGOUT
+                </button>
               </div>
-              <button className="logout-btn" onClick={logoutHandler}>
-                LOGOUT
-              </button>
             </div>
           </div>
-        </div>
-      </LoginGlobalStyle>
+        </LoginGlobalStyle>
+      ) : (
+        <NotFoundPage />
+      )}
     </>
   );
 }

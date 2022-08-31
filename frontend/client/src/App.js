@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
 import styled from 'styled-components';
+import axios from 'axios';
 
 import Navbar from './Components/Navbar';
 import LeftSidebar from './Components/LeftSidebar';
@@ -16,10 +17,10 @@ import NotFoundPage from './Pages/NotFoundPage';
 import EditPage from './Pages/EditPage';
 import MyPage from './Pages/MyPage';
 
-import axios from 'axios';
 const url = `http://localhost:8080/posts`;
 
 axios.defaults.withCredentials = true;
+
 function App() {
   const [data, setData] = useState([]);
 
@@ -37,6 +38,31 @@ function App() {
       .catch((err) => {
         if (err.response.status === 401) {
           console.log(err.response.data);
+        }
+      });
+  };
+  //login request
+  const [loginInfo, setLoginInfo] = useState({ userId: '', password: '' });
+  const [keepLogin, setKeepLogin] = useState(true);
+  const [errorMessage, setErrorMessage] = useState('');
+  const loginRQHandler = () => {
+    const { userId, password } = loginInfo;
+    if (!userId || !password) {
+      setErrorMessage('아이디와 비밀번호를 입력하세요');
+      return;
+    } else {
+      setErrorMessage('');
+    }
+    return axios
+      .post('https://localhost:4000/login', { loginInfo, keepLogin })
+      .then((res) => {
+        setIsLogin(true);
+        setUserInfo(res.data);
+        localStorage.setItem('login-token', res.token);
+      })
+      .catch((err) => {
+        if (err.response.data === 401) {
+          setErrorMessage('로그인에 실패함');
         }
       });
   };
@@ -100,8 +126,15 @@ function App() {
                 path="/login"
                 element={
                   <LogInPage
+                    isLogin={isLogin}
                     setUserInfo={setUserInfo}
                     setIsLogin={setIsLogin}
+                    loginRQHandler={loginRQHandler}
+                    loginInfo={loginInfo}
+                    setLoginInfo={setLoginInfo}
+                    keepLogin={keepLogin}
+                    setKeepLogin={setKeepLogin}
+                    errorMessage={errorMessage}
                   />
                 }
               />
@@ -123,9 +156,7 @@ function App() {
                 path="/posts/:id"
                 element={
                   <ReadQuestionPage
-                    // data={data}
-                    // setData={setData}
-                    // getData={getData}
+                    loginRQHandler={loginRQHandler}
                     isLogin={isLogin}
                   />
                 }

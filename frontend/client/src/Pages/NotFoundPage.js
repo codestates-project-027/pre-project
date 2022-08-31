@@ -1,13 +1,26 @@
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 
 const NotFoundPage = () => {
   return (
-    <div>
-      <h2>Sorry</h2>
-      <p>PAGE NOT FOUND</p>
-      <Link to="/">Back to Landing page</Link>
-    </div>
+    <>
+      <NotFoundCSS>
+        <div>
+          <h2>Sorry</h2>
+          <p>PAGE NOT FOUND</p>
+          <Link to="/">Back to Home..</Link>
+        </div>
+      </NotFoundCSS>
+    </>
   );
 };
 
 export default NotFoundPage;
+
+const NotFoundCSS = styled.div`
+  width: 100%;
+  margin-top: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;

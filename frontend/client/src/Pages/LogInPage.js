@@ -1,92 +1,73 @@
-import React, { useState } from 'react';
 import styled from 'styled-components';
 import { ReactComponent as Logo } from '../assets/LogoGlyphMd.svg';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 
-const LogInPage = ({ setUserInfo, setIsLogin }) => {
-  const [loginInfo, setLoginInfo] = useState({ userId: '', password: '' });
-  const [checkedKeepLogin, setCheckedKeepLogin] = useState(true);
-  const [errorMessage, setErrorMessage] = useState('');
-  const navigate = useNavigate();
-
+const LogInPage = ({
+  isLogin,
+  loginRQHandler,
+  loginInfo,
+  setLoginInfo,
+  keepLogin,
+  setKeepLogin,
+  errorMessage,
+}) => {
   const handleInputValue = (key) => (e) => {
     setLoginInfo({ ...loginInfo, [key]: e.target.value });
   };
 
-  const loginRQHandler = () => {
-    const { userId, password } = loginInfo;
-    if (!userId || !password) {
-      setErrorMessage('아이디와 비밀번호를 입력하세요');
-      return;
-    } else {
-      setErrorMessage('');
-    }
-    return axios
-      .post('https://localhost:4000/login', { loginInfo, checkedKeepLogin })
-      .then((res) => {
-        setIsLogin(true);
-        setUserInfo(res.data);
-        localStorage.setItem('login-token', res.token);
-      })
-      .then(() => navigate('/'))
-      .catch((err) => {
-        if (err.response.data === 401) {
-          setErrorMessage('로그인에 실패함');
-        }
-      });
-  };
-
   return (
     <>
-      <LoginGlobalStyle>
-        <Logo style={{ marginTop: '-80px' }} />
-        <div className="login--page--wrapper">
-          <div className="button--wrapper">
-            <Button style={GoogleColor}>Log in with Google</Button>
-            <Button style={GithubColor}>Log in with GitHub</Button>
-            <Button style={FBColor}>Log in with Facebook</Button>
-          </div>
+      {isLogin ? (
+        window.location.replace('http://localhost:3000/questionspage')
+      ) : (
+        <LoginGlobalStyle>
+          <Logo style={{ marginTop: '-80px' }} />
+          <div className="login--page--wrapper">
+            <div className="button--wrapper">
+              <Button style={GoogleColor}>Log in with Google</Button>
+              <Button style={GithubColor}>Log in with GitHub</Button>
+              <Button style={FBColor}>Log in with Facebook</Button>
+            </div>
 
-          <div className="loginform--wrapper">
-            <div className="login--components--wrapper">
-              <div className="label--input--button--wrapper">
-                <label htmlFor="email">Email</label>
-                <input
-                  name="email"
-                  type="email"
-                  onChange={handleInputValue('userId')}
-                />
-
-                <label htmlFor="password">Password</label>
-                <input
-                  name="password"
-                  type="password"
-                  onChange={handleInputValue('password')}
-                />
-
-                <label className="checkbox-container">
+            <div className="loginform--wrapper">
+              <div className="login--components--wrapper">
+                <div className="label--input--button--wrapper">
+                  <label htmlFor="email">Email</label>
                   <input
-                    type="checkbox"
-                    checked
-                    onChange={() => setCheckedKeepLogin(!checkedKeepLogin)}
+                    name="email"
+                    type="email"
+                    onChange={handleInputValue('userId')}
                   />
-                  {' 로그인 상태 유지하기'}
-                </label>
 
-                <button onClick={loginRQHandler}>Log in</button>
-                {errorMessage ? (
-                  <div id="alert-message" data-testid="alert-message">
-                    {errorMessage}
-                  </div>
-                ) : (
-                  ''
-                )}
+                  <label htmlFor="password">Password</label>
+                  <input
+                    name="password"
+                    type="password"
+                    onChange={handleInputValue('password')}
+                  />
+
+                  <label className="checkbox-container">
+                    <input
+                      type="checkbox"
+                      checked
+                      onChange={() => setKeepLogin(!keepLogin)}
+                    />
+                    {' 로그인 상태 유지하기'}
+                  </label>
+
+                  <button onClick={loginRQHandler}>Log in</button>
+                  {errorMessage ? (
+                    <div id="alert-message" data-testid="alert-message">
+                      {errorMessage}
+                    </div>
+                  ) : (
+                    ''
+                  )}
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </LoginGlobalStyle>
+        </LoginGlobalStyle>
+      )}
     </>
   );
 };
