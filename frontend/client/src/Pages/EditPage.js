@@ -4,20 +4,21 @@ import styled from 'styled-components';
 import axios from 'axios';
 
 const EditPage = (data) => {
+  const url = '/question/'
   const { id } = useParams();
   const navigate = useNavigate();
   const prevTitle = localStorage.getItem('title');
   const prevBody = localStorage.getItem('body');
   const prevTags = localStorage.getItem('tags');
   const [title, setTitle] = useState(prevTitle);
-  const [body, setBody] = useState(prevBody);
+  const [contents, setContents] = useState(prevBody);
   const [tags, setTags] = useState(prevTags);
 
   const updatePost = async (e) => {
     e.preventDefault();
-    const updatePost = { title, body, tags };
+    const updatePost = { title, contents, tags:[JSON.parse(JSON.stringify(tags))] } ;
     await axios
-      .patch(`/question?page=1/${id}`, updatePost) //서버경로 수정
+      .patch(url+id, updatePost) //서버경로 수정
       .then(() => {
         navigate('/questionspage');
       });
@@ -25,7 +26,7 @@ const EditPage = (data) => {
 
   const discardDraft = () => {
     setTitle('');
-    setBody('');
+    setContents('');
     setTags('');
   };
 
@@ -48,8 +49,8 @@ const EditPage = (data) => {
             <textarea
               className="main"
               type="text"
-              value={body}
-              onChange={(e) => setBody(e.target.value)}
+              value={contents}
+              onChange={(e) => setContents(e.target.value)}
             />
 
             <div className="main-first">Tag</div>

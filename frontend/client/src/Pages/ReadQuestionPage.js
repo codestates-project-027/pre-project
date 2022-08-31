@@ -13,6 +13,7 @@ import {
 } from 'react-icons/bs';
 
 const ReadQuestionPage = () => {
+  const url = '/question/' //서버경로 수정
   const navigate = useNavigate();
   const [data, setData] = useState([]);
   const [answerData, setAnswerData] = useState([]); //불러온 answer data
@@ -34,16 +35,14 @@ const ReadQuestionPage = () => {
   const { id } = useParams();
 
   const getData = async () => {
-    const getResponse = await axios('/question?page=1' + id); //서버경로 수정
+    const getResponse = await axios(url + id); 
     setData(getResponse.data);
     setAnswerData(getResponse.data.answerList);
     // setCommentData(getResponse.data.commentList);
   };
 
   const deleteData = async () => {
-    await axios.delete(`/question?page=1/${id}`).then(() => { //서버경로 수정
-      navigate('/questionspage');
-    });
+    await axios.delete(url + id).then(() => { navigate('/questionspage'); });
   };
 
   //answer
@@ -92,11 +91,11 @@ const ReadQuestionPage = () => {
                 <p className="date--and--ask" style={{ marginLeft: '20px' }}>
                   Viewed
                 </p>
-                <p className="date--and--answer">{data.view} times</p>
+                <p className="date--and--answer">{data.views} times</p>
                 <p className="date--and--ask" style={{ marginLeft: '20px' }}>
                   Author
                 </p>
-                <p className="date--and--answer">{data.author}</p>
+                <p className="date--and--answer">{data.userName}</p>
               </div>
             </div>
 
@@ -114,13 +113,13 @@ const ReadQuestionPage = () => {
               <BsClockHistory size="15" className="bs add click" />
             </div>
             <div className="content--comment--answer">
-              <pre className="content">{data.body}</pre>
+              <pre className="content">{data.contents}</pre>
               <div className="tags--edit--delete">
                 <div className="tags">{data.tags}</div>
                 <div className="edit--delete">
                   <div className="edit">
                     {localStorage.setItem('title', data.title)}
-                    {localStorage.setItem('body', data.body)}
+                    {localStorage.setItem('body', data.contents)}
                     {localStorage.setItem('tags', data.tags)}
                     <Link to={`/posts/edit/${id}`} style={LinkStyle}>
                       Edit
