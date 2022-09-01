@@ -11,6 +11,7 @@ import {
   BsFillBookmarkStarFill,
   BsClockHistory,
 } from 'react-icons/bs';
+import { TiCancel } from 'react-icons/ti';
 
 const ReadQuestionPage = () => {
   const url = '/question/'; //서버경로 수정
@@ -23,14 +24,11 @@ const ReadQuestionPage = () => {
   const [questionId, setQuestionId] = useState(id);
   const [answerContents, setAnswerContents] = useState('');
   const [userName, setUserName] = useState('userName');
-  const [votedUp, setVotedUp] = useState(false);
-  const [votedDown, setVotedDown] = useState(false);
 
   const getData = async () => {
     const getResponse = await axios(url + id);
     setData(getResponse.data);
     setAnswerData(getResponse.data.answerList);
-
   };
 
   const deleteData = async () => {
@@ -51,20 +49,18 @@ const ReadQuestionPage = () => {
   const voteUp = async () => {
     const up = { questionId: id, member: userName, vote: true };
     await axios.post(voteUrl, up);
-    setVotedUp(true);
     window.location.reload();
   };
 
   const voteDown = async () => {
     const down = { questionId: id, member: userName, vote: false };
     await axios.post(voteUrl, down);
-    setVotedDown(true);
     window.location.reload();
   };
 
   const voteDelete = async () => {
-    const reset = { questionId: id, member: userName };
-    await axios.delete(voteUrl, reset);
+    const voteReset = { questionId: id, member: userName };
+    await axios.delete(voteUrl, { data: voteReset });
     window.location.reload();
   };
 
@@ -105,16 +101,19 @@ const ReadQuestionPage = () => {
                 size="27"
                 className="bs click"
               />
-              <p className="bs" onClick={voteDelete}>
-                {data.votes}
-              </p>
+              {/* <VoteBoxUp>like</VoteBoxUp> */}
+              <p className="bs">{data.votes}</p>
               <BsFillCaretDownFill
                 onClick={voteDown}
                 size="27"
                 className="bs click"
               />
+              {/* <VoteBoxDown>dislike</VoteBoxDown> */}
+              <TiCancel size="20" className="bs click" onClick={voteDelete} />
+              {/* <VoteBoxReset>reset</VoteBoxReset> */}
               <BsFillBookmarkStarFill size="15" className="bs add click" />
-              <BsClockHistory size="15" className="bs add click" />
+              {/* <VoteBoxBookmark>bookmark</VoteBoxBookmark> */}
+              {/* <BsClockHistory size="15" className="bs add click" /> */}
             </div>
             <div className="content--comment--answer">
               <pre className="content">{data.contents}</pre>
@@ -178,6 +177,7 @@ const Div = styled.div`
     display: flex;
     flex-direction: column;
     width: 95%;
+    
   }
   .title--ask--date--wrapper {
     display: flex;
@@ -186,6 +186,7 @@ const Div = styled.div`
     margin-top: 30px;
     justify-content: space-between;
     border-bottom: 1px solid rgba(229, 229, 229, 0.7);
+    
   }
   .title--date--wrapper {
     display: flex;
@@ -226,6 +227,7 @@ const Div = styled.div`
       cursor: pointer;
     }
   }
+  
   .content--comment--answer {
     display: flex;
     flex-direction: column;
@@ -310,6 +312,7 @@ const Div = styled.div`
     width: 280px;
   }
 `;
+
 const LinkStyle = {
   color: 'rgb(108,115,123)',
   marginLeft: '2px',
@@ -324,3 +327,43 @@ const AskStyle = {
   height: '45px',
   marginBottom: '50px',
 };
+
+// const VoteBoxUp = styled.p`
+//   display: block;
+//   text-align: center;
+//   position: absolute;
+//   width: 35px;
+//   padding: 2px;
+//   margin-left: 45px;  margin-top: 20px;
+//   -webkit-border-radius: 8px;
+//   -moz-border-radius: 8px;
+//   background: rgba(100,163,166,0.5);  color: #fff;
+//   &:hover{
+//     display:none;
+//   }
+// `
+
+// const VoteBoxDown = styled(VoteBoxUp)`
+// width: 55px; 
+// margin-left: 65px;  margin-top: 85px;
+// &:hover{
+//   display:block;
+// }
+// `
+
+// const VoteBoxReset = styled(VoteBoxUp)`
+// margin-left: 55px;
+// width: 45px;
+// margin-top: 120px;
+// &:hover{
+//   display:block;
+// }
+// `
+// const VoteBoxBookmark = styled(VoteBoxDown)`
+// width: 90px;
+// margin-left: 100px;
+// margin-top: 155px;
+// &:hover{
+//   display:block;
+// }
+// `

@@ -9,6 +9,7 @@ import {
   BsFillBookmarkStarFill,
   BsClockHistory,
 } from 'react-icons/bs';
+import {TiCancel} from 'react-icons/ti'
 
 const AnswerCard = () => {
   const url = '/question/';
@@ -49,11 +50,12 @@ const AnswerCard = () => {
                       <BsFillCaretUpFill size="15" className="bs click" />
                       <p className="bs">{el.votes}0</p>
                       <BsFillCaretDownFill size="15" className="bs click" />
+                      <TiCancel size="15" className="bs click"/>
                       <BsFillBookmarkStarFill
                         size="11"
                         className="bs add click"
                       />
-                      <BsClockHistory size="11" className="bs add click" />
+                      {/* <BsClockHistory size="11" className="bs add click" /> */}
                     </div>
 
                     <div className="answers--content">{el.contents}</div>
@@ -175,7 +177,6 @@ const AnswerCardDefault = styled.div`
     margin-top: 10px;
     width: 680px;
     color: rgb(182, 186, 191);
-    font-weight: bold;
     /* justify-content: right; */
 
     &:hover {
