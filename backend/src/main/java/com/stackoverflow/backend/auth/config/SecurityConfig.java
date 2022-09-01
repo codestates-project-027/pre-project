@@ -4,6 +4,9 @@ package com.stackoverflow.backend.auth.config;
 import com.stackoverflow.backend.auth.filter.*;
 import com.stackoverflow.backend.auth.repository.MemberRepository;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.GlobalMethodSecurityConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
@@ -34,7 +37,11 @@ public class SecurityConfig {
                 .apply(new CustomDsl())
                 .and()
                 .authorizeRequests()//요청에 대한 권한 지정. Security 처리에 HttpServletRequest를 이용한다는 것을 의미한다.
-                .antMatchers("/question/{question_id}/**")//해당 경로에 대한 접속 권한 설정
+                .antMatchers(HttpMethod.POST,"/question/**","/answer/**","/comment/**","/vote/**")//해당 경로에 대한 접속 권한 설정
+                .access("hasRole('ROLE_USER')")//해당 Role을 가지고 있는 사용자만 접근가능
+                .antMatchers(HttpMethod.PATCH,"/question/**","/answer/**","/comment/**","/vote/**")//해당 경로에 대한 접속 권한 설정
+                .access("hasRole('ROLE_USER')")//해당 Role을 가지고 있는 사용자만 접근가능
+                .antMatchers(HttpMethod.DELETE,"/question/**","/answer/**","/comment/**","/vote/**")//해당 경로에 대한 접속 권한 설정
                 .access("hasRole('ROLE_USER')")//해당 Role을 가지고 있는 사용자만 접근가능
                 .anyRequest()// 설정한 경로 외에 모든 경로를 뜻함
                 .permitAll();//어떤 사용자든지 접근 가능
