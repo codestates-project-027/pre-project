@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequiredArgsConstructor
 public class RestApiController {
@@ -29,7 +31,7 @@ public class RestApiController {
     }
 
     @PostMapping("/join")
-    public String join(@RequestBody Member member) {
+    public String join(@Valid @RequestBody Member member) {
         member.setPassword(bCryptPasswordEncoder.encode(member.getPassword()));
         member.setRoles("ROLE_USER");
         memberRepository.save(member);
