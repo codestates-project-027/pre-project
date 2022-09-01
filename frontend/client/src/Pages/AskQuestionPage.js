@@ -18,7 +18,7 @@ export default AskQuestionPage;
 
 const Div = styled.div`
   display: flex;
-  align-items: center;
+  align-items: start;
   background-color: rgb(241, 242, 243);
 `;
 const Title = styled.div`
