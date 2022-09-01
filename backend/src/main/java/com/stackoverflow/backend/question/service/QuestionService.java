@@ -33,7 +33,7 @@ public class QuestionService {
 
     public Page<QuestionDTO.responsePage> getQuestions(int page){
         if (page==0) page++;
-        return questionRepository.findBy(PageRequest.of(page-1,5))
+        return questionRepository.findBy(PageRequest.of(page-1,10))
                 .map(entity -> {
                     QuestionDTO.responsePage dto = questionMapper.questionToQuestionResponsePage(entity);
             return dto;
@@ -41,8 +41,8 @@ public class QuestionService {
     }
 
     public QuestionDTO.response getQuestion(Long question_id, String userIp){
-        eventPublisher.publishEvent(new ViewEvent(eventPublisher,question_id, secureIp(userIp)));
         Question question = checkQuestion(question_id);
+        eventPublisher.publishEvent(new ViewEvent(eventPublisher,question_id, secureIp(userIp)));
         question.setVotes(getQuestionVotes(question));
         return questionMapper.questionToQuestionResponse(question);
     }
