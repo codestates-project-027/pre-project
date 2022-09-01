@@ -4,37 +4,32 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const AskQuestionForm = () => {
-  const url = 'http://localhost:8080/posts';
-  const [author, setAuthor] = useState('author');
-  const [createdAt, setCreatedAt] = useState(
-    `${new Date().toLocaleDateString()}`
-  );
+  const url = '/question'; //서버경로 수정
+  const [userName, setUsername] = useState('userName');
+  // const [createdAt, setCreatedAt] = useState(`${new Date().toLocaleDateString()}`);
 
-  // const [data, setData] = useState([]);
   const [title, setTitle] = useState('');
-  const [body, setBody] = useState('');
-  const [tags, setTags] = useState('');
+  const [contents, setContents] = useState('');
+  const [tags, setTags] = useState([]);
 
   const [vote, setVote] = useState(0);
   const [answer, setAnswer] = useState(0);
   const [view, setView] = useState(0);
 
-  // const setPreBody = (e) => {
-  //   const bodyContent={<pre>e.target.value</pre>}
-  //   setBody()
-  // }
-
   const navigate = useNavigate();
 
   const postData = async (e) => {
     e.preventDefault();
-    const post = { title, body, tags, author, createdAt, vote, answer, view };
-    await axios
-      .post(url, post)
-      // .then(setData((prev) => [...prev, body]))
-      .then(() => {
-        navigate('/questionspage');
-      });
+    // const post = { title, body, tags, author, createdAt, vote, answer, view };
+    const post = {
+      title,
+      contents,
+      userName,
+      tags: [JSON.parse(JSON.stringify(tags))],
+    };
+    await axios.post(url, post).then(() => {
+      navigate('/questionspage');
+    });
   };
 
   return (
@@ -64,8 +59,8 @@ const AskQuestionForm = () => {
           <textarea
             className="main"
             type="text"
-            value={body}
-            onChange={(e) => setBody(e.target.value)}
+            value={contents}
+            onChange={(e) => setContents(e.target.value)}
           />
         </div>
 

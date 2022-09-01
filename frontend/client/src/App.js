@@ -16,8 +16,9 @@ import LogInPage from './Pages/LogInPage';
 import NotFoundPage from './Pages/NotFoundPage';
 import EditPage from './Pages/EditPage';
 import MyPage from './Pages/MyPage';
+import AnswerEditPage from './Pages/AnswerEditPage';
 
-const url = `http://localhost:8080/posts`;
+const url = `/question?page=1`; //서버경로 수정
 
 axios.defaults.withCredentials = true;
 
@@ -161,6 +162,8 @@ function App() {
                   />
                 }
               />
+
+              <Route path="/answer/edit/:id" element={<AnswerEditPage />} />
 
               <Route path="/posts/:id" element={<NotFoundPage />} />
 

@@ -7,18 +7,20 @@ import Pagination from '../Components/Pagination';
 import AskButton from '../Components/AskButton';
 
 const QuestionsPage = ({ isLogin }) => {
+  const url = '/question?page=1';
+
   const [data, setData] = useState([]);
+  const [answerData, setAnswerData] = useState([]);
   //pagination
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(1);
   const offset = (page - 1) * limit;
 
-  const url = 'http://localhost:8080/posts';
-
   //GET 요청
   const getData = async () => {
     const getResponse = await axios(url);
-    setData(getResponse.data);
+    setData(getResponse.data.content);
+    setAnswerData(getResponse.data.answerList);
   };
 
   useEffect(() => {
@@ -84,14 +86,16 @@ const QuestionsPage = ({ isLogin }) => {
             </div>
 
             <div className="questions-wrapper">
-              {data.slice(offset, offset + limit).map((item) => (
+              {data.map((item) => (
                 <div style={{ width: '100%' }} key={item.id}>
                   <QuestionCard>
                     <div className="question--wrapper">
                       <div className="sidequestion--wrapper">
-                        <div className="vote">{item.vote} votes</div>
-                        <div className="answerview">{item.answer} answers</div>
-                        <div className="answerview">{item.view} views</div>
+                        <div className="vote">{item.votes} votes</div>
+                        <div className="answerview">
+                          {answerData ? answerData.length : 0} answers
+                        </div>
+                        <div className="answerview">{item.views} views</div>
                       </div>
                       <div className="mainquestion--wrapper">
                         <Link
@@ -100,12 +104,12 @@ const QuestionsPage = ({ isLogin }) => {
                         >
                           <div className="title">{item.title}</div>
                         </Link>
-                        <div className="body">{item.body}</div>
+                        <div className="body">{item.contents}</div>
 
                         <div className="mainquestion--bottom--wrapper">
                           <div className="tags">{item.tags} </div>
                           <div className="author--and--time">
-                            <p className="author">{item.author}</p>{' '}
+                            <p className="author">{item.userName}</p>{' '}
                             <p className="createdAt"> asked {item.createdAt}</p>
                           </div>
                         </div>

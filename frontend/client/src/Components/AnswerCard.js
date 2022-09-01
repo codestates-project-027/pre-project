@@ -1,25 +1,29 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
+import CommentCard from './CommentCard';
 import styled from 'styled-components';
 import axios from 'axios';
 import {
   BsFillCaretUpFill,
   BsFillCaretDownFill,
   BsFillBookmarkStarFill,
-  BsClockHistory,
 } from 'react-icons/bs';
-import CommentCard from './CommentCard';
+import { TiCancel } from 'react-icons/ti';
+import AnswerDelete from './AnswerDelete';
 
 const AnswerCard = () => {
+  const url = '/question/';
+  const deleteUrl = '/answer/';
+
   const [answerData, setAnswerData] = useState([]);
   const { id } = useParams();
 
   const getData = async () => {
-    //answerData = 가져온 answer data [{}]
-    const getResponse = await axios('http://localhost:8080/posts/' + id);
-    setAnswerData(getResponse.data.answerList); //JSON.stringify(answerData) = [{},{},{},{}]
-    // console.log(JSON.stringify(answerData));
+    const getResponse = await axios(url + id);
+    setAnswerData(getResponse.data.answerList);
   };
+
+  //setComment 할 수 있는 창 열기
 
   useEffect(() => {
     getData();
@@ -34,40 +38,43 @@ const AnswerCard = () => {
                 <div key={el.id}>
                   <div className="answers--icon--content">
                     <div className="answers--icons">
-                      <BsFillCaretUpFill size="20" className="bs click" />
-                      <p className="bs">{JSON.stringify(el.vote)}</p>
-                      <BsFillCaretDownFill size="20" className="bs click" />
+                      <BsFillCaretUpFill size="15" className="bs click" />
+                      <p className="bs">{el.votes}0</p>
+                      <BsFillCaretDownFill size="15" className="bs click" />
+                      <TiCancel size="15" className="bs click" />
                       <BsFillBookmarkStarFill
-                        size="13"
+                        size="11"
                         className="bs add click"
                       />
-                      <BsClockHistory size="13" className="bs add click" />
+                      {/* <BsClockHistory size="11" className="bs add click" /> */}
                     </div>
 
-                    <div className="answers--content">
-                      {JSON.stringify(el.answerContent).replace(/"/g, '')}
-                    </div>
+                    <div className="answers--content">{el.contents}</div>
                   </div>
 
                   <div className="answers--edit--delete--author">
                     <div className="one">
                       <div className="answers--edit--delete">
-                        <div className="edit">Edit</div>
-                        <div className="delete">Delete</div>
+                        {/* {localStorage.setItem('answer', el.contents)} */}
+                        <Link
+                          to={`/answer/edit/${id}`}
+                          style={{ textDecoration: 'none' }}
+                          className="edit"
+                        >
+                          Edit
+                        </Link>
+
+                        <AnswerDelete deleteUrl={deleteUrl} dataEl={el} />
                       </div>
 
                       <div className="author--date">
-                        <div className="author">
-                          {JSON.stringify(el.author)} answered
-                        </div>
-                        <div className="createdAt">
-                          {JSON.stringify(el.createdAt)}
-                        </div>
+                        <div className="author">{el.userName} answered</div>
+                        <div className="createdAt">{el.createdAt}</div>
                       </div>
                     </div>
                     <div className="two">
                       <div className="comment--wrapper">
-                        {/* <CommentCard/> */}
+                        <CommentCard />
                         <div className="comment--button">
                           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Add a comment
                         </div>
@@ -98,8 +105,9 @@ const AnswerCardDefault = styled.div`
     align-items: center;
     color: rgb(187, 191, 195);
     flex-direction: column;
-    /* width: 5%; */
-    /* background-color: aliceblue; */
+    p {
+      color: rgb(188, 191, 195);
+    }
   }
   .answers--content {
     width: 90%;
@@ -130,10 +138,6 @@ const AnswerCardDefault = styled.div`
       margin-left: 23px;
       color: rgb(183, 186, 190);
     }
-    .delete {
-      cursor: default;
-      color: rgb(183, 186, 190);
-    }
   }
   .author--date {
     display: flex;
@@ -162,7 +166,6 @@ const AnswerCardDefault = styled.div`
     margin-top: 10px;
     width: 680px;
     color: rgb(182, 186, 191);
-    font-weight: bold;
     /* justify-content: right; */
 
     &:hover {

@@ -11,37 +11,29 @@ import {
   BsFillBookmarkStarFill,
   BsClockHistory,
 } from 'react-icons/bs';
+import { TiCancel } from 'react-icons/ti';
 
 const ReadQuestionPage = () => {
+  const url = '/question/'; //서버경로 수정
+  const voteUrl = '/vote/question';
+  const postAnswerUrl = '/answer';
+  const deleteAnswerUrl = '/answer/';
+  const { id } = useParams();
   const navigate = useNavigate();
   const [data, setData] = useState([]);
   const [answerData, setAnswerData] = useState([]); //불러온 answer data
-
-  // const [author, setAuthor] = useState('author');
-  // const [createdAt, setCreatedAt] = useState(new Date().toLocaleDateString());
-  // const [vote, setVote] = useState(0);
-  // const [commentList, setCommentList]=useState(
-  //   {
-  //     "id":1,
-  //     "commentContent":"comment",
-  //     "author":"author",
-  //     "createdAt":"date"
-  //   })
-  //   const [answerList ,setAnswerList]= useState([
-  //     {answerContent:answerData, author, createdAt, vote, commentList}
-  //   ])
-
-  const { id } = useParams();
+  const [questionId, setQuestionId] = useState(id);
+  const [answerContents, setAnswerContents] = useState('');
+  const [userName, setUserName] = useState('userName');
 
   const getData = async () => {
-    const getResponse = await axios('http://localhost:8080/posts/' + id);
+    const getResponse = await axios(url + id);
     setData(getResponse.data);
     setAnswerData(getResponse.data.answerList);
-    // setCommentData(getResponse.data.commentList);
   };
 
   const deleteData = async () => {
-    await axios.delete(`http://localhost:8080/posts/${id}`).then(() => {
+    await axios.delete(url + id).then(() => {
       navigate('/questionspage');
     });
   };
@@ -49,31 +41,35 @@ const ReadQuestionPage = () => {
   //answer
   const postAnswer = async (e) => {
     e.preventDefault();
+    const answer = { questionId, contents: answerContents, userName };
+    await axios.post(postAnswerUrl, answer);
     window.location.reload();
   };
-  // const postAnswer = async (e) => {
-  //   e.preventDefault();
-  //   const answer = { "answerList": {answerContent, author:'author', createdAt : new Date().toLocaleDateString(), vote:0} };
-  //   await axios.post(`http://localhost:8080/posts/${id}`, answer);
-  //   window.location.reload();
-  // };
 
-  // const postAnswer = async (e) => {
-  //   e.preventDefault();
-  //   const answer = { title };
-  //   await axios.post(`http://localhost:8080/posts/${id}`, answer);
-  //   window.location.reload();
-  // };
+  const deleteAnswer = async () => {
+    const answer = { contents: answerContents };
+    await axios.delete(deleteAnswerUrl, { data: answer });
+    window.location.reload();
+  };
 
-  // const postAnswer = async (e) => {
-  //   e.preventDefault();
-  //   // const answer = {"answerList":{"answerContent":answerData }};
-  //   // 유효
-  //   //const post = { title, body, tags, author, createdAt, vote, answer, view};
-  //   const answer = {answerList};
-  //   await axios.post(`http://localhost:8080/posts/${id}`, answer);
-  //   window.location.reload();
-  // }
+  //votes
+  const voteUp = async () => {
+    const up = { questionId: id, member: userName, vote: true };
+    await axios.post(voteUrl, up);
+    window.location.reload();
+  };
+
+  const voteDown = async () => {
+    const down = { questionId: id, member: userName, vote: false };
+    await axios.post(voteUrl, down);
+    window.location.reload();
+  };
+
+  const voteDelete = async () => {
+    const voteReset = { questionId: id, member: userName };
+    await axios.delete(voteUrl, { data: voteReset });
+    window.location.reload();
+  };
 
   useEffect(() => {
     getData();
@@ -92,11 +88,11 @@ const ReadQuestionPage = () => {
                 <p className="date--and--ask" style={{ marginLeft: '20px' }}>
                   Viewed
                 </p>
-                <p className="date--and--answer">{data.view} times</p>
+                <p className="date--and--answer">{data.views} times</p>
                 <p className="date--and--ask" style={{ marginLeft: '20px' }}>
                   Author
                 </p>
-                <p className="date--and--answer">{data.author}</p>
+                <p className="date--and--answer">{data.userName}</p>
               </div>
             </div>
 
@@ -107,20 +103,33 @@ const ReadQuestionPage = () => {
 
           <div className="content--wrapper">
             <div className="icons">
-              <BsFillCaretUpFill size="27" className="bs click" />
-              <p className="bs">{data.vote}</p>
-              <BsFillCaretDownFill size="27" className="bs click" />
+              <BsFillCaretUpFill
+                onClick={voteUp}
+                size="27"
+                className="bs click"
+              />
+              {/* <VoteBoxUp>like</VoteBoxUp> */}
+              <p className="bs">{data.votes}</p>
+              <BsFillCaretDownFill
+                onClick={voteDown}
+                size="27"
+                className="bs click"
+              />
+              {/* <VoteBoxDown>dislike</VoteBoxDown> */}
+              <TiCancel size="20" className="bs click" onClick={voteDelete} />
+              {/* <VoteBoxReset>reset</VoteBoxReset> */}
               <BsFillBookmarkStarFill size="15" className="bs add click" />
-              <BsClockHistory size="15" className="bs add click" />
+              {/* <VoteBoxBookmark>bookmark</VoteBoxBookmark> */}
+              {/* <BsClockHistory size="15" className="bs add click" /> */}
             </div>
             <div className="content--comment--answer">
-              <pre className="content">{data.body}</pre>
+              <pre className="content">{data.contents}</pre>
               <div className="tags--edit--delete">
                 <div className="tags">{data.tags}</div>
                 <div className="edit--delete">
                   <div className="edit">
                     {localStorage.setItem('title', data.title)}
-                    {localStorage.setItem('body', data.body)}
+                    {localStorage.setItem('body', data.contents)}
                     {localStorage.setItem('tags', data.tags)}
                     <Link to={`/posts/edit/${id}`} style={LinkStyle}>
                       Edit
@@ -144,7 +153,7 @@ const ReadQuestionPage = () => {
 
                 <textarea
                   type="text"
-                  onChange={(e) => setAnswerData(e.target.value)}
+                  onChange={(e) => setAnswerContents(e.target.value)}
                 />
               </div>
 
@@ -211,6 +220,7 @@ const Div = styled.div`
   }
   p.bs {
     color: rgb(67, 67, 71);
+    cursor: pointer;
   }
   .bs {
     margin: 0px;
@@ -222,6 +232,7 @@ const Div = styled.div`
       cursor: pointer;
     }
   }
+
   .content--comment--answer {
     display: flex;
     flex-direction: column;
@@ -306,6 +317,7 @@ const Div = styled.div`
     width: 280px;
   }
 `;
+
 const LinkStyle = {
   color: 'rgb(108,115,123)',
   marginLeft: '2px',
@@ -320,3 +332,43 @@ const AskStyle = {
   height: '45px',
   marginBottom: '50px',
 };
+
+// const VoteBoxUp = styled.p`
+//   display: block;
+//   text-align: center;
+//   position: absolute;
+//   width: 35px;
+//   padding: 2px;
+//   margin-left: 45px;  margin-top: 20px;
+//   -webkit-border-radius: 8px;
+//   -moz-border-radius: 8px;
+//   background: rgba(100,163,166,0.5);  color: #fff;
+//   &:hover{
+//     display:none;
+//   }
+// `
+
+// const VoteBoxDown = styled(VoteBoxUp)`
+// width: 55px;
+// margin-left: 65px;  margin-top: 85px;
+// &:hover{
+//   display:block;
+// }
+// `
+
+// const VoteBoxReset = styled(VoteBoxUp)`
+// margin-left: 55px;
+// width: 45px;
+// margin-top: 120px;
+// &:hover{
+//   display:block;
+// }
+// `
+// const VoteBoxBookmark = styled(VoteBoxDown)`
+// width: 90px;
+// margin-left: 100px;
+// margin-top: 155px;
+// &:hover{
+//   display:block;
+// }
+// `

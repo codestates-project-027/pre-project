@@ -6,7 +6,7 @@ import { RiQuestionnaireFill } from 'react-icons/ri';
 import { MdThumbsUpDown } from 'react-icons/md';
 
 const SignUpPage = () => {
-  const url = 'http://localhost:3000/signup';
+  const url = '/login'; //서버경로 수정
   const navigate = useNavigate();
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
