@@ -4,6 +4,7 @@ package com.stackoverflow.backend.question.domain;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.stackoverflow.backend.answer.domain.Answer;
+import com.stackoverflow.backend.tag.domain.questiontag.QuestionTag;
 import com.stackoverflow.backend.vote.domain.QuestionVote;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -51,6 +52,9 @@ public class Question {
 
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
     private List<QuestionVote> questionVoteList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
+    private List<QuestionTag> questionTags = new ArrayList<>();
 
     @Builder
     public Question(String title, String contents, String userName, List<String> tags){

@@ -70,8 +70,6 @@ public class QuestionService {
 
     public void deleteQuestion(Long question_id) {
         checkQuestion(question_id);
-        List<QuestionTag> questionTags = questionTagRepository.findByQuestionId(question_id);
-        questionTags.forEach(e -> e.setQuestion(null));
         questionRepository.deleteById(question_id);
     }
 

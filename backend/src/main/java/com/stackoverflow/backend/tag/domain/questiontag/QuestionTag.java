@@ -19,12 +19,11 @@ public class QuestionTag {
     @Column(name = "questionTag_id")
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @JoinColumn(name = "question_id")
     private Question question;
 
-    //todo question <-> tag 양방향 매핑 고려중...
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @JoinColumn(name = "tag_id")
     private Tag tag;
 
