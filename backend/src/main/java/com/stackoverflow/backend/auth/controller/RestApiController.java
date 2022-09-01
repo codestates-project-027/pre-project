@@ -4,6 +4,8 @@ import com.stackoverflow.backend.auth.model.Member;
 import com.stackoverflow.backend.auth.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,21 +23,24 @@ public class RestApiController {
     public String login() {
         return "로그인 완료";
     }
-    @GetMapping("/join")
-    public String joinForm() {
-        return "joinForm";
-    }
     @PostMapping("/token")
     public String token() {
         return "<h1>token</h1>";
     }
 
+
     @PostMapping("/join")
-    public String join(@Valid @RequestBody Member member) {
-        member.setPassword(bCryptPasswordEncoder.encode(member.getPassword()));
-        member.setRoles("ROLE_USER");
-        memberRepository.save(member);
-        return "회원가입완료";
+    public ResponseEntity join(@Valid @RequestBody Member member) {
+        Member existEmail = memberRepository.findByEmail(member.getEmail());
+        if (existEmail == null) {
+            member.setPassword(bCryptPasswordEncoder.encode(member.getPassword()));
+            member.setRoles("ROLE_USER");
+            memberRepository.save(member);
+            return new ResponseEntity<>("회원가입완료", HttpStatus.CREATED);
+        }
+        else {
+            return new ResponseEntity<>("email 중복", HttpStatus.BAD_REQUEST);
+        }
     }
 
 }
