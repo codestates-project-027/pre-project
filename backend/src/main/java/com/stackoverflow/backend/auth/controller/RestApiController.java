@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequiredArgsConstructor
 public class RestApiController {
@@ -28,7 +30,7 @@ public class RestApiController {
 
 
     @PostMapping("/join")
-    public ResponseEntity join(@RequestBody Member member) {
+    public ResponseEntity join(@Valid @RequestBody Member member) {
         Member existEmail = memberRepository.findByEmail(member.getEmail());
         if (existEmail == null) {
             member.setPassword(bCryptPasswordEncoder.encode(member.getPassword()));
