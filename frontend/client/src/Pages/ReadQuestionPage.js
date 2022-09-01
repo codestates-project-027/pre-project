@@ -17,7 +17,7 @@ const ReadQuestionPage = () => {
   const url = '/question/'; //서버경로 수정
   const voteUrl = '/vote/question';
   const postAnswerUrl = '/answer';
-  const deleteAnswerUrl ='/answer/'
+  const deleteAnswerUrl = '/answer/';
   const { id } = useParams();
   const navigate = useNavigate();
   const [data, setData] = useState([]);
@@ -48,9 +48,9 @@ const ReadQuestionPage = () => {
 
   const deleteAnswer = async () => {
     const answer = { contents: answerContents };
-    await axios.delete(deleteAnswerUrl, {data:answer});
+    await axios.delete(deleteAnswerUrl, { data: answer });
     window.location.reload();
-  }
+  };
 
   //votes
   const voteUp = async () => {
@@ -184,7 +184,6 @@ const Div = styled.div`
     display: flex;
     flex-direction: column;
     width: 95%;
-    
   }
   .title--ask--date--wrapper {
     display: flex;
@@ -193,7 +192,6 @@ const Div = styled.div`
     margin-top: 30px;
     justify-content: space-between;
     border-bottom: 1px solid rgba(229, 229, 229, 0.7);
-    
   }
   .title--date--wrapper {
     display: flex;
@@ -234,7 +232,7 @@ const Div = styled.div`
       cursor: pointer;
     }
   }
-  
+
   .content--comment--answer {
     display: flex;
     flex-direction: column;
@@ -351,7 +349,7 @@ const AskStyle = {
 // `
 
 // const VoteBoxDown = styled(VoteBoxUp)`
-// width: 55px; 
+// width: 55px;
 // margin-left: 65px;  margin-top: 85px;
 // &:hover{
 //   display:block;

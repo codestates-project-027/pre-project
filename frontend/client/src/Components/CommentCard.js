@@ -11,12 +11,10 @@ const CommentCard = () => {
   const { id } = useParams();
 
   const getData = async () => {
-    const getResponse = await axios(url + id); 
+    const getResponse = await axios(url + id);
     setData(getResponse.data);
     setAnswerData(getResponse.data.answerList);
-    // setCommentData(getResponse.data.answerList[0].commentList); 
-
-
+    // setCommentData(getResponse.data.answerList[0].commentList);
   };
 
   useEffect(() => {
@@ -24,39 +22,35 @@ const CommentCard = () => {
   }, []);
 
   return (
-  <>
-  <CommentCardCSS>
-    {answerData.map(el=>{(
-      <>
-       <div className='comments' key={el.id} >
-       <div className="hr-line" />
-       <div className="comment">comment data{el.commentList}</div>
-       <div className="hr-line" />
-       </div>
-       </>
-    )})}
-
-   
-   
-  </CommentCardCSS></>)
+    <>
+      <CommentCardCSS>
+        {answerData.map((el) => {
+          <>
+            <div className="comments" key={el.id}>
+              <div className="hr-line" />
+              <div className="comment">comment data{el.commentList}</div>
+              <div className="hr-line" />
+            </div>
+          </>;
+        })}
+      </CommentCardCSS>
+    </>
+  );
 };
 
 const CommentCardCSS = styled.div`
-margin-top: 20px;
-display: flex;
-flex-direction: column;
-  .hr-line{
-    margin-top: 10px; margin-bottom: 10px;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  .hr-line {
+    margin-top: 10px;
+    margin-bottom: 10px;
     margin-left: 20px;
-    border : 0.5px solid rgb(241,242,243);
+    border: 0.5px solid rgb(241, 242, 243);
   }
-  .comment{
+  .comment {
     margin-left: 20px;
   }
-`
-
-
-
-
+`;
 
 export default CommentCard;

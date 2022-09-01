@@ -7,9 +7,8 @@ import {
   BsFillCaretUpFill,
   BsFillCaretDownFill,
   BsFillBookmarkStarFill,
-  BsClockHistory,
 } from 'react-icons/bs';
-import {TiCancel} from 'react-icons/ti';
+import { TiCancel } from 'react-icons/ti';
 import AnswerDelete from './AnswerDelete';
 
 const AnswerCard = () => {
@@ -17,23 +16,14 @@ const AnswerCard = () => {
   const deleteUrl = '/answer/';
 
   const [answerData, setAnswerData] = useState([]);
-  // const [pickData, setPickData] = useState([]);
   const { id } = useParams();
-  
-
 
   const getData = async () => {
-    const getResponse = await axios(url + id); 
-    setAnswerData(getResponse.data.answerList); 
+    const getResponse = await axios(url + id);
+    setAnswerData(getResponse.data.answerList);
   };
 
-
-  console.log(answerData)
-  
-
- 
-
-  //setContents 할 수 있는 창 열기
+  //setComment 할 수 있는 창 열기
 
   useEffect(() => {
     getData();
@@ -51,7 +41,7 @@ const AnswerCard = () => {
                       <BsFillCaretUpFill size="15" className="bs click" />
                       <p className="bs">{el.votes}0</p>
                       <BsFillCaretDownFill size="15" className="bs click" />
-                      <TiCancel size="15" className="bs click"/>
+                      <TiCancel size="15" className="bs click" />
                       <BsFillBookmarkStarFill
                         size="11"
                         className="bs add click"
@@ -66,14 +56,15 @@ const AnswerCard = () => {
                     <div className="one">
                       <div className="answers--edit--delete">
                         {/* {localStorage.setItem('answer', el.contents)} */}
-                        <Link to={`/answer/edit/${id}`} style={{"textDecoration":"none"}} className="edit">
+                        <Link
+                          to={`/answer/edit/${id}`}
+                          style={{ textDecoration: 'none' }}
+                          className="edit"
+                        >
                           Edit
                         </Link>
 
-                        <AnswerDelete 
-                        deleteUrl={deleteUrl}
-                        dataEl={el}
-                        />
+                        <AnswerDelete deleteUrl={deleteUrl} dataEl={el} />
                       </div>
 
                       <div className="author--date">
@@ -83,7 +74,7 @@ const AnswerCard = () => {
                     </div>
                     <div className="two">
                       <div className="comment--wrapper">
-                        <CommentCard/>
+                        <CommentCard />
                         <div className="comment--button">
                           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Add a comment
                         </div>

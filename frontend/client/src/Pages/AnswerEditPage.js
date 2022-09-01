@@ -1,25 +1,35 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
 
 const AnswerEditPage = () => {
-  const url = '/answer/';
-  const { id } = useParams();
   const navigate = useNavigate();
-  //   const prevAnswer = localStorage.getItem('answer');
-  const [contents, setContents] = useState('');
 
-  const updatePost = async (e) => {
-    e.preventDefault();
-    const updatePost = { contents };
-    await axios
-      .patch(url + id, updatePost) //서버경로 수정
-      .then(() => {
-        navigate(-1);
-      });
+  const url = '/question/';
+  const patchUrl = '/answer/';
+
+  const [answerData, setAnswerData] = useState([]);
+  const [contents, setContents] = useState('');
+  const { id } = useParams();
+
+  const getData = async () => {
+    const getResponse = await axios(url + id);
+    setAnswerData(getResponse.data.answerList);
   };
 
+  //   const prevAnswer = localStorage.getItem('answer');
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const updatePost = async () => {
+    const updateAnswer = { contents };
+    await axios.patch(patchUrl + answerData[0].id, updateAnswer).then(() => {
+      navigate(-1);
+    });
+  };
 
   const goBack = () => {
     navigate(-1);
