@@ -37,10 +37,10 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
         String jwtToken = jwtHeader.replace("Bearer ", "");
 
-        String username = JWT.require(Algorithm.HMAC512("cos_jwt_token")).build().verify(jwtToken).getClaim("username").asString();
+        String email = JWT.require(Algorithm.HMAC512("cos_jwt_token")).build().verify(jwtToken).getClaim("email").asString();
 
-        if (username != null) {
-            Member memberEntity = memberRepository.findByUsername(username);
+        if (email != null) {
+            Member memberEntity = memberRepository.findByEmail(email);
 
             PrincipalDetails principalDetails = new PrincipalDetails(memberEntity);
             Authentication authentication = new UsernamePasswordAuthenticationToken(principalDetails, null, principalDetails.getAuthorities());
