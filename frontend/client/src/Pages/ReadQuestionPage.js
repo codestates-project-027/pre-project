@@ -16,8 +16,9 @@ import { TiCancel } from 'react-icons/ti';
 const ReadQuestionPage = () => {
   const url = '/question/'; //서버경로 수정
   const voteUrl = '/vote/question';
-  const { id } = useParams();
   const postAnswerUrl = '/answer';
+  const deleteAnswerUrl ='/answer/'
+  const { id } = useParams();
   const navigate = useNavigate();
   const [data, setData] = useState([]);
   const [answerData, setAnswerData] = useState([]); //불러온 answer data
@@ -44,6 +45,12 @@ const ReadQuestionPage = () => {
     await axios.post(postAnswerUrl, answer);
     window.location.reload();
   };
+
+  const deleteAnswer = async () => {
+    const answer = { contents: answerContents };
+    await axios.delete(deleteAnswerUrl, {data:answer});
+    window.location.reload();
+  }
 
   //votes
   const voteUp = async () => {

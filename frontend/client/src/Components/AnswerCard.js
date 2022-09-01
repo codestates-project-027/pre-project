@@ -9,28 +9,29 @@ import {
   BsFillBookmarkStarFill,
   BsClockHistory,
 } from 'react-icons/bs';
-import {TiCancel} from 'react-icons/ti'
+import {TiCancel} from 'react-icons/ti';
+import AnswerDelete from './AnswerDelete';
 
 const AnswerCard = () => {
   const url = '/question/';
   const deleteUrl = '/answer/';
 
   const [answerData, setAnswerData] = useState([]);
-
+  // const [pickData, setPickData] = useState([]);
   const { id } = useParams();
+  
+
 
   const getData = async () => {
-    //answerData = 가져온 answer data [{}]
-    const getResponse = await axios(url + id); //서버경로
-    setAnswerData(getResponse.data.answerList); //JSON.stringify(answerData) = [{},{},{},{}]
-    // console.log(JSON.stringify(answerData));
+    const getResponse = await axios(url + id); 
+    setAnswerData(getResponse.data.answerList); 
   };
 
-  const deleteAnswer = async () => {
-    //API체크 후 수정
-    await axios.delete(deleteUrl + id);
-    window.location.reload();
-  };
+
+  console.log(answerData)
+  
+
+ 
 
   //setContents 할 수 있는 창 열기
 
@@ -65,13 +66,14 @@ const AnswerCard = () => {
                     <div className="one">
                       <div className="answers--edit--delete">
                         {/* {localStorage.setItem('answer', el.contents)} */}
-                        <Link to={`/answer/edit/${id}`} className="edit">
+                        <Link to={`/answer/edit/${id}`} style={{"textDecoration":"none"}} className="edit">
                           Edit
                         </Link>
 
-                        <div className="delete" onClick={deleteAnswer}>
-                          Delete
-                        </div>
+                        <AnswerDelete 
+                        deleteUrl={deleteUrl}
+                        dataEl={el}
+                        />
                       </div>
 
                       <div className="author--date">
@@ -143,10 +145,6 @@ const AnswerCardDefault = styled.div`
     }
     .edit {
       margin-left: 23px;
-      color: rgb(183, 186, 190);
-    }
-    .delete {
-      cursor: default;
       color: rgb(183, 186, 190);
     }
   }
