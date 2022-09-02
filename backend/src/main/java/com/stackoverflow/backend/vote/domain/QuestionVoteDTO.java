@@ -17,7 +17,7 @@ public class QuestionVoteDTO {
     private Long questionId;
 
     @NotBlank(message = "투표자는 공백일 수 없습니다.")
-    private String member;
+    private String userName;
 
     @NotNull(message = "vote 값은 공백일 수 없습니다.")
     private Boolean vote;
@@ -28,6 +28,6 @@ public class QuestionVoteDTO {
         @NotNull(message = "게시글 번호는 공백일 수 없습니다.")
         private Long questionId;
         @NotBlank(message = "투표자는 공백일 수 없습니다.")
-        private String member;
+        private String userName;
     }
 }

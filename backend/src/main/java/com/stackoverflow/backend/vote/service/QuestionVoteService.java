@@ -18,25 +18,27 @@ public class QuestionVoteService {
     private final QuestionVoteRepository questionVoteRepository;
     private final QuestionRepository questionRepository;
 
-    public void voteQuestion(QuestionVoteDTO questionVoteDTO) {
+    public void voteQuestion(QuestionVoteDTO questionVoteDTO, String UserName) {
+        checkAuth(questionVoteDTO.getUserName(), UserName);
         Question question = checkQuestion(questionVoteDTO);
         Long questionVoteId = findMemberVote(questionVoteDTO, question);
         if (questionVoteId!=0L) {
             questionVoteRepository.save(new QuestionVote(
-                    questionVoteId, questionVoteDTO.getMember(),
+                    questionVoteId, questionVoteDTO.getUserName(),
                     questionVoteDTO.getVote(),question));
         } else {
             questionVoteRepository.save(new QuestionVote(
-                    questionVoteDTO.getMember(),questionVoteDTO.getVote(),question));
+                    questionVoteDTO.getUserName(),questionVoteDTO.getVote(),question));
         }
     }
 
-    public void voteQuestionCancel(QuestionVoteDTO.Cancel questionVoteDTO) {
+    public void voteQuestionCancel(QuestionVoteDTO.Cancel questionVoteDTO, String UserName) {
+        checkAuth(questionVoteDTO.getUserName(), UserName);
         Question question = questionRepository.findById(questionVoteDTO.getQuestionId())
                 .orElseThrow(()->new CustomException(ErrorMessage.QUESTION_NOT_FOUND));
         try{
             questionVoteRepository.deleteById(
-                    questionVoteRepository.findByQuestionAndMember(question, questionVoteDTO.getMember()).getId());
+                    questionVoteRepository.findByQuestionAndUserName(question, questionVoteDTO.getUserName()).getId());
         } catch (Exception e){
             throw new CustomException(ErrorMessage.VOTE_NOT_FOUND);
         }
@@ -45,7 +47,7 @@ public class QuestionVoteService {
     private Long findMemberVote(QuestionVoteDTO questionVoteDTO, Question question) {
         Long questionVoteId = 0L;
         for (QuestionVote questionVotes: question.getQuestionVoteList()){
-            if (questionVotes.getMember().equals(questionVoteDTO.getMember())){
+            if (questionVotes.getUserName().equals(questionVoteDTO.getUserName())){
                 if (questionVotes.getVote()== questionVoteDTO.getVote()) throw new CustomException(ErrorMessage.VOTE_CONFLICT);
                 else questionVoteId = questionVotes.getId();
             }
@@ -56,5 +58,9 @@ public class QuestionVoteService {
     private Question checkQuestion(QuestionVoteDTO questionVoteDTO) {
         return questionRepository.findById(questionVoteDTO.getQuestionId())
                 .orElseThrow(()->new CustomException(ErrorMessage.QUESTION_NOT_FOUND));
+    }
+
+    private void checkAuth(String userName1, String userName2) {
+        if (!userName1.equals(userName2)) throw new CustomException(ErrorMessage.USERNAME_NOT_EQUAL);
     }
 }

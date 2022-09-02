@@ -27,29 +27,33 @@ public class AnswerService {
 
 
     @Transactional
-    public void createAnswer(AnswerDTO answerDTO) {
+    public void createAnswer(AnswerDTO answerDTO, String UserName) {
+        checkAuth(answerDTO.getUserName(), UserName);
         Question question = questionRepository.findById(answerDTO.getQuestionId())
                 .orElseThrow(()->new CustomException(ErrorMessage.QUESTION_NOT_FOUND));
         countAnswer(question, "add");
         answerRepository.save(new Answer(answerDTO.getContents(), answerDTO.getUserName(), question));
     }
-    public void patchAnswer(Long answer_id, AnswerDTO.patch answerDTO){
+
+    public void patchAnswer(Long answer_id, AnswerDTO.patch answerDTO, String UserName){
         Answer answer = answerRepository.findById(answer_id)
                 .orElseThrow(() -> new CustomException(ErrorMessage.ANSWER_NOT_FOUND));
+        checkAuth(answer.getUserName(), UserName);
         if (answerDTO.getContents()!=null) answer.setContents(answerDTO.getContents());
         answerRepository.save(answer);
     }
 
     @Transactional
-    public void deleteAnswer(Long answer_id) {
+    public void deleteAnswer(Long answer_id, String UserName) {
         Answer answer = answerRepository.findById(answer_id)
                 .orElseThrow(()->new CustomException(ErrorMessage.ANSWER_NOT_FOUND));
+        checkAuth(answer.getUserName(), UserName);
         countAnswer(answer.getQuestion(), "sub");
         answerRepository.deleteById(answer_id);
     }
 
 
-    public void countAnswer(Question question, String fun){
+    private void countAnswer(Question question, String fun){
         if (fun.equals("add")) {
             question.addAnswerCount();
             questionRepository.save(question);
@@ -58,5 +62,9 @@ public class AnswerService {
             question.subAnswerCount();
             questionRepository.save(question);
         }
+    }
+
+    private void checkAuth(String userName1, String userName2) {
+        if (!userName1.equals(userName2)) throw new CustomException(ErrorMessage.USERNAME_NOT_EQUAL);
     }
 }
