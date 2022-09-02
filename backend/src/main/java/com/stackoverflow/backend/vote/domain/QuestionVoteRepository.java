@@ -7,5 +7,5 @@ import java.util.List;
 import java.util.Map;
 
 public interface QuestionVoteRepository extends JpaRepository<QuestionVote, Long> {
-    QuestionVote findByQuestionAndMember(Question question,String member);
+    QuestionVote findByQuestionAndUserName(Question question,String userName);
 }

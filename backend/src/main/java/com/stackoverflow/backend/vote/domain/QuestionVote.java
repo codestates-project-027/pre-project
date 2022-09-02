@@ -19,7 +19,7 @@ public class QuestionVote {
     private Long id;
 
     @Column
-    private String member;
+    private String userName;
 
     @Column
     private Boolean vote;
@@ -29,8 +29,8 @@ public class QuestionVote {
     private Question question;
 
     @Builder
-    public QuestionVote(String member, Boolean vote, Question question){
-        this.member = member;
+    public QuestionVote(String userName, Boolean vote, Question question){
+        this.userName = userName;
         this.vote = vote;
         this.question = question;
     }

@@ -18,15 +18,21 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final AnswerRepository answerRepository;
 
-    public void createComment(CommentDTO commentDTO) {
+    public void createComment(CommentDTO commentDTO, String UserName) {
+        checkAuth(commentDTO.getUserName(), UserName);
         Answer answer = answerRepository.findById(commentDTO.getAnswerId())
                 .orElseThrow(()-> new CustomException(ErrorMessage.ANSWER_NOT_FOUND));
         commentRepository.save(new Comment(commentDTO.getContents(), commentDTO.getUserName(),answer));
     }
 
-    public void deleteComment(Long comment_id) {
-        commentRepository.findById(comment_id)
+    public void deleteComment(Long comment_id, String UserName) {
+        Comment comment = commentRepository.findById(comment_id)
                 .orElseThrow(()->new CustomException(ErrorMessage.COMMENT_NOT_FOUND));
+        checkAuth(comment.getUserName(), UserName);
         commentRepository.deleteById(comment_id);
+    }
+
+    private void checkAuth(String userName1, String userName2) {
+        if (!userName1.equals(userName2)) throw new CustomException(ErrorMessage.USERNAME_NOT_EQUAL);
     }
 }

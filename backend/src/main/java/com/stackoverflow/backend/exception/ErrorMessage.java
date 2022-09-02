@@ -12,9 +12,7 @@ public enum ErrorMessage {
     FORM_NOT_VAILD(HttpStatus.BAD_REQUEST,"Form Not Valid"),
     VOTE_CONFLICT(HttpStatus.CONFLICT,"Overlapped Vote"),
     VOTE_NOT_FOUND(HttpStatus.NOT_FOUND, "Vote Not Found"),
-    EMAIL_NOT_FOUND(HttpStatus.NOT_FOUND, "Email Not Found"),
-    USERNAME_NOT_FOUND(HttpStatus.NOT_FOUND, "Username Not Found"),
-    PASSWORD_NOT_FOUND(HttpStatus.NOT_FOUND, "Password Not Found");
+    USERNAME_NOT_EQUAL(HttpStatus.FORBIDDEN, "Username Not Equal");
 
     @Getter
     private HttpStatus status;

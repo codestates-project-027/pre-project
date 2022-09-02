@@ -52,16 +52,18 @@ public class QuestionService {
         return questionMapper.questionToQuestionResponse(question);
     }
 
-    public void createQuestion(QuestionDTO questionDTO) {
+    public void createQuestion(QuestionDTO questionDTO, String UserName) {
+        checkAuth(questionDTO.getUserName(), UserName);
         Question question = questionRepository.save(questionMapper.questionDTOToQuestion(questionDTO));
         saveTag(questionDTO.getTags(), question);
     }
 
 
     @Transactional
-    public void patchQuestion(Long question_id, QuestionDTO.patch questionDTO) {
+    public void patchQuestion(Long question_id, QuestionDTO.patch questionDTO, String UserName) {
         //todo refactoring
         Question question = checkQuestion(question_id);
+        checkAuth(question.getUserName(), UserName);
         if (!(questionDTO.getTitle()==null||questionDTO.getTitle().isBlank())) question.setTitle(questionDTO.getTitle());
         if (!(questionDTO.getContents()==null||questionDTO.getContents().isBlank())) question.setContents(questionDTO.getContents());
         if (questionDTO.getTags()!=null) {
@@ -72,8 +74,8 @@ public class QuestionService {
         questionRepository.save(question);
     }
 
-    public void deleteQuestion(Long question_id) {
-        checkQuestion(question_id);
+    public void deleteQuestion(Long question_id, String UserName) {
+        checkAuth(checkQuestion(question_id).getUserName(), UserName);
         questionRepository.deleteById(question_id);
     }
 
@@ -106,5 +108,8 @@ public class QuestionService {
             else votes--;
         }
         return votes;
+    }
+    private void checkAuth(String userName1, String userName2) {
+        if (!userName1.equals(userName2)) throw new CustomException(ErrorMessage.USERNAME_NOT_EQUAL);
     }
 }
