@@ -7,10 +7,8 @@ import com.stackoverflow.backend.answer.domain.Answer;
 import com.stackoverflow.backend.tag.domain.questiontag.QuestionTag;
 import com.stackoverflow.backend.vote.domain.QuestionVote;
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
