@@ -3,6 +3,8 @@ package com.stackoverflow.backend.question.domain;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.stackoverflow.backend.answer.domain.Answer;
 import com.stackoverflow.backend.answer.domain.AnswerDTO;
+import com.stackoverflow.backend.vote.domain.QuestionVote;
+import com.stackoverflow.backend.vote.domain.QuestionVoteDTO;
 import lombok.*;
 import org.springframework.stereotype.Service;
 
@@ -59,8 +61,10 @@ public class QuestionDTO {
         private Long views;
         private Long votes;
         private Long answers;
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd",timezone = "Asia/Seoul")
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm",timezone = "Asia/Seoul")
         private LocalDateTime createdAt;
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm",timezone = "Asia/Seoul")
+        private LocalDateTime active;
         private List<String> tags;
         private List<AnswerDTO.response> answerList;
     }
@@ -76,8 +80,10 @@ public class QuestionDTO {
         private Long votes;
         private Long answers;
         private List<String> tags;
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd",timezone = "Asia/Seoul")
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm",timezone = "Asia/Seoul")
         private LocalDateTime createdAt;
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm",timezone = "Asia/Seoul")
+        private LocalDateTime active;
     }
 
     @AllArgsConstructor

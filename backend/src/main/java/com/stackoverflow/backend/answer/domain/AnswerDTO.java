@@ -41,7 +41,7 @@ public class AnswerDTO {
         private Long id;
         private String contents;
         private String userName;
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd",timezone = "Asia/Seoul")
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm",timezone = "Asia/Seoul")
         private LocalDateTime createdAt;
         private List<CommentDTO.response> commentList;
     }

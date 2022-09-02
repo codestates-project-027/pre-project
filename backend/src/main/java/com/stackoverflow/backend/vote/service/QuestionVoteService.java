@@ -11,6 +11,8 @@ import com.stackoverflow.backend.vote.domain.QuestionVoteRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +24,8 @@ public class QuestionVoteService {
         checkAuth(questionVoteDTO.getUserName(), UserName);
         Question question = checkQuestion(questionVoteDTO);
         Long questionVoteId = findMemberVote(questionVoteDTO, question);
+        question.setActiveTime();
+        questionRepository.save(question);
         if (questionVoteId!=0L) {
             questionVoteRepository.save(new QuestionVote(
                     questionVoteId, questionVoteDTO.getUserName(),

@@ -36,13 +36,12 @@ public class QuestionService {
     public Page<QuestionDTO.responsePage> getQuestions(int page, String sortValue,String sort){
         if (page==0) page++;
         if (sortValue==null) sortValue="createdAt";
-        //todo generic refactoring
         if (sort==null || sort.equals("max")) {
             return questionRepository.findBy(PageRequest.of(page-1,10, Sort.by(sortValue).descending()))
-                    .map(questionMapper::questionToQuestionResponsePage);
+                    .map(question -> questionMapper.questionToQuestionResponsePage(question.setReturnVotes(getQuestionVotes(question))));
         }
         return questionRepository.findBy(PageRequest.of(page-1,10, Sort.by(sortValue).ascending()))
-                .map(questionMapper::questionToQuestionResponsePage);
+                .map(question -> questionMapper.questionToQuestionResponsePage(question.setReturnVotes(getQuestionVotes(question))));
     }
 
     public QuestionDTO.response getQuestion(Long question_id, String userIp){
@@ -70,6 +69,7 @@ public class QuestionService {
             questionTagRepository.deleteAllByQuestion(question);
             saveTag(questionDTO.getTags(), question);
             question.setTags(questionDTO.getTags());
+            question.setActiveTime();
         }
         questionRepository.save(question);
     }
