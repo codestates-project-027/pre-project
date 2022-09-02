@@ -26,6 +26,7 @@ const ReadQuestionPage = () => {
   const [answerContents, setAnswerContents] = useState('');
   const [userName, setUserName] = useState('userName');
 
+  
   //Question
   const getData = async () => {
     const getResponse = await axios(url + id);

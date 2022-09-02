@@ -4,15 +4,7 @@ import NotFoundPage from './NotFoundPage';
 
 export default function Mypage({ userInfo, setIsLogin, setUserInfo, isLogin }) {
   const logoutHandler = () => {
-    return axios
-      .post('https://localhost:4000/logout')
-      .then((res) => {
-        setUserInfo(null);
-        setIsLogin(false);
-      })
-      .catch((err) => {
-        alert(err);
-      });
+   //cli에서 처리
   };
 
   return (
