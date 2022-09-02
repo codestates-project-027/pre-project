@@ -3,31 +3,21 @@ import { useParams, Link } from 'react-router-dom';
 import CommentCard from './CommentCard';
 import styled from 'styled-components';
 import axios from 'axios';
-import {
-  BsFillCaretUpFill,
-  BsFillCaretDownFill,
-  BsFillBookmarkStarFill,
-} from 'react-icons/bs';
-import { TiCancel } from 'react-icons/ti';
 import AnswerDelete from './AnswerDelete';
+import CommentBtn from './CommentBtn';
 
-const AnswerCard = () => {
-  const url = '/question/';
-  const deleteUrl = '/answer/';
-
-  const [answerData, setAnswerData] = useState([]);
+const AnswerCard = ({answerData, setAnswerData, commentData, setCommentData}) => {
+  const deleteAnswerUrl = '/answer/';
   const { id } = useParams();
+ 
 
-  const getData = async () => {
-    const getResponse = await axios(url + id);
-    setAnswerData(getResponse.data.answerList);
-  };
+  
+ 
 
+ 
   //setComment 할 수 있는 창 열기
 
-  useEffect(() => {
-    getData();
-  }, []);
+
 
   return (
     <>
@@ -35,23 +25,9 @@ const AnswerCard = () => {
         <div className="answers--wrapper">
           {answerData
             ? answerData.map((el) => (
-                <div key={el.id}>
-                  <div className="answers--icon--content">
-                    <div className="answers--icons">
-                      <BsFillCaretUpFill size="15" className="bs click" />
-                      <p className="bs">{el.votes}0</p>
-                      <BsFillCaretDownFill size="15" className="bs click" />
-                      <TiCancel size="15" className="bs click" />
-                      <BsFillBookmarkStarFill
-                        size="11"
-                        className="bs add click"
-                      />
-                      {/* <BsClockHistory size="11" className="bs add click" /> */}
-                    </div>
-
+              
+                <div key={el.id}>     
                     <div className="answers--content">{el.contents}</div>
-                  </div>
-
                   <div className="answers--edit--delete--author">
                     <div className="one">
                       <div className="answers--edit--delete">
@@ -60,11 +36,12 @@ const AnswerCard = () => {
                           to={`/answer/edit/${id}`}
                           style={{ textDecoration: 'none' }}
                           className="edit"
+                          state={{el}}
                         >
                           Edit
                         </Link>
 
-                        <AnswerDelete deleteUrl={deleteUrl} dataEl={el} />
+                        <AnswerDelete deleteUrl={deleteAnswerUrl} dataEl={el} />
                       </div>
 
                       <div className="author--date">
@@ -74,10 +51,12 @@ const AnswerCard = () => {
                     </div>
                     <div className="two">
                       <div className="comment--wrapper">
-                        <CommentCard />
-                        <div className="comment--button">
-                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Add a comment
-                        </div>
+                        <CommentCard commentData={el.commentList}/>
+                        <CommentBtn style={CommentBtnStyle} id={el.id} >
+                          {/* {addComment? "e":"Add a comment"}{console.log(el)} */}
+                        {/* <div key={el.id} onClick={()=>console.log(id)}>yes</div> */}
+                  
+                        </CommentBtn>
                       </div>
                     </div>
                   </div>
@@ -110,9 +89,10 @@ const AnswerCardDefault = styled.div`
     }
   }
   .answers--content {
-    width: 90%;
+    width: 100%;
     margin-left: 10px;
-    padding: 10px;
+    padding-top: 20px;
+    padding-bottom: 20px;
   }
   .answers--edit--delete--author {
     display: flex;
@@ -135,7 +115,7 @@ const AnswerCardDefault = styled.div`
       align-items: center;
     }
     .edit {
-      margin-left: 23px;
+      /* margin-left: 23px; */
       color: rgb(183, 186, 190);
     }
   }
@@ -157,22 +137,25 @@ const AnswerCardDefault = styled.div`
   }
   .comment--wrapper {
     display: flex;
+    font-weight: bold;
     flex-direction: column;
     width: 100%;
     /* background-color:bisque; */
   }
-  .comment--button {
-    display: flex;
-    margin-top: 10px;
-    width: 680px;
-    color: rgb(182, 186, 191);
-    /* justify-content: right; */
-
-    &:hover {
-      color: rgb(107, 135, 166);
-      cursor: pointer;
-    }
-  }
 `;
 
+const CommentBtnStyle = {
+  "display": "flex",
+  "marginTop": "10px",
+    "width": "680px",
+    "color": "rgb(182, 186, 191)",
+    "marginLeft": "37px",
+    "cursor":"pointer"
+    // &:hover {
+    //   color: rgb(107, 135, 166),
+    //   cursor: pointer,
+    // }
+  }
+
 export default AnswerCard;
+

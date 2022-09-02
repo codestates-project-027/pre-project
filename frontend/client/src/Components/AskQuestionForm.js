@@ -103,7 +103,7 @@ const Test = styled.div`
     flex-direction: column;
     width: 80%;
     background-color: white;
-    margin-left: 13%;
+    margin-left: 11%;
     height: fit-content;
     box-shadow: 7px 8px 10px 0px gray;
 

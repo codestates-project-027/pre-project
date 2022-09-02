@@ -27,5 +27,5 @@ const Title = styled.div`
   font-weight: 600;
   text-align: left;
   padding: 3%;
-  padding-left: 9.2%;
+  padding-left: 7.8%;
 `;
