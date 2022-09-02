@@ -1,15 +1,8 @@
 package com.stackoverflow.backend.question.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.stackoverflow.backend.answer.domain.Answer;
 import com.stackoverflow.backend.answer.domain.AnswerDTO;
-import com.stackoverflow.backend.vote.domain.QuestionVote;
-import com.stackoverflow.backend.vote.domain.QuestionVoteDTO;
 import lombok.*;
-import org.springframework.stereotype.Service;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;

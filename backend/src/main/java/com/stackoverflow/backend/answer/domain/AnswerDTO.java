@@ -1,15 +1,10 @@
 package com.stackoverflow.backend.answer.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.stackoverflow.backend.comment.domain.Comment;
 import com.stackoverflow.backend.comment.domain.CommentDTO;
-import com.stackoverflow.backend.question.domain.Question;
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
 
-import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
