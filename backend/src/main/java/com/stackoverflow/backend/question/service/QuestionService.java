@@ -38,16 +38,15 @@ public class QuestionService {
         if (sortValue==null) sortValue="createdAt";
         if (sort==null || sort.equals("max")) {
             return questionRepository.findBy(PageRequest.of(page-1,10, Sort.by(sortValue).descending()))
-                    .map(question -> questionMapper.questionToQuestionResponsePage(question.setReturnVotes(getQuestionVotes(question))));
+                    .map(questionMapper::questionToQuestionResponsePage);
         }
         return questionRepository.findBy(PageRequest.of(page-1,10, Sort.by(sortValue).ascending()))
-                .map(question -> questionMapper.questionToQuestionResponsePage(question.setReturnVotes(getQuestionVotes(question))));
+                .map(questionMapper::questionToQuestionResponsePage);
     }
 
     public QuestionDTO.response getQuestion(Long question_id, String userIp){
         Question question = checkQuestion(question_id);
         eventPublisher.publishEvent(new ViewEvent(eventPublisher,question_id, secureIp(userIp)));
-        question.setVotes(getQuestionVotes(question));
         return questionMapper.questionToQuestionResponse(question);
     }
 
@@ -101,15 +100,17 @@ public class QuestionService {
         }
     }
 
-    private Long getQuestionVotes(Question question) {
-        Long votes = 0L;
-        for(QuestionVote questionVotes: question.getQuestionVoteList()){
-            if (questionVotes.getVote()) votes++;
-            else votes--;
-        }
-        return votes;
-    }
     private void checkAuth(String userName1, String userName2) {
         if (!userName1.equals(userName2)) throw new CustomException(ErrorMessage.USERNAME_NOT_EQUAL);
     }
+
+//    //disabled
+//    private Long getQuestionVotes(Question question) {
+//        Long votes = 0L;
+//        for(QuestionVote questionVotes: question.getQuestionVoteList()){
+//            if (questionVotes.getVote()) votes++;
+//            else votes--;
+//        }
+//        return votes;
+//    }
 }

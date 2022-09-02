@@ -88,6 +88,10 @@ public class Question {
 
     public void subAnswerCount() {this.answers--;}
 
+    public void addVoteCount() {this.votes+=1L;}
+
+    public void subVoteCount() {this.votes-=1L;}
+
     public Question setReturnVotes(Long votes){
         this.votes = votes;
         return this;

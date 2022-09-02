@@ -11,7 +11,6 @@ import com.stackoverflow.backend.vote.domain.QuestionVoteRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 
 
 @Service
@@ -25,14 +24,24 @@ public class QuestionVoteService {
         Question question = checkQuestion(questionVoteDTO);
         Long questionVoteId = findMemberVote(questionVoteDTO, question);
         question.setActiveTime();
-        questionRepository.save(question);
         if (questionVoteId!=0L) {
             questionVoteRepository.save(new QuestionVote(
                     questionVoteId, questionVoteDTO.getUserName(),
                     questionVoteDTO.getVote(),question));
+            if (questionVoteDTO.getVote()) {
+                question.addVoteCount();
+                question.addVoteCount();
+            } else {
+                question.subVoteCount();
+                question.subVoteCount();
+            }
+            questionRepository.save(question);
         } else {
             questionVoteRepository.save(new QuestionVote(
                     questionVoteDTO.getUserName(),questionVoteDTO.getVote(),question));
+            if (questionVoteDTO.getVote()) question.addVoteCount();
+            else question.subVoteCount();
+            questionRepository.save(question);
         }
     }
 
@@ -41,8 +50,11 @@ public class QuestionVoteService {
         Question question = questionRepository.findById(questionVoteDTO.getQuestionId())
                 .orElseThrow(()->new CustomException(ErrorMessage.QUESTION_NOT_FOUND));
         try{
-            questionVoteRepository.deleteById(
-                    questionVoteRepository.findByQuestionAndUserName(question, questionVoteDTO.getUserName()).getId());
+            QuestionVote questionVote = questionVoteRepository.findByQuestionAndUserName(question, questionVoteDTO.getUserName());
+            questionVoteRepository.deleteById(questionVote.getId());
+            if (questionVote.getVote()) question.subVoteCount();
+            else question.addAnswerCount();
+            questionRepository.save(question);
         } catch (Exception e){
             throw new CustomException(ErrorMessage.VOTE_NOT_FOUND);
         }
