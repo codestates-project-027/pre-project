@@ -13,8 +13,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -31,38 +33,40 @@ public class QuestionService {
     private final ApplicationEventPublisher eventPublisher;
 
 
-    public Page<QuestionDTO.responsePage> getQuestions(int page){
+    public Page<QuestionDTO.responsePage> getQuestions(int page, String sortValue,String sort){
         if (page==0) page++;
-        return questionRepository.findBy(PageRequest.of(page-1,5))
-                .map(entity -> {
-                    QuestionDTO.responsePage dto = questionMapper.questionToQuestionResponsePage(entity);
-            return dto;
-        });
+        if (sortValue==null) sortValue="createdAt";
+        //todo generic refactoring
+        if (sort==null || sort.equals("max")) {
+            return questionRepository.findBy(PageRequest.of(page-1,10, Sort.by(sortValue).descending()))
+                    .map(questionMapper::questionToQuestionResponsePage);
+        }
+        return questionRepository.findBy(PageRequest.of(page-1,10, Sort.by(sortValue).ascending()))
+                .map(questionMapper::questionToQuestionResponsePage);
     }
 
     public QuestionDTO.response getQuestion(Long question_id, String userIp){
-        eventPublisher.publishEvent(new ViewEvent(eventPublisher,question_id, secureIp(userIp)));
         Question question = checkQuestion(question_id);
+        eventPublisher.publishEvent(new ViewEvent(eventPublisher,question_id, secureIp(userIp)));
         question.setVotes(getQuestionVotes(question));
         return questionMapper.questionToQuestionResponse(question);
     }
 
     public void createQuestion(QuestionDTO questionDTO) {
         Question question = questionRepository.save(questionMapper.questionDTOToQuestion(questionDTO));
-        checkTag(questionDTO.getTags());
-        questionDTO.getTags().forEach(tag -> {
-            Tag findTag = tagRepository.findByTagName(tag);
-            questionTagRepository.save(new QuestionTag(question, findTag));
-        });
+        saveTag(questionDTO.getTags(), question);
     }
 
+
+    @Transactional
     public void patchQuestion(Long question_id, QuestionDTO.patch questionDTO) {
         //todo refactoring
         Question question = checkQuestion(question_id);
         if (!(questionDTO.getTitle()==null||questionDTO.getTitle().isBlank())) question.setTitle(questionDTO.getTitle());
         if (!(questionDTO.getContents()==null||questionDTO.getContents().isBlank())) question.setContents(questionDTO.getContents());
         if (questionDTO.getTags()!=null) {
-            checkTag(questionDTO.getTags());
+            questionTagRepository.deleteAllByQuestion(question);
+            saveTag(questionDTO.getTags(), question);
             question.setTags(questionDTO.getTags());
         }
         questionRepository.save(question);
@@ -70,8 +74,6 @@ public class QuestionService {
 
     public void deleteQuestion(Long question_id) {
         checkQuestion(question_id);
-        List<QuestionTag> questionTags = questionTagRepository.findByQuestionId(question_id);
-        questionTags.forEach(e -> e.setQuestion(null));
         questionRepository.deleteById(question_id);
     }
 
@@ -80,10 +82,11 @@ public class QuestionService {
                 () -> new CustomException(ErrorMessage.QUESTION_NOT_FOUND));
     }
 
-    private void checkTag(List<String> tagList) {
+    private void saveTag(List<String> tagList, Question question) {
         tagList.forEach(tag -> {
-            if (tagRepository.existsByTagName(tag)) return ;
-            tagRepository.save(new Tag(tag));
+            if (!tagRepository.existsByTagName(tag)) tagRepository.save(new Tag(tag));
+            Tag findTag = tagRepository.findByTagName(tag);
+            questionTagRepository.save(new QuestionTag(question, findTag));
         });
     }
 

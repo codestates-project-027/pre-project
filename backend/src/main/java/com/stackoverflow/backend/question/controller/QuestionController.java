@@ -13,6 +13,8 @@ import org.hibernate.annotations.Filter;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,8 +29,8 @@ public class QuestionController {
     private final QuestionService questionService;
 
     @GetMapping("")
-    private Page<QuestionDTO.responsePage> getQuestions(@RequestParam int page){
-        return questionService.getQuestions(page);
+    private Page<QuestionDTO.responsePage> getQuestions(@RequestParam int page, String sortValue, String sort){
+        return questionService.getQuestions(page, sortValue, sort);
     }
     @GetMapping("/{question_id}")
     private ResponseEntity<QuestionDTO.response> getQuestion(

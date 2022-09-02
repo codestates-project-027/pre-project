@@ -4,11 +4,13 @@ package com.stackoverflow.backend.question.domain;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.stackoverflow.backend.answer.domain.Answer;
+import com.stackoverflow.backend.tag.domain.questiontag.QuestionTag;
 import com.stackoverflow.backend.vote.domain.QuestionVote;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +39,9 @@ public class Question {
 
     @Column
     private Long votes;
+
+    @Column
+    private Long answers;
     @Column
     private LocalDateTime createdAt;
 
@@ -52,6 +57,9 @@ public class Question {
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
     private List<QuestionVote> questionVoteList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
+    private List<QuestionTag> questionTags = new ArrayList<>();
+
     @Builder
     public Question(String title, String contents, String userName, List<String> tags){
         this.title = title;
@@ -59,6 +67,7 @@ public class Question {
         this.userName = userName;
         this.views = 0L;
         this.votes = 0L;
+        this.answers = 0L;
         this.createdAt = LocalDateTime.now();
         this.tags = tags;
     }
@@ -70,5 +79,9 @@ public class Question {
     public void addViewer(String viewer){
         this.viewers.add(viewer);
     }
+
+    public void addAnswerCount() {this.answers++;}
+
+    public void subAnswerCount() {this.answers--;}
 
 }

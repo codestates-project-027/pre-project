@@ -33,7 +33,7 @@ public class Comment {
     @CreatedDate
     private LocalDateTime createdAt;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "answer_id")
     private Answer answer;
 
