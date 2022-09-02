@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -31,9 +32,18 @@ public class QuestionService {
     private final ApplicationEventPublisher eventPublisher;
 
 
-    public Page<QuestionDTO.responsePage> getQuestions(int page){
+    public Page<QuestionDTO.responsePage> getQuestions(int page, String sortValue,String sort){
         if (page==0) page++;
-        return questionRepository.findBy(PageRequest.of(page-1,10))
+        if (sortValue==null) sortValue="createdAt";
+        //todo generic refactoring
+        if (sort==null || sort.equals("max")) {
+            return questionRepository.findBy(PageRequest.of(page-1,10, Sort.by(sortValue).descending()))
+                    .map(entity -> {
+                        QuestionDTO.responsePage dto = questionMapper.questionToQuestionResponsePage(entity);
+                        return dto;
+                    });
+        }
+        return questionRepository.findBy(PageRequest.of(page-1,10, Sort.by(sortValue).ascending()))
                 .map(entity -> {
                     QuestionDTO.responsePage dto = questionMapper.questionToQuestionResponsePage(entity);
             return dto;
@@ -49,12 +59,9 @@ public class QuestionService {
 
     public void createQuestion(QuestionDTO questionDTO) {
         Question question = questionRepository.save(questionMapper.questionDTOToQuestion(questionDTO));
-        checkTag(questionDTO.getTags());
-        questionDTO.getTags().forEach(tag -> {
-            Tag findTag = tagRepository.findByTagName(tag);
-            questionTagRepository.save(new QuestionTag(question, findTag));
-        });
+        saveTag(questionDTO.getTags(), question);
     }
+
 
     public void patchQuestion(Long question_id, QuestionDTO.patch questionDTO) {
         //todo refactoring
@@ -62,7 +69,8 @@ public class QuestionService {
         if (!(questionDTO.getTitle()==null||questionDTO.getTitle().isBlank())) question.setTitle(questionDTO.getTitle());
         if (!(questionDTO.getContents()==null||questionDTO.getContents().isBlank())) question.setContents(questionDTO.getContents());
         if (questionDTO.getTags()!=null) {
-            checkTag(questionDTO.getTags());
+            questionTagRepository.deleteAllByQuestion(question);
+            saveTag(questionDTO.getTags(), question);
             question.setTags(questionDTO.getTags());
         }
         questionRepository.save(question);
@@ -78,10 +86,11 @@ public class QuestionService {
                 () -> new CustomException(ErrorMessage.QUESTION_NOT_FOUND));
     }
 
-    private void checkTag(List<String> tagList) {
+    private void saveTag(List<String> tagList, Question question) {
         tagList.forEach(tag -> {
-            if (tagRepository.existsByTagName(tag)) return ;
-            tagRepository.save(new Tag(tag));
+            if (!tagRepository.existsByTagName(tag)) tagRepository.save(new Tag(tag));
+            Tag findTag = tagRepository.findByTagName(tag);
+            questionTagRepository.save(new QuestionTag(question, findTag));
         });
     }
 

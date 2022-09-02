@@ -10,6 +10,7 @@ import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +39,9 @@ public class Question {
 
     @Column
     private Long votes;
+
+    @Column
+    private Long answers;
     @Column
     private LocalDateTime createdAt;
 
@@ -63,6 +67,7 @@ public class Question {
         this.userName = userName;
         this.views = 0L;
         this.votes = 0L;
+        this.answers = 0L;
         this.createdAt = LocalDateTime.now();
         this.tags = tags;
     }
@@ -74,5 +79,7 @@ public class Question {
     public void addViewer(String viewer){
         this.viewers.add(viewer);
     }
+
+    public void addAnswerCount() {this.answers++;}
 
 }

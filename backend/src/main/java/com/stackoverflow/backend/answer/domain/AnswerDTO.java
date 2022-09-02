@@ -1,5 +1,6 @@
 package com.stackoverflow.backend.answer.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.stackoverflow.backend.comment.domain.Comment;
 import com.stackoverflow.backend.comment.domain.CommentDTO;
 import com.stackoverflow.backend.question.domain.Question;
@@ -40,6 +41,7 @@ public class AnswerDTO {
         private Long id;
         private String contents;
         private String userName;
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd",timezone = "Asia/Seoul")
         private LocalDateTime createdAt;
         private List<CommentDTO.response> commentList;
     }

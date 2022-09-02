@@ -1,5 +1,6 @@
 package com.stackoverflow.backend.question.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.stackoverflow.backend.answer.domain.Answer;
 import com.stackoverflow.backend.answer.domain.AnswerDTO;
 import lombok.*;
@@ -57,6 +58,8 @@ public class QuestionDTO {
         private String userName;
         private Long views;
         private Long votes;
+        private Long answers;
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd",timezone = "Asia/Seoul")
         private LocalDateTime createdAt;
         private List<String> tags;
         private List<AnswerDTO.response> answerList;
@@ -71,7 +74,9 @@ public class QuestionDTO {
         private String userName;
         private Long views;
         private Long votes;
+        private Long answers;
         private List<String> tags;
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd",timezone = "Asia/Seoul")
         private LocalDateTime createdAt;
     }
 
