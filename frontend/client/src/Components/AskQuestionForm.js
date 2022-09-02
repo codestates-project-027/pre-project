@@ -76,7 +76,7 @@ const AskQuestionForm = () => {
             value={tags}
             onChange={(e) => setTags(e.target.value)}
             placeholder="e.g. (iphone android sql)"
-          />
+          />{console.log(tags)}
 
           <div className="wrapper-button">
             <Button1 onClick={postData}>Review your question</Button1>
