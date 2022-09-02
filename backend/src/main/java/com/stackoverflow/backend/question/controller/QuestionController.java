@@ -29,8 +29,8 @@ public class QuestionController {
     private final QuestionService questionService;
 
     @GetMapping("")
-    private Page<QuestionDTO.responsePage> getQuestions(@RequestParam int page){
-        return questionService.getQuestions(page);
+    private Page<QuestionDTO.responsePage> getQuestions(@RequestParam int page, String sortValue, String sort){
+        return questionService.getQuestions(page, sortValue, sort);
     }
     @GetMapping("/{question_id}")
     private ResponseEntity<QuestionDTO.response> getQuestion(

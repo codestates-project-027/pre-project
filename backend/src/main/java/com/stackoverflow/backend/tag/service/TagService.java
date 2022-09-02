@@ -26,7 +26,7 @@ public class TagService {
         try {
             Long tagId = tagRepository.findByTagName(tag).getId();
             if (page==0) page++;
-            Page<QuestionTagDTO.responseQuestions> questions = questionTagRepository.findByTagId(tagId,PageRequest.of(page-1,5))
+            Page<QuestionTagDTO.responseQuestions> questions = questionTagRepository.findByTagId(tagId,PageRequest.of(page-1,10))
                     .map(entity -> {
                         QuestionTagDTO.responseQuestions dto = questionTagMapper.questionTagToQuestionTagResponseQuestions(entity);
                         return dto;
