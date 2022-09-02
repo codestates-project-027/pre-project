@@ -21,11 +21,9 @@ const EditPage = () => {
       contents,
       tags: [JSON.parse(JSON.stringify(tags))],
     };
-    await axios
-      .patch(url + id, updatePost) //서버경로 수정
-      .then(() => {
-        navigate('/questionspage');
-      });
+    await axios.patch(url + id, updatePost).then(() => {
+      navigate('/questionspage');
+    });
   };
 
   const discardDraft = () => {

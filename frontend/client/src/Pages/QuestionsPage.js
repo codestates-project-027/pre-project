@@ -6,38 +6,34 @@ import OverflowBlog from '../assets/overflowblog.png';
 import AskButton from '../Components/AskButton';
 
 const QuestionsPage = ({ isLogin, limit, totalPosts }) => {
-  // const url = '/question?page=1';
-  const pageUrl = '/question?page='
+  const pageUrl = '/question?page=';
   const [data, setData] = useState([]);
   const [answerData, setAnswerData] = useState([]);
   const [page, setPage] = useState(1);
   const [id, setId] = useState(1);
-  const [prevId, setPrevId] = useState(1);
-  
+
   //Pagination
   const numPages = Math.ceil(totalPosts / limit);
-  const offset = (page-1)*limit;
+  const offset = (page - 1) * limit;
 
   const selectPage = (el) => {
-    setId(el+1);
-  }
+    setId(el + 1);
+  };
   const toPrevPage = () => {
-    if (id!==1){
-      setId(id - 1)
+    if (id !== 1) {
+      setId(id - 1);
     }
-  }
+  };
 
   const toNextPage = () => {
-    if (id!==numPages){
-      setId(id + 1)
+    if (id !== numPages) {
+      setId(id + 1);
     }
-  }
-
-  
+  };
 
   //GET 요청
   const getData = async () => {
-    const getResponse = await axios(pageUrl+id);
+    const getResponse = await axios(pageUrl + id);
     setData(getResponse.data.content);
     setAnswerData(getResponse.data.answerList);
   };
@@ -105,7 +101,7 @@ const QuestionsPage = ({ isLogin, limit, totalPosts }) => {
             </div>
 
             <div className="questions-wrapper">
-              {data.slice(offset, offset+limit).map((item) => (
+              {data.slice(offset, offset + limit).map((item) => (
                 <div style={{ width: '100%' }} key={item.id}>
                   <QuestionCard>
                     <div className="question--wrapper">
@@ -138,34 +134,31 @@ const QuestionsPage = ({ isLogin, limit, totalPosts }) => {
                 </div>
               ))}
             </div>
-          
-            
-      <GlobalDiv>{console.log(`id:${id},page:${page},offset:${offset}`)}
-        <Button onClick={toPrevPage} >
-          &lt;
-        </Button>
-        {Array(numPages)
-          .fill()
-          .map((_, el) => (
-            <Button className="page--btn"
-              key={el + 1}
-              onClick={()=>{selectPage(el)}}
-              aria-current={id === el + 1 ? 'page' : null}
-            >
-              {el + 1} {/*setPage */}
-            </Button>
-          ))}
-        <Button onClick={toNextPage} >
-          &gt;
-        </Button>
-      </GlobalDiv>
-    
+
+            <GlobalDiv>
+              {console.log(`id:${id},page:${page},offset:${offset}`)}
+              <Button onClick={toPrevPage}>&lt;</Button>
+              {Array(numPages)
+                .fill()
+                .map((_, el) => (
+                  <Button
+                    className="page--btn"
+                    key={el + 1}
+                    onClick={() => {
+                      selectPage(el);
+                    }}
+                    aria-current={id === el + 1 ? 'page' : null}
+                  >
+                    {el + 1} {/*setPage */}
+                  </Button>
+                ))}
+              <Button onClick={toNextPage}>&gt;</Button>
+            </GlobalDiv>
           </div>
         </div>
 
         <div className="sub--wrapper">
           <img className="overflowblog" alt="blog" src={OverflowBlog} />{' '}
-          {/* assets : overflowblog.png삭제 후 커밋하기 //merge 후 추가해서 commit*/}
         </div>
       </Div>
     </>
@@ -286,7 +279,6 @@ const QuestionCard = styled.div`
     align-items: center;
     justify-content: space-between;
     margin-top: 10px;
-    /* background-color:bisque; */
     margin-bottom: -10px;
   }
   .tags {
@@ -375,14 +367,7 @@ const Button = styled.button`
   color: rgba(109, 115, 122);
   font-size: 1rem;
   background-color: white;
-  
-  /* &:focus{
-    color: rgb(110,180,210);
-    font-weight: bold;
-    cursor: revert;
-    transform: revert;
-    background-color: rgb(229,236,242);
-  } */
+
   &:hover {
     cursor: pointer;
   }
@@ -394,12 +379,10 @@ const Button = styled.button`
   }
 
   &[aria-current] {
-    //active
-   
-    color: rgb(110,180,210);
+    color: rgb(110, 180, 210);
     font-weight: bold;
     cursor: revert;
     transform: revert;
-    background-color: rgb(229,236,242);
+    background-color: rgb(229, 236, 242);
   }
 `;

@@ -6,19 +6,25 @@ import { RiQuestionnaireFill } from 'react-icons/ri';
 import { MdThumbsUpDown } from 'react-icons/md';
 import axios from 'axios';
 
-const SignUpPage = ({username, password, email, usernameHandler, emailHandler, passwordHandler}) => {
+const SignUpPage = ({
+  username,
+  password,
+  email,
+  usernameHandler,
+  emailHandler,
+  passwordHandler,
+}) => {
   const url = '/join'; //서버경로 수정
   const navigate = useNavigate();
   const [click, setClick] = useState(false);
-  
+
   const regex =
     /([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
-
 
   const submitHandler = async (e) => {
     e.preventDefault();
     setClick(true);
-    const joinInfo = { username, email, password};
+    const joinInfo = { username, email, password };
     if (
       username !== '' &&
       password !== '' &&
@@ -27,10 +33,11 @@ const SignUpPage = ({username, password, email, usernameHandler, emailHandler, p
       username.length >= 8 &&
       regex.test(email) === true
     ) {
-      await axios.post(url,joinInfo)
-      .then(()=>alert('환영합니다!')).catch(err=>alert('이미 가입한 회원정보입니다.'))
-      .then(()=>navigate('/questionspage'))
-      
+      await axios
+        .post(url, joinInfo)
+        .then(() => alert('환영합니다!'))
+        .catch((err) => alert('이미 가입한 회원정보입니다.'))
+        .then(() => navigate('/questionspage'));
     } else if (regex.test(email) === false || email.length === 0) {
       alert('이메일을 다시 입력해주세요');
     } else if (regex.test(email) === true && username.length < 8) {
