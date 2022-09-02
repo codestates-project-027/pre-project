@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import OverflowBlog from '../assets/overflowblog.png';
-import Pagination from '../Components/Pagination';
 import AskButton from '../Components/AskButton';
 
 const QuestionsPage = ({ isLogin, limit, totalPosts }) => {
