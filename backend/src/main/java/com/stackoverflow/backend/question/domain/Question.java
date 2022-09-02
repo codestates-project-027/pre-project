@@ -82,4 +82,6 @@ public class Question {
 
     public void addAnswerCount() {this.answers++;}
 
+    public void subAnswerCount() {this.answers--;}
+
 }

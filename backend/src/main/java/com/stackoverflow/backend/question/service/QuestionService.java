@@ -16,6 +16,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -38,16 +39,10 @@ public class QuestionService {
         //todo generic refactoring
         if (sort==null || sort.equals("max")) {
             return questionRepository.findBy(PageRequest.of(page-1,10, Sort.by(sortValue).descending()))
-                    .map(entity -> {
-                        QuestionDTO.responsePage dto = questionMapper.questionToQuestionResponsePage(entity);
-                        return dto;
-                    });
+                    .map(questionMapper::questionToQuestionResponsePage);
         }
         return questionRepository.findBy(PageRequest.of(page-1,10, Sort.by(sortValue).ascending()))
-                .map(entity -> {
-                    QuestionDTO.responsePage dto = questionMapper.questionToQuestionResponsePage(entity);
-            return dto;
-        });
+                .map(questionMapper::questionToQuestionResponsePage);
     }
 
     public QuestionDTO.response getQuestion(Long question_id, String userIp){
@@ -63,6 +58,7 @@ public class QuestionService {
     }
 
 
+    @Transactional
     public void patchQuestion(Long question_id, QuestionDTO.patch questionDTO) {
         //todo refactoring
         Question question = checkQuestion(question_id);

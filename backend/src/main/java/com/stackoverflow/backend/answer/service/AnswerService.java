@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 @Service
@@ -24,9 +25,12 @@ public class AnswerService {
     private final QuestionRepository questionRepository;
     private final AnswerRepository answerRepository;
 
+
+    @Transactional
     public void createAnswer(AnswerDTO answerDTO) {
         Question question = questionRepository.findById(answerDTO.getQuestionId())
                 .orElseThrow(()->new CustomException(ErrorMessage.QUESTION_NOT_FOUND));
+        countAnswer(question, "add");
         answerRepository.save(new Answer(answerDTO.getContents(), answerDTO.getUserName(), question));
     }
     public void patchAnswer(Long answer_id, AnswerDTO.patch answerDTO){
@@ -36,9 +40,23 @@ public class AnswerService {
         answerRepository.save(answer);
     }
 
+    @Transactional
     public void deleteAnswer(Long answer_id) {
-        answerRepository.findById(answer_id)
+        Answer answer = answerRepository.findById(answer_id)
                 .orElseThrow(()->new CustomException(ErrorMessage.ANSWER_NOT_FOUND));
+        countAnswer(answer.getQuestion(), "sub");
         answerRepository.deleteById(answer_id);
+    }
+
+
+    public void countAnswer(Question question, String fun){
+        if (fun.equals("add")) {
+            question.addAnswerCount();
+            questionRepository.save(question);
+        }
+        else {
+            question.subAnswerCount();
+            questionRepository.save(question);
+        }
     }
 }
