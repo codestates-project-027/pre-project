@@ -35,9 +35,9 @@ const SignUpPage = ({
     ) {
       await axios
         .post(url, joinInfo)
-        .then(() => alert('환영합니다!'))
+        .then(() => alert('환영합니다!')).then(() => navigate('/questionspage'))
         .catch((err) => alert('이미 가입한 회원정보입니다.'))
-        .then(() => navigate('/questionspage'));
+        
     } else if (regex.test(email) === false || email.length === 0) {
       alert('이메일을 다시 입력해주세요');
     } else if (regex.test(email) === true && username.length < 8) {

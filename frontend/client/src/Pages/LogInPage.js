@@ -1,15 +1,12 @@
 import styled from 'styled-components';
+import {useState} from 'react';
 import { ReactComponent as Logo } from '../assets/LogoGlyphMd.svg';
+import axios from 'axios';
 
 const LogInPage = ({
-  isLogin,
-  loginRQHandler,
-  loginInfo,
-  setLoginInfo,
-  keepLogin,
-  setKeepLogin,
-  errorMessage,
+  isLogin, loginRQHandler, setLoginInfo, loginInfo, setKeepLogin, keepLogin, errorMessage
 }) => {
+
   const handleInputValue = (key) => (e) => {
     setLoginInfo({ ...loginInfo, [key]: e.target.value });
   };
@@ -17,7 +14,8 @@ const LogInPage = ({
   return (
     <>
       {isLogin ? (
-        window.location.replace('http://localhost:3000/questionspage')
+        <div>login success</div>
+        // window.location.replace('http://localhost:3000/questionspage')
       ) : (
         <LoginGlobalStyle>
           <Logo style={{ marginTop: '-80px' }} />
@@ -35,7 +33,7 @@ const LogInPage = ({
                   <input
                     name="email"
                     type="email"
-                    onChange={handleInputValue('userId')}
+                    onChange={handleInputValue('email')}
                   />
 
                   <label htmlFor="password">Password</label>
@@ -139,7 +137,6 @@ const GoogleColor = {
 const GithubColor = {
   backgroundColor: 'rgb(48,51,55)',
   color: 'white',
-  cursor: 'pointer',
 };
 
 const FBColor = {

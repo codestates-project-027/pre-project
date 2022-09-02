@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 
 import styled from 'styled-components';
 import axios from 'axios';
-
+import {useJwt} from 'react-jwt';
 import Navbar from './Components/Navbar';
 import LeftSidebar from './Components/LeftSidebar';
 
@@ -18,12 +18,14 @@ import EditPage from './Pages/EditPage';
 import MyPage from './Pages/MyPage';
 import AnswerEditPage from './Pages/AnswerEditPage';
 
+const token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJjb3Mgand0IHRva2VuIiwiaWQiOjEsImV4cCI6MTY2MjExMzQxMiwiZW1haWwiOiJhYmNAZ21haWwuY29tIiwidXNlcm5hbWUiOiJhYmMifQ.42iN6om2ZiK3IQvkjqMeLZ5Q7qS-dW77LA0BJWTzw-3a8hybENK3oZVh2gqfajY_xAUTB3P3TtdhKch89tjF1A"
 const url = `/question?page=1`;
 const loginUrl = '/login';
 
 axios.defaults.withCredentials = true;
 
 function App() {
+  const {decodedToken, isExpired} = useJwt(token);
   const [data, setData] = useState([]);
   //JOIN
   const [username, setUsername] = useState('');
@@ -44,6 +46,7 @@ function App() {
   const [isLogin, setIsLogin] = useState(false);
   const [userInfo, setUserInfo] = useState(null);
   const [loginToken, setLoginToken] = useState('');
+  const [jwtForUserInfo, setJwtForUserInfo] = useState('');
 
   // const authHandler = () => { //check
   //   axios
@@ -59,25 +62,36 @@ function App() {
   //     });
   // };
   //login request
-  const [loginInfo, setLoginInfo] = useState({ userId: '', password: '' });
+
+
+
+
+  const loginUrl = '/login';
+  
+  //Auth: Login
+  const [loginInfo, setLoginInfo] = useState({ email: '', password: '' });
   const [keepLogin, setKeepLogin] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
 
+  
+
   const loginRQHandler = () => {
-    const { userId, password } = loginInfo;
-    if (!userId || !password) {
+    const { email, password } = loginInfo;
+    if (!email || !password) {
       setErrorMessage('아이디와 비밀번호를 입력하세요');
       return;
     } else {
       setErrorMessage('');
     }
     return axios
-      .post(loginUrl, { email, username, password })
+      .post(loginUrl, { email, password }) 
       .then((res) => {
-        localStorage.setItem('login-token', res.payload.Authorization);
+        localStorage.setItem('login-token', res.headers.authorization);
         setLoginToken(localStorage.getItem('login-token'));
+        setJwtForUserInfo(loginToken.slice(7));
+
         setIsLogin(true);
-        // Axios.defaults.headers.common['Authorization'] = `Bearer ${loginToken}`
+    
       })
       .catch((err) => {
         if (err.response.data === 401) {
@@ -85,6 +99,10 @@ function App() {
         }
       });
   };
+  
+  {console.log(decodedToken)}
+  // {    console.log(jwt.decode(jwtForUserInfo))}
+  
 
   const logoutHandler = () => {
     //로그아웃 구현-> client에서 처리 + 토큰 삭제
@@ -153,11 +171,13 @@ function App() {
                 element={
                   <LogInPage
                     isLogin={isLogin}
+                    setLoginToken={setLoginToken}
+                    setIsLogin={setIsLogin}
                     loginRQHandler={loginRQHandler}
-                    loginInfo={loginInfo}
                     setLoginInfo={setLoginInfo}
-                    keepLogin={keepLogin}
+                    loginInfo={loginInfo}
                     setKeepLogin={setKeepLogin}
+                    keepLogin={keepLogin}
                     errorMessage={errorMessage}
                   />
                 }
@@ -192,8 +212,6 @@ function App() {
                 path="/posts/:id"
                 element={
                   <ReadQuestionPage
-                    loginRQHandler={loginRQHandler}
-                    isLogin={isLogin}
                   />
                 }
               />
