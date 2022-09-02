@@ -6,21 +6,15 @@ import { useNavigate } from 'react-router-dom';
 const AskQuestionForm = () => {
   const url = '/question'; //서버경로 수정
   const [userName, setUsername] = useState('userName');
-  // const [createdAt, setCreatedAt] = useState(`${new Date().toLocaleDateString()}`);
 
   const [title, setTitle] = useState('');
   const [contents, setContents] = useState('');
   const [tags, setTags] = useState([]);
 
-  const [vote, setVote] = useState(0);
-  const [answer, setAnswer] = useState(0);
-  const [view, setView] = useState(0);
-
   const navigate = useNavigate();
 
   const postData = async (e) => {
     e.preventDefault();
-    // const post = { title, body, tags, author, createdAt, vote, answer, view };
     const post = {
       title,
       contents,
@@ -77,6 +71,7 @@ const AskQuestionForm = () => {
             onChange={(e) => setTags(e.target.value)}
             placeholder="e.g. (iphone android sql)"
           />
+          {console.log(tags)}
 
           <div className="wrapper-button">
             <Button1 onClick={postData}>Review your question</Button1>

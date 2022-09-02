@@ -9,7 +9,6 @@ import {
   BsFillCaretUpFill,
   BsFillCaretDownFill,
   BsFillBookmarkStarFill,
-  BsClockHistory,
 } from 'react-icons/bs';
 import { TiCancel } from 'react-icons/ti';
 
@@ -27,11 +26,12 @@ const ReadQuestionPage = () => {
   const [answerContents, setAnswerContents] = useState('');
   const [userName, setUserName] = useState('userName');
 
+  //Question
   const getData = async () => {
     const getResponse = await axios(url + id);
     setData(getResponse.data);
     setAnswerData(getResponse.data.answerList);
-    setCommentData(answerData.commentList)
+    setCommentData(answerData.commentList);
   };
 
   const deleteData = async () => {
@@ -40,17 +40,11 @@ const ReadQuestionPage = () => {
     });
   };
 
-  //answer
+  //Answer
   const postAnswer = async (e) => {
     e.preventDefault();
     const answer = { questionId, contents: answerContents, userName };
     await axios.post(postAnswerUrl, answer);
-    window.location.reload();
-  };
-
-  const deleteAnswer = async () => {
-    const answer = { contents: answerContents };
-    await axios.delete(deleteAnswerUrl, { data: answer });
     window.location.reload();
   };
 
@@ -148,7 +142,7 @@ const ReadQuestionPage = () => {
                   <div className="read--answer--desc">
                     {answerData ? answerData.length : null}&nbsp;Answers
                   </div>
-                  <AnswerCard answerData={answerData} commentData={commentData} setCommentData={commentData}/>
+                  <AnswerCard answerData={answerData} />
                 </div>
 
                 <div className="wirte--answer--desc">Your Answer</div>

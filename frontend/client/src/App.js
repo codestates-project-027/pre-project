@@ -18,8 +18,8 @@ import EditPage from './Pages/EditPage';
 import MyPage from './Pages/MyPage';
 import AnswerEditPage from './Pages/AnswerEditPage';
 
-const url = `/question?page=1`; 
-const loginUrl = '/login'
+const url = `/question?page=1`;
+const loginUrl = '/login';
 
 axios.defaults.withCredentials = true;
 
@@ -29,7 +29,7 @@ function App() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
-  
+
   const usernameHandler = (event) => {
     setUsername(event.target.value);
   };
@@ -39,8 +39,6 @@ function App() {
   const passwordHandler = (event) => {
     setPassword(event.target.value);
   };
-  
-
 
   //GET Auth : Login and get token to CRUD
   const [isLogin, setIsLogin] = useState(false);
@@ -62,9 +60,9 @@ function App() {
   // };
   //login request
   const [loginInfo, setLoginInfo] = useState({ userId: '', password: '' });
-  // const [keepLogin, setKeepLogin] = useState(true);
+  const [keepLogin, setKeepLogin] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
-  
+
   const loginRQHandler = () => {
     const { userId, password } = loginInfo;
     if (!userId || !password) {
@@ -77,7 +75,7 @@ function App() {
       .post(loginUrl, { email, username, password })
       .then((res) => {
         localStorage.setItem('login-token', res.payload.Authorization);
-        setLoginToken(localStorage.getItem('login-token'))
+        setLoginToken(localStorage.getItem('login-token'));
         setIsLogin(true);
         // Axios.defaults.headers.common['Authorization'] = `Bearer ${loginToken}`
       })
@@ -88,7 +86,8 @@ function App() {
       });
   };
 
-  const logoutHandler = () => { //로그아웃 구현-> client에서 처리 + 토큰 삭제
+  const logoutHandler = () => {
+    //로그아웃 구현-> client에서 처리 + 토큰 삭제
     return axios
       .post('https://localhost:4000/logout')
       .then((res) => {
@@ -100,22 +99,15 @@ function App() {
       });
   };
 
-  
-
   //pagination
   const [limit, setLimit] = useState(10);
   const [totalPosts, setTotalPosts] = useState(0);
-  const [first ,setFirst] = useState(1);
-  const [last, setLast] = useState(1);
-  
 
   //GET
   const getData = async () => {
     const getResponse = await axios(url);
     setData(getResponse.data);
     setTotalPosts(getResponse.data.totalElements);
-    setLast(getResponse.data.last);
-    setFirst(getResponse.data.first);
   };
 
   useEffect(() => {
@@ -123,7 +115,6 @@ function App() {
       const allPosts = await getData();
       if (allPosts) setData(allPosts);
     };
-    // authHandler();
     getAllPosts();
   }, []);
 
@@ -149,10 +140,8 @@ function App() {
                 element={
                   <QuestionsPage
                     isLogin={isLogin}
-                    totalPosts={totalPosts}
                     limit={limit}
-                    last={last}
-                    first={first}
+                    totalPosts={totalPosts}
                   />
                 }
               />
@@ -164,40 +153,37 @@ function App() {
                 element={
                   <LogInPage
                     isLogin={isLogin}
-                    setUserInfo={setUserInfo}
-                    setIsLogin={setIsLogin}
                     loginRQHandler={loginRQHandler}
                     loginInfo={loginInfo}
                     setLoginInfo={setLoginInfo}
-                    // keepLogin={keepLogin}
-                    // setKeepLogin={setKeepLogin}
+                    keepLogin={keepLogin}
+                    setKeepLogin={setKeepLogin}
                     errorMessage={errorMessage}
                   />
                 }
               />
 
-              <Route path="/join" 
-              element={
-              <SignUpPage 
-              username={username}
-              setUsername={setUsername}
-              password={password}
-              setPassword={setPassword}
-              email={email}
-              setEmail={setEmail}
-              usernameHandler={usernameHandler}
-              emailHandler={emailHandler}
-              passwordHandler={passwordHandler}
-
-              />} />
+              <Route
+                path="/join"
+                element={
+                  <SignUpPage
+                    username={username}
+                    password={password}
+                    email={email}
+                    usernameHandler={usernameHandler}
+                    emailHandler={emailHandler}
+                    passwordHandler={passwordHandler}
+                  />
+                }
+              />
               <Route
                 path="/mypage"
                 element={
                   <MyPage
-                    isLogin={isLogin}
+                    userInfo={userInfo}
                     setIsLogin={setIsLogin}
                     setUserInfo={setUserInfo}
-                    userInfo={userInfo}
+                    isLogin={isLogin}
                   />
                 }
               />
@@ -237,21 +223,7 @@ const RoutesWrapper = styled.div`
   width: 80%;
   height: 100vh;
   border-left: 1px solid rgba(229, 229, 229, 0.7);
-  /* background-color: red; */
   /* margin-left: calc( 15% + 5px) */
 `;
 
 export default App;
-
-// {
-//   isLogin ? (
-//     <MyPage
-//       isLogin={isLogin}
-//       setIsLogin={setIsLogin}
-//       setUserInfo={setUserInfo}
-//       userInfo={userInfo}
-//     />
-//   ) : (
-//     <LandingPage />
-//   )
-// }

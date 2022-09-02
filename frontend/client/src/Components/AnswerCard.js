@@ -1,23 +1,12 @@
-import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import CommentCard from './CommentCard';
 import styled from 'styled-components';
-import axios from 'axios';
 import AnswerDelete from './AnswerDelete';
 import CommentBtn from './CommentBtn';
 
-const AnswerCard = ({answerData, setAnswerData, commentData, setCommentData}) => {
+const AnswerCard = ({ answerData }) => {
   const deleteAnswerUrl = '/answer/';
   const { id } = useParams();
- 
-
-  
- 
-
- 
-  //setComment 할 수 있는 창 열기
-
-
 
   return (
     <>
@@ -25,9 +14,8 @@ const AnswerCard = ({answerData, setAnswerData, commentData, setCommentData}) =>
         <div className="answers--wrapper">
           {answerData
             ? answerData.map((el) => (
-              
-                <div key={el.id}>     
-                    <div className="answers--content">{el.contents}</div>
+                <div key={el.id}>
+                  <div className="answers--content">{el.contents}</div>
                   <div className="answers--edit--delete--author">
                     <div className="one">
                       <div className="answers--edit--delete">
@@ -36,7 +24,7 @@ const AnswerCard = ({answerData, setAnswerData, commentData, setCommentData}) =>
                           to={`/answer/edit/${id}`}
                           style={{ textDecoration: 'none' }}
                           className="edit"
-                          state={{el}}
+                          state={{ el }}
                         >
                           Edit
                         </Link>
@@ -51,12 +39,8 @@ const AnswerCard = ({answerData, setAnswerData, commentData, setCommentData}) =>
                     </div>
                     <div className="two">
                       <div className="comment--wrapper">
-                        <CommentCard commentData={el.commentList}/>
-                        <CommentBtn style={CommentBtnStyle} id={el.id} >
-                          {/* {addComment? "e":"Add a comment"}{console.log(el)} */}
-                        {/* <div key={el.id} onClick={()=>console.log(id)}>yes</div> */}
-                  
-                        </CommentBtn>
+                        <CommentCard commentData={el.commentList} />
+                        <CommentBtn style={CommentBtnStyle} id={el.id} />
                       </div>
                     </div>
                   </div>
@@ -115,7 +99,6 @@ const AnswerCardDefault = styled.div`
       align-items: center;
     }
     .edit {
-      /* margin-left: 23px; */
       color: rgb(183, 186, 190);
     }
   }
@@ -140,22 +123,16 @@ const AnswerCardDefault = styled.div`
     font-weight: bold;
     flex-direction: column;
     width: 100%;
-    /* background-color:bisque; */
   }
 `;
 
 const CommentBtnStyle = {
-  "display": "flex",
-  "marginTop": "10px",
-    "width": "680px",
-    "color": "rgb(182, 186, 191)",
-    "marginLeft": "37px",
-    "cursor":"pointer"
-    // &:hover {
-    //   color: rgb(107, 135, 166),
-    //   cursor: pointer,
-    // }
-  }
+  display: 'flex',
+  marginTop: '10px',
+  width: '680px',
+  color: 'rgb(182, 186, 191)',
+  marginLeft: '37px',
+  cursor: 'pointer',
+};
 
 export default AnswerCard;
-

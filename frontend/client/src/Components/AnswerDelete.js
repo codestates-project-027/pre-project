@@ -10,7 +10,7 @@ const AnswerDelete = ({ deleteUrl, dataEl }) => {
   return (
     <>
       <button style={style} onClick={deleteAnswer}>
-        delete
+        Delete
       </button>
     </>
   );
