@@ -58,8 +58,8 @@ const Div = styled.div`
   border: 1px solid lightgray;
   display: flex;
   flex-direction: column;
-  width: 250px;
-  height: 400px;
+  width: 280px;
+  height: 400px; //580px
   background-color: rgb(247, 247, 247);
   margin: 0;
   padding: 10px;
@@ -73,7 +73,7 @@ const Div = styled.div`
 `;
 
 const Ptag = styled.div`
-  width: 250px;
+  width: 270px;
   height: 250px;
   background-color: white;
   margin-top: 10px;

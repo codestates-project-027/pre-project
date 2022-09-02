@@ -52,7 +52,7 @@ const Div = styled.div`
     border-radius: 3%;
     box-shadow: 1px 1px 10px lightgrey;
     background-color: white;
-    width: 250px;
+    width: 270px;
     height: 60px;
     padding: 5px;
     display: flex;
