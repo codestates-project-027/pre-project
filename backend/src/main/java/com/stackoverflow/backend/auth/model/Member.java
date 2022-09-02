@@ -20,12 +20,7 @@ public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-//    @NotBlank(message = "올바른 이메일 주소가 아닙니다.")
-//    @Email
-//    private String username;
-//    @NotBlank(message = "닉네임은 공백이 아니어야 합니다.")
-//    private  String displayName;
-@NotBlank(message = "올바른 이메일 주소가 아닙니다.")
+    @NotBlank(message = "올바른 이메일 주소가 아닙니다.")
     @Email
     private String email;
     @NotBlank(message = "닉네임은 공백이 아니어야 합니다.")

@@ -1,12 +1,17 @@
 package com.stackoverflow.backend.exception;
 
 
+import com.stackoverflow.backend.auth.dto.Response;
 import lombok.Builder;
 import lombok.Getter;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.time.LocalDateTime;
 
 @Getter
@@ -39,4 +44,6 @@ public class ErrorResponse {
                         .build()
                 );
     }
+
+
 }
