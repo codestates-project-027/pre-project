@@ -4,57 +4,36 @@ import styled from 'styled-components';
 import { AiTwotoneTrophy, AiFillTags } from 'react-icons/ai';
 import { RiQuestionnaireFill } from 'react-icons/ri';
 import { MdThumbsUpDown } from 'react-icons/md';
+import axios from 'axios';
 
-const SignUpPage = () => {
-  const url = '/login'; //서버경로 수정
+const SignUpPage = ({username, password, email, usernameHandler, emailHandler, passwordHandler}) => {
+  const url = '/join'; //서버경로 수정
   const navigate = useNavigate();
-  const [name, setName] = useState('');
-  const [password, setPassword] = useState('');
-  const [email, setEmail] = useState('');
   const [click, setClick] = useState(false);
-
+  
   const regex =
     /([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
 
-  const nameHandler = (event) => {
-    setName(event.target.value);
-  };
 
-  const emailHandler = (event) => {
-    setEmail(event.target.value);
-  };
-
-  const passwordHandler = (event) => {
-    setPassword(event.target.value);
-  };
-
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
     setClick(true);
-    const newData = { displayName: name, email: email, password: password };
+    const joinInfo = { username, email, password};
     if (
-      name !== '' &&
+      username !== '' &&
       password !== '' &&
       email !== '' &&
       password.length >= 8 &&
-      name.length >= 8 &&
+      username.length >= 8 &&
       regex.test(email) === true
     ) {
-      fetch(url, {
-        method: 'POST',
-        headers: { 'Content-type': 'application/json' },
-        body: JSON.stringify(newData),
-      })
-        .then(() => {
-          console.log('성공');
-          navigate('/questionspage');
-        })
-        .catch((err) => {
-          console.log('error', err);
-        });
+      await axios.post(url,joinInfo)
+      .then(()=>alert('환영합니다!')).catch(err=>alert('이미 가입한 회원정보입니다.'))
+      .then(()=>navigate('/questionspage'))
+      
     } else if (regex.test(email) === false || email.length === 0) {
       alert('이메일을 다시 입력해주세요');
-    } else if (regex.test(email) === true && name.length < 8) {
+    } else if (regex.test(email) === true && username.length < 8) {
       alert('이름은 8자리 이상이여야 합니다');
     } else {
       alert('비밀번호는 8자리 이상이여야 합니다');
@@ -103,8 +82,8 @@ const SignUpPage = () => {
           <form>
             <div>
               <h2>Display name</h2>
-              <input onChange={nameHandler} />
-              {click && name.length >= 8 ? (
+              <input required onChange={usernameHandler} />
+              {click && username.length >= 8 ? (
                 <span className="signup-confirm">
                   사용할 수 있는 아이디입니다.
                 </span>
@@ -112,7 +91,7 @@ const SignUpPage = () => {
             </div>
             <div>
               <h2>Email</h2>
-              <input onChange={emailHandler} />
+              <input required onChange={emailHandler} />
               {click && regex.test(email) === false ? (
                 <span className="signup-error">
                   유효한 이메일 주소가 아닙니다.
@@ -121,7 +100,7 @@ const SignUpPage = () => {
             </div>
             <div>
               <h2>Password</h2>
-              <input onChange={passwordHandler} type="password" />
+              <input required onChange={passwordHandler} type="password" />
               {click && password.length >= 8 ? (
                 <span className="signup-confirm">
                   사용할 수 있는 비밀번호입니다
@@ -130,7 +109,7 @@ const SignUpPage = () => {
             </div>
             <div className="signup-submit">
               <div>
-                <input type="checkbox" className="opt--description" />
+                <input type="checkbox" required className="opt--description" />
                 Opt-in to receive occasional product updates, user research
                 invitations, company announcements, and digests.
               </div>

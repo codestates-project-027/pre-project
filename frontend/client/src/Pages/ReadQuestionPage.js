@@ -22,6 +22,7 @@ const ReadQuestionPage = () => {
   const navigate = useNavigate();
   const [data, setData] = useState([]);
   const [answerData, setAnswerData] = useState([]); //불러온 answer data
+  const [commentData, setCommentData] = useState([]);
   const [questionId, setQuestionId] = useState(id);
   const [answerContents, setAnswerContents] = useState('');
   const [userName, setUserName] = useState('userName');
@@ -30,11 +31,12 @@ const ReadQuestionPage = () => {
     const getResponse = await axios(url + id);
     setData(getResponse.data);
     setAnswerData(getResponse.data.answerList);
+    setCommentData(answerData.commentList)
   };
 
   const deleteData = async () => {
     await axios.delete(url + id).then(() => {
-      navigate('/questionspage');
+      navigate(-1);
     });
   };
 
@@ -146,7 +148,7 @@ const ReadQuestionPage = () => {
                   <div className="read--answer--desc">
                     {answerData ? answerData.length : null}&nbsp;Answers
                   </div>
-                  <AnswerCard />
+                  <AnswerCard answerData={answerData} commentData={commentData} setCommentData={commentData}/>
                 </div>
 
                 <div className="wirte--answer--desc">Your Answer</div>

@@ -18,34 +18,53 @@ import EditPage from './Pages/EditPage';
 import MyPage from './Pages/MyPage';
 import AnswerEditPage from './Pages/AnswerEditPage';
 
-const url = `/question?page=1`; //서버경로 수정
+const url = `/question?page=1`; 
+const loginUrl = '/login'
 
 axios.defaults.withCredentials = true;
 
 function App() {
   const [data, setData] = useState([]);
+  //JOIN
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
+  
+  const usernameHandler = (event) => {
+    setUsername(event.target.value);
+  };
+  const emailHandler = (event) => {
+    setEmail(event.target.value);
+  };
+  const passwordHandler = (event) => {
+    setPassword(event.target.value);
+  };
+  
 
-  //AUTH
+
+  //GET Auth : Login and get token to CRUD
   const [isLogin, setIsLogin] = useState(false);
   const [userInfo, setUserInfo] = useState(null);
+  const [loginToken, setLoginToken] = useState('');
 
-  const authHandler = () => {
-    axios
-      .get('https://localhost:4000/userinfo')
-      .then((res) => {
-        setIsLogin(true);
-        setUserInfo(res.data);
-      })
-      .catch((err) => {
-        if (err.response.status === 401) {
-          console.log(err.response.data);
-        }
-      });
-  };
+  // const authHandler = () => { //check
+  //   axios
+  //     .get('https://localhost:4000/userinfo')
+  //     .then((res) => {
+  //       setIsLogin(true);
+  //       setUserInfo(res.data);
+  //     })
+  //     .catch((err) => {
+  //       if (err.response.status === 401) {
+  //         console.log(err.response.data);
+  //       }
+  //     });
+  // };
   //login request
   const [loginInfo, setLoginInfo] = useState({ userId: '', password: '' });
-  const [keepLogin, setKeepLogin] = useState(true);
+  // const [keepLogin, setKeepLogin] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
+  
   const loginRQHandler = () => {
     const { userId, password } = loginInfo;
     if (!userId || !password) {
@@ -55,11 +74,12 @@ function App() {
       setErrorMessage('');
     }
     return axios
-      .post('https://localhost:4000/login', { loginInfo, keepLogin })
+      .post(loginUrl, { email, username, password })
       .then((res) => {
+        localStorage.setItem('login-token', res.payload.Authorization);
+        setLoginToken(localStorage.getItem('login-token'))
         setIsLogin(true);
-        setUserInfo(res.data);
-        localStorage.setItem('login-token', res.token);
+        // Axios.defaults.headers.common['Authorization'] = `Bearer ${loginToken}`
       })
       .catch((err) => {
         if (err.response.data === 401) {
@@ -68,7 +88,7 @@ function App() {
       });
   };
 
-  const logoutHandler = () => {
+  const logoutHandler = () => { //로그아웃 구현-> client에서 처리 + 토큰 삭제
     return axios
       .post('https://localhost:4000/logout')
       .then((res) => {
@@ -80,10 +100,22 @@ function App() {
       });
   };
 
+  
+
+  //pagination
+  const [limit, setLimit] = useState(10);
+  const [totalPosts, setTotalPosts] = useState(0);
+  const [first ,setFirst] = useState(1);
+  const [last, setLast] = useState(1);
+  
+
   //GET
   const getData = async () => {
     const getResponse = await axios(url);
     setData(getResponse.data);
+    setTotalPosts(getResponse.data.totalElements);
+    setLast(getResponse.data.last);
+    setFirst(getResponse.data.first);
   };
 
   useEffect(() => {
@@ -91,9 +123,11 @@ function App() {
       const allPosts = await getData();
       if (allPosts) setData(allPosts);
     };
-    authHandler();
+    // authHandler();
     getAllPosts();
   }, []);
+
+  // {console.log(data.first)}
 
   return (
     <BrowserRouter>
@@ -114,9 +148,11 @@ function App() {
                 path="/questionspage"
                 element={
                   <QuestionsPage
-                    data={data}
-                    setData={setData}
                     isLogin={isLogin}
+                    totalPosts={totalPosts}
+                    limit={limit}
+                    last={last}
+                    first={first}
                   />
                 }
               />
@@ -133,14 +169,27 @@ function App() {
                     loginRQHandler={loginRQHandler}
                     loginInfo={loginInfo}
                     setLoginInfo={setLoginInfo}
-                    keepLogin={keepLogin}
-                    setKeepLogin={setKeepLogin}
+                    // keepLogin={keepLogin}
+                    // setKeepLogin={setKeepLogin}
                     errorMessage={errorMessage}
                   />
                 }
               />
 
-              <Route path="/join" element={<SignUpPage />} />
+              <Route path="/join" 
+              element={
+              <SignUpPage 
+              username={username}
+              setUsername={setUsername}
+              password={password}
+              setPassword={setPassword}
+              email={email}
+              setEmail={setEmail}
+              usernameHandler={usernameHandler}
+              emailHandler={emailHandler}
+              passwordHandler={passwordHandler}
+
+              />} />
               <Route
                 path="/mypage"
                 element={

@@ -6,26 +6,46 @@ import OverflowBlog from '../assets/overflowblog.png';
 import Pagination from '../Components/Pagination';
 import AskButton from '../Components/AskButton';
 
-const QuestionsPage = ({ isLogin }) => {
-  const url = '/question?page=1';
-
+const QuestionsPage = ({ isLogin, limit, totalPosts }) => {
+  // const url = '/question?page=1';
+  const pageUrl = '/question?page='
   const [data, setData] = useState([]);
   const [answerData, setAnswerData] = useState([]);
-  //pagination
-  const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(1);
-  const offset = (page - 1) * limit;
+  const [id, setId] = useState(1);
+  const [prevId, setPrevId] = useState(1);
+  
+  //Pagination
+  const numPages = Math.ceil(totalPosts / limit);
+  const offset = (page-1)*limit;
+
+  const selectPage = (el) => {
+    setId(el+1);
+  }
+  const toPrevPage = () => {
+    if (id!==1){
+      setId(id - 1)
+    }
+  }
+
+  const toNextPage = () => {
+    if (id!==numPages){
+      setId(id + 1)
+    }
+  }
+
+  
 
   //GET 요청
   const getData = async () => {
-    const getResponse = await axios(url);
+    const getResponse = await axios(pageUrl+id);
     setData(getResponse.data.content);
     setAnswerData(getResponse.data.answerList);
   };
 
   useEffect(() => {
     getData();
-  }, []);
+  }, [id]);
 
   //tab 메뉴 관련
   const [currentTab, setCurrentTab] = useState(0);
@@ -86,7 +106,7 @@ const QuestionsPage = ({ isLogin }) => {
             </div>
 
             <div className="questions-wrapper">
-              {data.map((item) => (
+              {data.slice(offset, offset+limit).map((item) => (
                 <div style={{ width: '100%' }} key={item.id}>
                   <QuestionCard>
                     <div className="question--wrapper">
@@ -119,12 +139,28 @@ const QuestionsPage = ({ isLogin }) => {
                 </div>
               ))}
             </div>
-            <Pagination
-              total={data.length}
-              limit={limit}
-              page={page}
-              setPage={setPage}
-            />
+          
+            
+      <GlobalDiv>{console.log(`id:${id},page:${page},offset:${offset}`)}
+        <Button onClick={toPrevPage} >
+          &lt;
+        </Button>
+        {Array(numPages)
+          .fill()
+          .map((_, el) => (
+            <Button className="page--btn"
+              key={el + 1}
+              onClick={()=>{selectPage(el)}}
+              aria-current={id === el + 1 ? 'page' : null}
+            >
+              {el + 1} {/*setPage */}
+            </Button>
+          ))}
+        <Button onClick={toNextPage} >
+          &gt;
+        </Button>
+      </GlobalDiv>
+    
           </div>
         </div>
 
@@ -321,4 +357,50 @@ const LoginDesc = styled.button`
   border-radius: 2px;
   border: 1px solid rgb(120, 155, 158, 0.5);
   cursor: pointer;
+`;
+
+//pagination
+const GlobalDiv = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  margin: 16px;
+`;
+
+const Button = styled.button`
+  border: none;
+  border-radius: 8px;
+  padding: 8px;
+  margin: 0;
+  color: rgba(109, 115, 122);
+  font-size: 1rem;
+  background-color: white;
+  
+  /* &:focus{
+    color: rgb(110,180,210);
+    font-weight: bold;
+    cursor: revert;
+    transform: revert;
+    background-color: rgb(229,236,242);
+  } */
+  &:hover {
+    cursor: pointer;
+  }
+
+  &[disabled] {
+    cursor: revert;
+    transform: revert;
+    background-color: white;
+  }
+
+  &[aria-current] {
+    //active
+   
+    color: rgb(110,180,210);
+    font-weight: bold;
+    cursor: revert;
+    transform: revert;
+    background-color: rgb(229,236,242);
+  }
 `;

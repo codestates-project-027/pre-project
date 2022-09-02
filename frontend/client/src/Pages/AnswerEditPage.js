@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
+
 import styled from 'styled-components';
 import axios from 'axios';
 
@@ -12,6 +13,8 @@ const AnswerEditPage = () => {
   const [answerData, setAnswerData] = useState([]);
   const [contents, setContents] = useState('');
   const { id } = useParams();
+  const location = useLocation();
+  const data = location.state.el;
 
   const getData = async () => {
     const getResponse = await axios(url + id);
@@ -26,7 +29,7 @@ const AnswerEditPage = () => {
 
   const updatePost = async () => {
     const updateAnswer = { contents };
-    await axios.patch(patchUrl + answerData[0].id, updateAnswer).then(() => {
+    await axios.patch(patchUrl + data.id, updateAnswer).then(() => {
       navigate(-1);
     });
   };
