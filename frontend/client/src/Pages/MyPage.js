@@ -13,16 +13,14 @@ export default function Mypage({ userInfo, setIsLogin, setUserInfo, isLogin }) {
         <LoginGlobalStyle>
           <div className="container">
             <div className="left-box">
-              <span>Welcome {`${userInfo.name}(${userInfo.userId})`}</span>
+              <span>Welcome {`${userInfo.username}`}</span>
             </div>
             <div className="right-box">
               <h1>My Page</h1>
               <div className="input-field">
                 <h3>내 정보</h3>
                 <div className="userinfo-field">
-                  <div>{`💻 ${userInfo.position}`}</div>
                   <div>{`📩 ${userInfo.email}`}</div>
-                  <div>{`📍 ${userInfo.location}`}</div>
                   {/* <article>
             <h3>Bio</h3>
             <span>{userInfo.bio}</span>

@@ -1,21 +1,46 @@
 import styled from 'styled-components';
 import {useState} from 'react';
+import {useJwt} from 'react-jwt';
+import { useNavigate } from 'react-router-dom';
 import { ReactComponent as Logo } from '../assets/LogoGlyphMd.svg';
 import axios from 'axios';
 
+
 const LogInPage = ({
-  isLogin, loginRQHandler, setLoginInfo, loginInfo, setKeepLogin, keepLogin, errorMessage
+  isLogin, loginRQHandler, setLoginInfo, loginInfo, setKeepLogin, keepLogin, errorMessage, jwtToken
 }) => {
+
+  const navigate = useNavigate();
+  const parseJwt = (token) => {
+    var base64Url = token.split('.')[1];
+    var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+    return JSON.parse(jsonPayload);
+};
 
   const handleInputValue = (key) => (e) => {
     setLoginInfo({ ...loginInfo, [key]: e.target.value });
   };
 
+
+  
+
   return (
     <>
       {isLogin ? (
-        <div>login success</div>
-        // window.location.replace('http://localhost:3000/questionspage')
+        <>
+        <div>login success</div>{
+        setTimeout(function(){
+          // const userInfo = parseJwt(jwtToken);
+          // const answer = { questionId, contents: answerContents, userName };
+          // const userInfo = { username: parseJwt(jwtToken).username, email: parseJwt(jwtToken).email };
+          // // console.log(userInfo.email, userInfo.username);
+          // localStorage.setItem('username', JSON.stringify(userInfo));
+          navigate('/questionspage');
+          },1)}
+        </>
       ) : (
         <LoginGlobalStyle>
           <Logo style={{ marginTop: '-80px' }} />
