@@ -168,7 +168,7 @@ function App() {
               element={
               <AskQuestionPage 
               jwtToken={jwtToken}
-              
+              userInfo={userInfo}
               />} />
 
               <Route

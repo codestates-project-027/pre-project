@@ -3,9 +3,9 @@ import styled from 'styled-components';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const AskQuestionForm = (jwtToken) => {
+const AskQuestionForm = ({jwtToken, userInfoUserName}) => {
   const url = '/question';
-  const [userName, setUsername] = useState('userName');
+  const [userName, setUsername] = useState(userInfoUserName);
 
   const [title, setTitle] = useState('');
   const [contents, setContents] = useState('');
@@ -14,8 +14,7 @@ const AskQuestionForm = (jwtToken) => {
   const navigate = useNavigate();
 
   const postData = async (e) => {
-    const sendToken = jwtToken.jwtToken.jwtToken;
-    const headers = {headers: {Authorization: `Bearer ${sendToken}`}}
+    const headers = {headers: {Authorization: `Bearer ${jwtToken}`}}
     e.preventDefault();
     const post = {
       title,

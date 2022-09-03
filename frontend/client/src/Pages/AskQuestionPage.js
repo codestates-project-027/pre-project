@@ -2,12 +2,13 @@ import styled from 'styled-components';
 import AskQuestionForm from '../Components/AskQuestionForm';
 import QSidebar from '../Components/QSidebar';
 
-const AskQuestionPage = (jwtToken, headers) => {
+const AskQuestionPage = ({jwtToken, userInfo}) => {
   return (
     <>
       <Title>Ask Question</Title>
       <Div>
-        <AskQuestionForm jwtToken={jwtToken} headers={headers} />
+        <AskQuestionForm jwtToken={jwtToken} userInfoUserName={JSON.parse(JSON.stringify(userInfo.username))} />
+        {console.log(`Form:${JSON.parse(JSON.stringify(userInfo.username))}`, jwtToken)}
         <QSidebar />
       </Div>
     </>
