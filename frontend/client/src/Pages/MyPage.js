@@ -20,11 +20,8 @@ export default function Mypage({ userInfo, setIsLogin, setUserInfo, isLogin }) {
               <div className="input-field">
                 <h3>내 정보</h3>
                 <div className="userinfo-field">
-                  <div>{`📩 ${userInfo.email}`}</div>
-                  {/* <article>
-            <h3>Bio</h3>
-            <span>{userInfo.bio}</span>
-          </article> */}
+                  <div>{`✉️ ${userInfo.email}`}</div>
+
                 </div>
                 <button className="logout-btn" onClick={logoutHandler}>
                   LOGOUT

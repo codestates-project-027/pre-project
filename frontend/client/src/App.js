@@ -90,8 +90,9 @@ function App() {
     await axios.post(loginUrl, { email, password }) 
       .then((res) => {
         localStorage.setItem('login-token', res.headers.authorization);
-        const token = res.headers.authorization;
+        const token = localStorage.getItem('login-token')
         const resolved = parseJwt(token);
+        setJwtToken(token);
         setUserInfo({email: resolved.email, username: resolved.username})
         setIsLogin(true);
       })
@@ -103,7 +104,6 @@ function App() {
   };
    
  
-  // {    console.log(jwt.decode(jwtForUserInfo))}
   
 
   const logoutHandler = () => {
@@ -163,7 +163,12 @@ function App() {
                 }
               />
 
-              <Route path="/askquestionpage" element={<AskQuestionPage />} />
+              <Route path="/askquestionpage" 
+              element={
+              <AskQuestionPage 
+              jwtToken={jwtToken}
+              
+              />} />
 
               <Route
                 path="/login"
