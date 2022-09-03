@@ -25,7 +25,7 @@ const ReadQuestionPage = ({jwtToken, userInfo, getValidToken}) => {
   const [commentData, setCommentData] = useState([]);
   const [questionId, setQuestionId] = useState(id);
   const [answerContents, setAnswerContents] = useState('');
-  const [userName, setUserName] = useState('userName');
+  const [userName, setUserName] = useState(JSON.parse(JSON.stringify(userInfo.username)));
   const headers = { headers: { Authorization: `Bearer ${jwtToken}` } };
   
   //Question
@@ -53,27 +53,28 @@ const ReadQuestionPage = ({jwtToken, userInfo, getValidToken}) => {
   const postAnswer = async (e) => {
     e.preventDefault();
     const answer = { questionId, contents: answerContents, userName };
-    await axios.post(postAnswerUrl, answer);
-    window.location.reload();
+    await axios.post(postAnswerUrl, answer, headers);
+    // window.location.reload();
   };
 
   //votes
   const voteUp = async () => {
-    const up = { questionId: id, member: userName, vote: true };
-    await axios.post(voteUrl, up);
-    window.location.reload();
+    const up = { questionId: id, userName, vote: true};
+    await axios.post(voteUrl, up, headers);
+    // window.location.reload();
   };
 
   const voteDown = async () => {
-    const down = { questionId: id, member: userName, vote: false };
-    await axios.post(voteUrl, down);
-    window.location.reload();
+    const down = { questionId: id, userName, vote: false};
+    await axios.post(voteUrl, down, headers );
+    // window.location.reload();
   };
 
-  const voteDelete = async () => {
-    const voteReset = { questionId: id, member: userName };
-    await axios.delete(voteUrl, { data: voteReset });
-    window.location.reload();
+  const voteDelete = async () => { //vote Delete ..
+    const voteReset = { questionId: id, userName };
+    // console.log(id, userName)
+    await axios.delete(voteUrl, voteReset, headers);
+    // window.location.reload();
   };
 
   useEffect(() => {
@@ -151,7 +152,12 @@ const ReadQuestionPage = ({jwtToken, userInfo, getValidToken}) => {
                   <div className="read--answer--desc">
                     {answerData ? answerData.length : null}&nbsp;Answers
                   </div>
-                  <AnswerCard answerData={answerData} />
+                  <AnswerCard 
+                  answerData={answerData} 
+                  jwtToken={jwtToken}
+                  headers={headers}
+                  userName={userName}
+                  />
                 </div>
 
                 <div className="wirte--answer--desc">Your Answer</div>
@@ -166,8 +172,7 @@ const ReadQuestionPage = ({jwtToken, userInfo, getValidToken}) => {
                 {' '}
                 Post your Answer{' '}
               </AskButton>
-              {/* <button onClick={console.log(data.JSON.stringify(answerList))}>answer list</button> */}
-              {/* <button onClick={console.log(data.commentList)}>comment list</button> */}
+ 
             </div>
 
             <div className="sub--wrapper">

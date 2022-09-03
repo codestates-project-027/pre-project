@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import DeleteCommntBtn from './DeleteCommntBtn';
 
-const CommentCard = ({ commentData }) => {
+const CommentCard = ({ commentData, headers, userName }) => {
   return (
     <>
       <CommentCardCSS>
@@ -11,9 +11,9 @@ const CommentCard = ({ commentData }) => {
                 <div className="hr-line" />
                 <span className="contents">
                   {el.contents}
-                  <span className="username">&#11;-&#31;{el.userName}</span>
+                  <span className="username">&#11;-&#31;{userName}</span>
                   <span className="createdAt">{el.createdAt}</span>
-                  <DeleteCommntBtn id={el.id} />
+                  <DeleteCommntBtn id={el.id} headers={headers} />
                 </span>
 
                 <div className="hr-line" />

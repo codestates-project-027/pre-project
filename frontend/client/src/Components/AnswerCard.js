@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import AnswerDelete from './AnswerDelete';
 import CommentBtn from './CommentBtn';
 
-const AnswerCard = ({ answerData }) => {
+const AnswerCard = ({ answerData, jwtToken, headers, userName }) => {
   const deleteAnswerUrl = '/answer/';
   const { id } = useParams();
 
@@ -29,7 +29,7 @@ const AnswerCard = ({ answerData }) => {
                           Edit
                         </Link>
 
-                        <AnswerDelete deleteUrl={deleteAnswerUrl} dataEl={el} />
+                        <AnswerDelete deleteUrl={deleteAnswerUrl} dataEl={el} jwtToken={jwtToken} />
                       </div>
 
                       <div className="author--date">
@@ -39,8 +39,8 @@ const AnswerCard = ({ answerData }) => {
                     </div>
                     <div className="two">
                       <div className="comment--wrapper">
-                        <CommentCard commentData={el.commentList} />
-                        <CommentBtn style={CommentBtnStyle} id={el.id} />
+                        <CommentCard commentData={el.commentList} headers={headers} userName={userName} />
+                        <CommentBtn style={CommentBtnStyle} id={el.id} headers={headers} userName={userName}  />
                       </div>
                     </div>
                   </div>

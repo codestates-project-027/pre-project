@@ -245,7 +245,7 @@ function App() {
               getValidToken={getValidToken}
               />} />
 
-              <Route path="/answer/edit/:id" element={<AnswerEditPage />} />
+              <Route path="/answer/edit/:id" element={<AnswerEditPage jwtToken={jwtToken}/>} />
 
               <Route path="/posts/:id" element={<NotFoundPage />} />
 

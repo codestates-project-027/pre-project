@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { useState } from 'react';
 import axios from 'axios';
 
-const CommentBtn = ({ id }) => {
+const CommentBtn = ({ id, headers, userName }) => {
   const postCommentUrl = '/comment';
   const [addComment, setAddComment] = useState(false);
   const [contents, setContents] = useState([]);
@@ -10,12 +10,8 @@ const CommentBtn = ({ id }) => {
     setAddComment(!addComment);
   };
   const postComment = async () => {
-    await axios.post(postCommentUrl, {
-      answerId: id,
-      contents,
-      userName: 'userName',
-    });
-    window.location.reload();
+    await axios.post(postCommentUrl, { answerId: id, contents, userName }, headers);
+    // window.location.reload();
   };
 
   return (
