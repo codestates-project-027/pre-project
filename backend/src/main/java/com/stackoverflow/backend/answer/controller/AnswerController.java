@@ -1,13 +1,8 @@
 package com.stackoverflow.backend.answer.controller;
 
-import com.stackoverflow.backend.answer.domain.Answer;
 import com.stackoverflow.backend.answer.domain.AnswerDTO;
 import com.stackoverflow.backend.answer.service.AnswerService;
 import com.stackoverflow.backend.auth.oauth.PrincipalDetails;
-import com.stackoverflow.backend.exception.CustomException;
-import com.stackoverflow.backend.exception.ErrorMessage;
-import com.stackoverflow.backend.question.domain.Question;
-import com.stackoverflow.backend.question.domain.QuestionDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +10,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/answer")

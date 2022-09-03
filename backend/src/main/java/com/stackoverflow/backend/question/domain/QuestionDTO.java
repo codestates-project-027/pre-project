@@ -1,13 +1,8 @@
 package com.stackoverflow.backend.question.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.stackoverflow.backend.answer.domain.Answer;
 import com.stackoverflow.backend.answer.domain.AnswerDTO;
 import lombok.*;
-import org.springframework.stereotype.Service;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
@@ -61,6 +56,8 @@ public class QuestionDTO {
         private Long answers;
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd",timezone = "Asia/Seoul")
         private LocalDateTime createdAt;
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm",timezone = "Asia/Seoul")
+        private LocalDateTime active;
         private List<String> tags;
         private List<AnswerDTO.response> answerList;
     }
@@ -78,6 +75,8 @@ public class QuestionDTO {
         private List<String> tags;
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd",timezone = "Asia/Seoul")
         private LocalDateTime createdAt;
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm",timezone = "Asia/Seoul")
+        private LocalDateTime active;
     }
 
     @AllArgsConstructor

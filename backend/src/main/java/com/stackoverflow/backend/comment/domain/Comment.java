@@ -4,7 +4,6 @@ package com.stackoverflow.backend.comment.domain;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.stackoverflow.backend.answer.domain.Answer;
-import com.stackoverflow.backend.question.domain.Question;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 

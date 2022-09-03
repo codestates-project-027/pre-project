@@ -7,10 +7,8 @@ import com.stackoverflow.backend.answer.domain.Answer;
 import com.stackoverflow.backend.tag.domain.questiontag.QuestionTag;
 import com.stackoverflow.backend.vote.domain.QuestionVote;
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +43,9 @@ public class Question {
     @Column
     private LocalDateTime createdAt;
 
+    @Column
+    private LocalDateTime active;
+
     @ElementCollection
     private List<String> tags;
 
@@ -69,6 +70,7 @@ public class Question {
         this.votes = 0L;
         this.answers = 0L;
         this.createdAt = LocalDateTime.now();
+        this.active = LocalDateTime.now();
         this.tags = tags;
     }
 
@@ -83,5 +85,18 @@ public class Question {
     public void addAnswerCount() {this.answers++;}
 
     public void subAnswerCount() {this.answers--;}
+
+    public void addVoteCount() {this.votes+=1L;}
+
+    public void subVoteCount() {this.votes-=1L;}
+
+    public Question setReturnVotes(Long votes){
+        this.votes = votes;
+        return this;
+    }
+
+    public void setActiveTime(){
+        this.active = LocalDateTime.now();
+    }
 
 }
