@@ -104,7 +104,22 @@ function App() {
   };
    
  
-  // {    console.log(jwt.decode(jwtForUserInfo))}
+ const getValidToken = async () => {
+  await axios.post(loginUrl, { email, password }) 
+      .then((res) => {
+        localStorage.setItem('login-token', res.headers.authorization);
+        const token = localStorage.getItem('login-token')
+        const resolved = parseJwt(token);
+        setJwtToken(token);
+        setUserInfo({email: resolved.email, username: resolved.username})
+        setIsLogin(true);
+      })
+      .catch((err) => {
+        if (err.response.data.status === 401) {
+          setErrorMessage('로그인에 실패함');
+        }
+      });
+ }
   
 
   const logoutHandler = () => {
@@ -169,6 +184,7 @@ function App() {
               <AskQuestionPage 
               jwtToken={jwtToken}
               userInfo={userInfo}
+              getValidToken={getValidToken}
               />} />
 
               <Route

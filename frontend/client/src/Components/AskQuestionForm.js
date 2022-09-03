@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const AskQuestionForm = ({jwtToken, userInfoUserName}) => {
+const AskQuestionForm = ({jwtToken, userInfoUserName, getValidToken}) => {
   const url = '/question';
   const [userName, setUsername] = useState(userInfoUserName);
 
@@ -14,6 +14,7 @@ const AskQuestionForm = ({jwtToken, userInfoUserName}) => {
   const navigate = useNavigate();
 
   const postData = async (e) => {
+    try {
     const headers = {headers: {Authorization: `Bearer ${jwtToken}`}}
     e.preventDefault();
     const post = {
@@ -22,9 +23,18 @@ const AskQuestionForm = ({jwtToken, userInfoUserName}) => {
       userName,
       tags: [JSON.parse(JSON.stringify(tags))],
     };
-    await axios.post(url, post, headers).then(() => {
-      navigate('/questionspage');
-    });
+
+    await axios.post(url, post, headers)
+    .then(() => { navigate('/questionspage'); })
+  }
+
+    catch (err){
+      if (err.response){
+        console.log(err)
+      }
+
+    }
+    //토큰 만료시 getValidToken 실행
   };
 
 
