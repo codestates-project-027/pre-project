@@ -32,7 +32,7 @@ const AskQuestionForm = ({ jwtToken, userInfoUserName, getValidToken }) => {
         console.log(err);
       }
     }
-    //토큰 만료시 getValidToken 실행
+    //토큰 만료시 getValidToken 실행+ReadQuestionPage+
   };
 
   return (

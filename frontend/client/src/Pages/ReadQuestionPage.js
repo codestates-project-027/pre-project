@@ -12,7 +12,8 @@ import {
 } from 'react-icons/bs';
 import { TiCancel } from 'react-icons/ti';
 
-const ReadQuestionPage = () => {
+const ReadQuestionPage = ({jwtToken, userInfo, getValidToken}) => {
+  
   const url = '/question/'; //서버경로 수정
   const voteUrl = '/vote/question';
   const postAnswerUrl = '/answer';
@@ -25,7 +26,7 @@ const ReadQuestionPage = () => {
   const [questionId, setQuestionId] = useState(id);
   const [answerContents, setAnswerContents] = useState('');
   const [userName, setUserName] = useState('userName');
-
+  const headers = { headers: { Authorization: `Bearer ${jwtToken}` } };
   
   //Question
   const getData = async () => {
@@ -36,9 +37,16 @@ const ReadQuestionPage = () => {
   };
 
   const deleteData = async () => {
-    await axios.delete(url + id).then(() => {
-      navigate(-1);
-    });
+    try {
+      await axios.delete(url + id, headers).then(() => {
+        navigate(-1);
+      });
+    } catch (err) {
+      if(err.response){
+        console.log(err);
+      }
+    }
+    
   };
 
   //Answer

@@ -238,7 +238,12 @@ function App() {
                 }
               />
 
-              <Route path="/posts/:id" element={<ReadQuestionPage />} />
+              <Route path="/posts/:id" element={
+              <ReadQuestionPage 
+              jwtToken={jwtToken}
+              userInfo={userInfo}
+              getValidToken={getValidToken}
+              />} />
 
               <Route path="/answer/edit/:id" element={<AnswerEditPage />} />
 
