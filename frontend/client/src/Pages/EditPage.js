@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
 
-const EditPage = () => {
+const EditPage = ({jwtToken, userInfo, getValidToken}) => {
   const url = '/question/';
   const { id } = useParams();
   const navigate = useNavigate();
@@ -15,15 +15,22 @@ const EditPage = () => {
   const [tags, setTags] = useState(prevTags);
 
   const updatePost = async (e) => {
-    e.preventDefault();
+    try {
+      const headers = { headers: { Authorization: `Bearer ${jwtToken}` } };
+      e.preventDefault();
     const updatePost = {
       title,
       contents,
       tags: [JSON.parse(JSON.stringify(tags))],
     };
-    await axios.patch(url + id, updatePost).then(() => {
+    await axios.patch(url + id, updatePost, headers).then(() => {
       navigate('/questionspage');
     });
+
+    } catch (err) {
+      if (err.response) {console.log(err)}
+    }
+    
   };
 
   const discardDraft = () => {

@@ -4,7 +4,7 @@ import NotFoundPage from './NotFoundPage';
 
 export default function Mypage({ userInfo, setIsLogin, setUserInfo, isLogin }) {
   const logoutHandler = () => {
-   //cli에서 처리
+    //cli에서 처리
   };
 
   return (
@@ -21,7 +21,6 @@ export default function Mypage({ userInfo, setIsLogin, setUserInfo, isLogin }) {
                 <h3>내 정보</h3>
                 <div className="userinfo-field">
                   <div>{`✉️ ${userInfo.email}`}</div>
-
                 </div>
                 <button className="logout-btn" onClick={logoutHandler}>
                   LOGOUT

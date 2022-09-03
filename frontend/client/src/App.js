@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 
 import styled from 'styled-components';
 import axios from 'axios';
-import {useJwt} from 'react-jwt';
+import { useJwt } from 'react-jwt';
 import Navbar from './Components/Navbar';
 import LeftSidebar from './Components/LeftSidebar';
 
@@ -20,7 +20,6 @@ import AnswerEditPage from './Pages/AnswerEditPage';
 
 // const token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJjb3Mgand0IHRva2VuIiwiaWQiOjEsImV4cCI6MTY2MjExMzQxMiwiZW1haWwiOiJhYmNAZ21haWwuY29tIiwidXNlcm5hbWUiOiJhYmMifQ.42iN6om2ZiK3IQvkjqMeLZ5Q7qS-dW77LA0BJWTzw-3a8hybENK3oZVh2gqfajY_xAUTB3P3TtdhKch89tjF1A"
 
-
 axios.defaults.withCredentials = true;
 
 function App() {
@@ -29,14 +28,18 @@ function App() {
 
   // const {decodedToken, isExpired} = useJwt(token);
   const [data, setData] = useState([]);
-  
+
   //JOIN
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
 
-  const usernameHandler = (event) => { setUsername(event.target.value); };
-  const emailHandler = (event) => { setEmail(event.target.value); };
+  const usernameHandler = (event) => {
+    setUsername(event.target.value);
+  };
+  const emailHandler = (event) => {
+    setEmail(event.target.value);
+  };
   const passwordHandler = (event) => {
     setPassword(event.target.value);
   };
@@ -61,8 +64,6 @@ function App() {
   // };
   //login request
 
-
-  
   //Auth: Login
   const [loginInfo, setLoginInfo] = useState({ email: '', password: '' });
   const [keepLogin, setKeepLogin] = useState(true);
@@ -71,12 +72,17 @@ function App() {
   const parseJwt = (token) => {
     const base64Url = token.split('.')[1];
     const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    const jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
-        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-    }).join(''));
+    const jsonPayload = decodeURIComponent(
+      window
+        .atob(base64)
+        .split('')
+        .map(function (c) {
+          return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        })
+        .join('')
+    );
     return JSON.parse(jsonPayload);
-};
-
+  };
 
   const loginRQHandler = async () => {
     const { email, password } = loginInfo;
@@ -86,14 +92,15 @@ function App() {
     } else {
       setErrorMessage('');
     }
- 
-    await axios.post(loginUrl, { email, password }) 
+
+    await axios
+      .post(loginUrl, { email, password })
       .then((res) => {
         localStorage.setItem('login-token', res.headers.authorization);
-        const token = localStorage.getItem('login-token')
+        const token = localStorage.getItem('login-token');
         const resolved = parseJwt(token);
         setJwtToken(token);
-        setUserInfo({email: resolved.email, username: resolved.username})
+        setUserInfo({ email: resolved.email, username: resolved.username });
         setIsLogin(true);
       })
       .catch((err) => {
@@ -102,16 +109,16 @@ function App() {
         }
       });
   };
-   
- 
- const getValidToken = async () => {
-  await axios.post(loginUrl, { email, password }) 
+
+  const getValidToken = async () => {
+    await axios
+      .post(loginUrl, { email, password })
       .then((res) => {
         localStorage.setItem('login-token', res.headers.authorization);
-        const token = localStorage.getItem('login-token')
+        const token = localStorage.getItem('login-token');
         const resolved = parseJwt(token);
         setJwtToken(token);
-        setUserInfo({email: resolved.email, username: resolved.username})
+        setUserInfo({ email: resolved.email, username: resolved.username });
         setIsLogin(true);
       })
       .catch((err) => {
@@ -119,8 +126,7 @@ function App() {
           setErrorMessage('로그인에 실패함');
         }
       });
- }
-  
+  };
 
   const logoutHandler = () => {
     //로그아웃 구현-> client에서 처리 + 토큰 삭제
@@ -147,7 +153,6 @@ function App() {
   };
 
   useEffect(() => {
-    
     getData();
   }, []);
 
@@ -179,19 +184,22 @@ function App() {
                 }
               />
 
-              <Route path="/askquestionpage" 
-              element={
-              <AskQuestionPage 
-              jwtToken={jwtToken}
-              userInfo={userInfo}
-              getValidToken={getValidToken}
-              />} />
+              <Route
+                path="/askquestionpage"
+                element={
+                  <AskQuestionPage
+                    jwtToken={jwtToken}
+                    userInfo={userInfo}
+                    getValidToken={getValidToken}
+                  />
+                }
+              />
 
               <Route
                 path="/login"
                 element={
                   <LogInPage
-                  jwtToken={jwtToken}
+                    jwtToken={jwtToken}
                     isLogin={isLogin}
                     setJwtToken={setJwtToken}
                     setIsLogin={setIsLogin}
@@ -230,13 +238,7 @@ function App() {
                 }
               />
 
-              <Route
-                path="/posts/:id"
-                element={
-                  <ReadQuestionPage
-                  />
-                }
-              />
+              <Route path="/posts/:id" element={<ReadQuestionPage />} />
 
               <Route path="/answer/edit/:id" element={<AnswerEditPage />} />
 
@@ -244,7 +246,12 @@ function App() {
 
               <Route
                 path="/posts/edit/:id"
-                element={<EditPage data={data} />}
+                element={
+                <EditPage 
+                jwtToken={jwtToken}
+                userInfo={userInfo}
+                getValidToken={getValidToken}
+                />}
               />
             </Routes>
           </RoutesWrapper>
