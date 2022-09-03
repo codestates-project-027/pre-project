@@ -104,6 +104,7 @@ function App() {
   };
    
  
+  // {    console.log(jwt.decode(jwtForUserInfo))}
   
 
   const logoutHandler = () => {

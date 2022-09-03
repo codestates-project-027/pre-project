@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const AskQuestionForm = (jwtToken, headers, setHeaders) => {
+const AskQuestionForm = (jwtToken) => {
   const url = '/question';
   const [userName, setUsername] = useState('userName');
 
@@ -14,8 +14,8 @@ const AskQuestionForm = (jwtToken, headers, setHeaders) => {
   const navigate = useNavigate();
 
   const postData = async (e) => {
-    // const sendToken = jwtToken.jwtToken.jwtToken;
-    // setHeaders(sendToken)
+    const sendToken = jwtToken.jwtToken.jwtToken;
+    const headers = {headers: {Authorization: `Bearer ${sendToken}`}}
     e.preventDefault();
     const post = {
       title,
@@ -23,8 +23,7 @@ const AskQuestionForm = (jwtToken, headers, setHeaders) => {
       userName,
       tags: [JSON.parse(JSON.stringify(tags))],
     };
-    await axios.post(url, post, {headers}).then(() => {
-      console.log(headers)
+    await axios.post(url, post, headers).then(() => {
       navigate('/questionspage');
     });
   };

@@ -2,12 +2,12 @@ import styled from 'styled-components';
 import AskQuestionForm from '../Components/AskQuestionForm';
 import QSidebar from '../Components/QSidebar';
 
-const AskQuestionPage = (jwtToken, headers, setHeaders) => {
+const AskQuestionPage = (jwtToken, headers) => {
   return (
     <>
       <Title>Ask Question</Title>
       <Div>
-        <AskQuestionForm jwtToken={jwtToken} headers={headers} setHeaders={setHeaders}/>
+        <AskQuestionForm jwtToken={jwtToken} headers={headers} />
         <QSidebar />
       </Div>
     </>
