@@ -12,7 +12,7 @@ const AnswerEditPage = ({jwtToken}) => {
   const patchUrl = '/answer/';
 
   const [answerData, setAnswerData] = useState([]);
-  const [contents, setContents] = useState('');
+  const [contents, setContents] = useState(localStorage.getItem('answer-content'));
   const { id } = useParams();
   const location = useLocation();
   const data = location.state.el;
@@ -21,8 +21,6 @@ const AnswerEditPage = ({jwtToken}) => {
     const getResponse = await axios(url + id);
     setAnswerData(getResponse.data.answerList);
   };
-
-  //   const prevAnswer = localStorage.getItem('answer');
 
   useEffect(() => {
     getData();

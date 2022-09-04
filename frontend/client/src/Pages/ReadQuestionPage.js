@@ -70,7 +70,7 @@ const ReadQuestionPage = ({jwtToken, userInfo, getValidToken, isLogin, userName,
     window.location.reload();
     }
     catch (err){ 
-      if(err.response){alert(`이미 좋아요 누름`)}
+      if(err.response){alert(`already liked`)}
     }
     
   };
@@ -82,7 +82,7 @@ const ReadQuestionPage = ({jwtToken, userInfo, getValidToken, isLogin, userName,
     window.location.reload();
     }
     catch (err){
-      if (err.response){alert(`이미 싫어요 누름`)}
+      if (err.response){alert(`already disliked`)}
     }
     
   };

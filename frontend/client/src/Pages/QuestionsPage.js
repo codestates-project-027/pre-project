@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import OverflowBlog from '../assets/overflowblog.png';
 import AskButton from '../Components/AskButton';
 
-const QuestionsPage = ({ isLogin, limit, totalPosts, totalPages, setTotalPages}) => {
+const QuestionsPage = ({ isLogin, limit, totalPosts}) => {
   const calculatedDate = () => {
     const createdAt = new Date();
     const year = createdAt.getFullYear();
@@ -42,14 +42,13 @@ const QuestionsPage = ({ isLogin, limit, totalPosts, totalPages, setTotalPages})
   };
   //Date calculations
   
-  
+
   //GET questions
   //Newest
   const getData = async () => {
     const getResponse = await axios(pageUrl + id);
     setData(getResponse.data.content);
     setAnswerData(getResponse.data.answerList);
-    setTotalPages(getResponse.data.totalPages);
   };
   //Oldest
   const getOldestData = async () => {
