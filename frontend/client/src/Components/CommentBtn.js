@@ -13,7 +13,7 @@ const CommentBtn = ({ id, headers, userName, setUserName }) => {
     setUserName(localStorage.getItem('user-name'));
     try {await axios.post(postCommentUrl, { answerId: id, contents, userName }, headers);
     window.location.reload();}
-    catch (err){alert(err)}
+    catch (err){alert(`내용을 입력하세요`)}
     
   };
 

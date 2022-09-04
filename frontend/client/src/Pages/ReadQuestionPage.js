@@ -58,8 +58,16 @@ const ReadQuestionPage = ({jwtToken, isLogin, userName, setUserName}) => {
   const postAnswer = async (e) => {
     e.preventDefault();
     const answer = { questionId, contents: answerContents, userName:localStorage.getItem('user-name') };
-    await axios.post(postAnswerUrl, answer, headers);
+    try {
+      await axios.post(postAnswerUrl, answer, headers);
     window.location.reload();
+    }
+    catch(err){
+      if (err.response){
+        alert(`내용을 입력하세요`)
+      }
+    }
+    
     
   };
   //votes

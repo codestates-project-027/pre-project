@@ -6,21 +6,34 @@ import OverflowBlog from '../assets/overflowblog.png';
 import AskButton from '../Components/AskButton';
 
 const QuestionsPage = ({ isLogin, limit, totalPosts}) => {
-  const calculatedDate = () => {
+  
+  const calculatedTime = () => { //2022.09.04 10:00
     const createdAt = new Date();
     const year = createdAt.getFullYear();
     const month = 
-    ('0' + (createdAt.getMonth()+1)).slice(-2);
-    const day = ('0'+ (createdAt.getDate())).slice(-2);
-    return `${year}-${month}-${day}`
+    createdAt.getMonth()<=8? 
+    ('0' + (createdAt.getMonth()+1)): (createdAt.getMonth()+1);
+    const day = 
+    createdAt.getDate()<=9?
+    ('0'+ (createdAt.getDate())): (createdAt.getDate());
+
+    const hour = 
+    createdAt.getHours()<=9?
+    ('0'+ (createdAt.getHours())): (createdAt.getHours());
+
+    const minute = 
+    createdAt.getMinutes()<=9?
+    ('0'+ (createdAt.getMinutes())): (createdAt.getMinutes());
+
+    return `${year}-${month}-${day} ${hour}:${minute}`
   }
+
   const pageUrl = '/question?page=';
   const [data, setData] = useState([]);
   const [answerData, setAnswerData] = useState([]);
   const [page, setPage] = useState(1);
   const [id, setId] = useState(1);
-  const [currentDate, setCurrnetDate] = useState(calculatedDate
-    );
+  const [currentTime, setCurrentTime] = useState(calculatedTime);
 
   //Pagination
   const numPages = Math.ceil(totalPosts / limit);
@@ -41,7 +54,9 @@ const QuestionsPage = ({ isLogin, limit, totalPosts}) => {
     }
   };
   //Date calculations
-  
+  const newlyDated = () => {
+    // calculatedDate
+  }
 
   //GET questions
   //Newest
@@ -91,7 +106,6 @@ const QuestionsPage = ({ isLogin, limit, totalPosts}) => {
   return (
     <>
       <Div>
-        <button onClick={()=>{console.log(currentDate)}}>current</button>
         <div className="main--wrapper">
           <div className="head--wrapper">
             <div className="head">
@@ -135,7 +149,7 @@ const QuestionsPage = ({ isLogin, limit, totalPosts}) => {
             <div className="questions-wrapper">
               {data.slice(offset, offset + limit).map((item) => (
                 <div style={{ width: '100%' }} key={item.id}>
-                  <QuestionCard>
+                  <QuestionCard activeTime={item.active} calculatedTime={calculatedTime}>
                     <div className="question--wrapper">
                       <div className="sidequestion--wrapper">
                         <div className="vote">{item.votes} votes</div>
@@ -158,6 +172,7 @@ const QuestionsPage = ({ isLogin, limit, totalPosts}) => {
                           <div className="author--and--time">
                             <p className="author">{item.userName}</p>{' '}
                             <p className="createdAt"> asked {item.createdAt}</p>
+                            
                           </div>
                         </div>
                       </div>
