@@ -15,7 +15,7 @@ const AnswerCard = ({ answerData, jwtToken, headers, userName, setUserName, isLo
           {answerData
             ? answerData.map((el) => (
                 <div key={el.id}>
-                  <div className="answers--content">{el.contents}</div>{localStorage.setItem('answer-content', el.contents)}
+                  <div className="answers--content">{el.contents}</div>{localStorage.setItem('edit-answer', el.contents)}
                   <div className="answers--edit--delete--author">
                     <div className="one">
                       <div className="answers--edit--delete">

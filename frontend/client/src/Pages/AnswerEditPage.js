@@ -12,7 +12,7 @@ const AnswerEditPage = ({jwtToken}) => {
   const patchUrl = '/answer/';
 
   const [answerData, setAnswerData] = useState([]);
-  const [contents, setContents] = useState(localStorage.getItem('answer-content'));
+  const [contents, setContents] = useState(localStorage.getItem('edit-answer'));
   const { id } = useParams();
   const location = useLocation();
   const data = location.state.el;
