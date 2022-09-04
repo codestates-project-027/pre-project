@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import {Link} from 'react-router-dom';
+import TagBlock from './TagBlock';
 
 const QuestionCard = ({activeTime, calculatedTime, item, answerData}) => {
     return (
@@ -23,11 +24,10 @@ const QuestionCard = ({activeTime, calculatedTime, item, answerData}) => {
                         <div className="body">{item.contents}</div>
 
                         <div className="mainquestion--bottom--wrapper">
-                          <div className="tags">{item.tags} </div>
+                          <TagBlock tags={item.tags}/>
                           <div className="author--and--time">
                             <p className="author">{item.userName}</p>{' '}
                             <p className="createdAt"> asked {item.createdAt}</p>
-                            
                           </div>
                         </div>
                       </div>
@@ -65,9 +65,7 @@ const QuestionCardCSS = styled.div`
     margin-left: 20px;
     flex-direction: column;
   }
-  .mainquestion--bottom--wrapper {
-    display: flex;
-  }
+
   .vote {
     font-weight: 600;
   }
@@ -98,7 +96,7 @@ const QuestionCardCSS = styled.div`
     margin-top: 10px;
     margin-bottom: -10px;
   }
-  .tags {
+  .tags { //to delete
     background-color: rgb(227, 236, 243);
     color: rgb(72, 114, 153);
     border-radius: 5px;
