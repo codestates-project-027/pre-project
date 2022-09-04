@@ -14,6 +14,7 @@ const AskQuestionForm = ({ jwtToken, userInfoUserName, setIsLogin }) => {
   const navigate = useNavigate();
 
   const postData = async (e) => {
+    // if (contents.length || title.length || tags.length ===0 ){alert(`내용을 입력하세요.`)}
     try {
       const headers = { headers: { Authorization: `Bearer ${jwtToken}` } };
       e.preventDefault();
@@ -49,6 +50,7 @@ const AskQuestionForm = ({ jwtToken, userInfoUserName, setIsLogin }) => {
             className="main"
             type="text"
             value={title}
+            required
             onChange={(e) => setTitle(e.target.value)}
             placeholder="e.g. is there an R function for finding the index of an element in a vector?"
           />
@@ -65,6 +67,7 @@ const AskQuestionForm = ({ jwtToken, userInfoUserName, setIsLogin }) => {
             className="main"
             type="text"
             value={contents}
+            required
             onChange={(e) => setContents(e.target.value)}
           />
         </div>
@@ -80,6 +83,7 @@ const AskQuestionForm = ({ jwtToken, userInfoUserName, setIsLogin }) => {
             type="text"
             value={tags}
             onChange={(e) => setTags(e.target.value)}
+            required
             placeholder="e.g. (iphone android sql)"
           />
 

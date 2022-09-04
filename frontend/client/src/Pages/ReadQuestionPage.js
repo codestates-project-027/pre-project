@@ -59,7 +59,7 @@ const ReadQuestionPage = ({jwtToken, isLogin, userName, setUserName, setIsLogin}
 
   //Answer
   const postAnswer = async (e) => {
-    if (answerContents.length===''){alert(`내용을 입력하세요`)}
+    // if (answerContents.length===''){alert(`내용을 입력하세요`)}
     e.preventDefault();
     const answer = { questionId, contents: answerContents, userName:localStorage.getItem('user-name') };
     try {
@@ -78,16 +78,18 @@ const ReadQuestionPage = ({jwtToken, isLogin, userName, setUserName, setIsLogin}
   //votes
   const voteUp = async () => {
     try {
-      if (votedUp){alert(`Already liked`)}
       const up = { questionId: id, userName:localStorage.getItem('user-name'), vote: true};
       await axios.post(voteUrl, up, headers);
       setVotedUp(true); setVotedDown(false); setVoteCanceled(false);
       window.location.reload();
     } catch (err) {
-      if (err.response) {
+      if (err.response){
+        if (err.response.status===409){alert(`Already liked`)}
+        else {
         alert(`만료된 토큰입니다. 다시 로그인해주세요`);
         setIsLogin(false)
         navigate('/login');
+        }
       }
     }
     
@@ -95,16 +97,18 @@ const ReadQuestionPage = ({jwtToken, isLogin, userName, setUserName, setIsLogin}
 
   const voteDown = async () => {
     try {
-      if (votedDown){alert(`Already Disliked`)}
       const down = { questionId: id, userName:localStorage.getItem('user-name'), vote: false};
     await axios.post(voteUrl, down, headers );
     setVotedDown(true); setVotedUp(false); setVoteCanceled(false);
     window.location.reload();
   } catch (err) {
-    if (err.response) {
+    if (err.response){
+      if (err.response.status===409){alert(`Already disliked`)}
+      else {
       alert(`만료된 토큰입니다. 다시 로그인해주세요`);
       setIsLogin(false)
       navigate('/login');
+      }
     }
   }
     
@@ -112,16 +116,18 @@ const ReadQuestionPage = ({jwtToken, isLogin, userName, setUserName, setIsLogin}
 
   const voteCancel = async () => { 
     try {
-      if (voteCanceled){alert(`Already Canceled`)}
       const reset = { questionId: id, userName:localStorage.getItem('user-name') };
     await axios.delete(voteUrl, reset, headers);
     setVoteCanceled(true); setVotedUp(false); setVotedDown(false);
     window.location.reload();
   } catch (err) {
-    if (err.response) {
+    if (err.response){
+      if (err.response.status===409){alert(`Already canceled`)}
+      else {
       alert(`만료된 토큰입니다. 다시 로그인해주세요`);
       setIsLogin(false)
       navigate('/login');
+      }
     }
   }
     
