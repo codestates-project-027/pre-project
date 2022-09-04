@@ -1,8 +1,10 @@
 import styled from 'styled-components';
 import { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
-const CommentBtn = ({ id, headers, userName, setUserName }) => {
+const CommentBtn = ({ id, headers, userName, setUserName, setIsLogin }) => {
+  const navigate = useNavigate();
   const postCommentUrl = '/comment';
   const [addComment, setAddComment] = useState(false);
   const [contents, setContents] = useState([]);
@@ -10,10 +12,17 @@ const CommentBtn = ({ id, headers, userName, setUserName }) => {
     setAddComment(!addComment);
   };
   const postComment = async () => {
+    if (contents.length===0){alert(`내용을 입력하세요`)}
     setUserName(localStorage.getItem('user-name'));
     try {await axios.post(postCommentUrl, { answerId: id, contents, userName }, headers);
-    window.location.reload();}
-    catch (err){alert(`내용을 입력하세요`)}
+    window.location.reload();
+    } catch (err) {
+      if (err.response) {
+        alert(`만료된 토큰입니다. 다시 로그인해주세요`);
+        setIsLogin(false)
+        navigate('/login');
+      }
+    }
     
   };
 

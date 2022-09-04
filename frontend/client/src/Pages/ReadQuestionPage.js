@@ -12,7 +12,7 @@ import {
 } from 'react-icons/bs';
 import { TiCancel } from 'react-icons/ti';
 
-const ReadQuestionPage = ({jwtToken, isLogin, userName, setUserName}) => {
+const ReadQuestionPage = ({jwtToken, isLogin, userName, setUserName, setIsLogin}) => {
   
   const url = '/question/'; //서버경로 수정
   const voteUrl = '/vote/question';
@@ -24,6 +24,9 @@ const ReadQuestionPage = ({jwtToken, isLogin, userName, setUserName}) => {
   const [commentData, setCommentData] = useState([]);
   const [questionId, setQuestionId] = useState(id);
   const [answerContents, setAnswerContents] = useState('');
+  const [votedUp, setVotedUp] = useState(false);
+  const [votedDown, setVotedDown] = useState(false);
+  const [voteCanceled, setVoteCanceled] = useState(false);
   
 
 
@@ -46,64 +49,81 @@ const ReadQuestionPage = ({jwtToken, isLogin, userName, setUserName}) => {
         window.location.reload();
       });
     } catch (err) {
-      if(err.response){
-        alert(`작성자가 아닙니다.`);
+      if (err.response) {
+        alert(`만료된 토큰입니다. 다시 로그인해주세요`);
+        setIsLogin(false)
+        navigate('/login');
       }
     }
-
-    
   };
 
   //Answer
   const postAnswer = async (e) => {
+    if (answerContents.length===''){alert(`내용을 입력하세요`)}
     e.preventDefault();
     const answer = { questionId, contents: answerContents, userName:localStorage.getItem('user-name') };
     try {
       await axios.post(postAnswerUrl, answer, headers);
     window.location.reload();
+  } catch (err) {
+    if (err.response) {
+      alert(`만료된 토큰입니다. 다시 로그인해주세요`);
+      setIsLogin(false)
+      navigate('/login');
     }
-    catch(err){
-      if (err.response){
-        alert(`내용을 입력하세요`)
-      }
-    }
+  }
     
     
   };
   //votes
   const voteUp = async () => {
     try {
+      if (votedUp){alert(`Already liked`)}
       const up = { questionId: id, userName:localStorage.getItem('user-name'), vote: true};
-    await axios.post(voteUrl, up, headers);
-    window.location.reload();
-    }
-    catch (err){ 
-      if(err.response){alert(`already liked`)}
+      await axios.post(voteUrl, up, headers);
+      setVotedUp(true); setVotedDown(false); setVoteCanceled(false);
+      window.location.reload();
+    } catch (err) {
+      if (err.response) {
+        alert(`만료된 토큰입니다. 다시 로그인해주세요`);
+        setIsLogin(false)
+        navigate('/login');
+      }
     }
     
   };
 
   const voteDown = async () => {
     try {
+      if (votedDown){alert(`Already Disliked`)}
       const down = { questionId: id, userName:localStorage.getItem('user-name'), vote: false};
     await axios.post(voteUrl, down, headers );
+    setVotedDown(true); setVotedUp(false); setVoteCanceled(false);
     window.location.reload();
+  } catch (err) {
+    if (err.response) {
+      alert(`만료된 토큰입니다. 다시 로그인해주세요`);
+      setIsLogin(false)
+      navigate('/login');
     }
-    catch (err){
-      if (err.response){alert(`already disliked`)}
-    }
+  }
     
   };
 
-  const voteDelete = async () => { 
+  const voteCancel = async () => { 
     try {
+      if (voteCanceled){alert(`Already Canceled`)}
       const reset = { questionId: id, userName:localStorage.getItem('user-name') };
     await axios.delete(voteUrl, reset, headers);
+    setVoteCanceled(true); setVotedUp(false); setVotedDown(false);
     window.location.reload();
+  } catch (err) {
+    if (err.response) {
+      alert(`만료된 토큰입니다. 다시 로그인해주세요`);
+      setIsLogin(false)
+      navigate('/login');
     }
-    catch (err){
-      if (err.response){alert(err.message)}
-    }
+  }
     
   };
 
@@ -152,7 +172,7 @@ const ReadQuestionPage = ({jwtToken, isLogin, userName, setUserName}) => {
                 className="bs click"
               />
               {/* <VoteBoxDown>dislike</VoteBoxDown> */}
-              <TiCancel size="20" className="bs click" onClick={voteDelete} />
+              <TiCancel size="20" className="bs click" onClick={voteCancel} />
               {/* <VoteBoxReset>reset</VoteBoxReset> */}
               <BsFillBookmarkStarFill size="15" className="bs add click" />
               {/* <VoteBoxBookmark>bookmark</VoteBoxBookmark> */}
@@ -191,6 +211,7 @@ const ReadQuestionPage = ({jwtToken, isLogin, userName, setUserName}) => {
                   userName={userName}
                   setUserName={setUserName}
                   isLogin={isLogin}
+                  setIsLogin={setIsLogin}
                   />
                 </div>
 

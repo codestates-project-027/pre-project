@@ -249,9 +249,10 @@ function App() {
               isLogin={isLogin}
               userName={userName}
               setUserName={setUserName}
+              setIsLogin={setIsLogin}
               />} />
 
-              <Route path="/answer/edit/:id" element={<AnswerEditPage jwtToken={jwtToken}/>} />
+              <Route path="/answer/edit/:id" element={<AnswerEditPage jwtToken={jwtToken} setIsLogin={setIsLogin}/>} />
 
               <Route path="/posts/:id" element={<NotFoundPage />} />
 
@@ -262,6 +263,7 @@ function App() {
                 jwtToken={jwtToken}
                 userInfo={userInfo}
                 getValidToken={getValidToken}
+                setIsLogin={setIsLogin}
                 />}
               />
             </Routes>

@@ -1,16 +1,21 @@
 import styled from 'styled-components';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
-const DeleteCommntBtn = ({ id, headers }) => {
+const DeleteCommntBtn = ({ id, headers, setIsLogin }) => {
+  const navigate = useNavigate();
   const deleteCommentUrl = '/comment/';
   const deleteComment = async () => {
     try {
       await axios.delete(deleteCommentUrl + id, headers);
     window.location.reload();
+  } catch (err) {
+    if (err.response) {
+      alert(`만료된 토큰입니다. 다시 로그인해주세요`);
+      setIsLogin(false)
+      navigate('/login');
     }
-    catch (err) {
-      if(err.response){alert(`작성자가 아닙니다.`)}
-    }
+  }
     
   };
   return (

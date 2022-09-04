@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
 
-const EditPage = ({jwtToken, userInfo, getValidToken}) => {
+const EditPage = ({jwtToken, userInfo, getValidToken, setIsLogin}) => {
   const url = '/question/';
   const { id } = useParams();
   const navigate = useNavigate();
@@ -27,9 +27,13 @@ const EditPage = ({jwtToken, userInfo, getValidToken}) => {
       navigate('/questionspage');
     });
 
-    } catch (err) {
-      if (err.response) {alert(`작성자가 아닙니다.`)}
+  } catch (err) {
+    if (err.response) {
+      alert(`만료된 토큰입니다. 다시 로그인해주세요`);
+      setIsLogin(false)
+      navigate('/login');
     }
+  }
     
   };
 

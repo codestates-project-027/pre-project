@@ -35,7 +35,6 @@ const AskQuestionForm = ({ jwtToken, userInfoUserName, setIsLogin }) => {
         navigate('/login');
       }
     }
-    //토큰 만료시 getValidToken 실행+ReadQuestionPage+
   };
 
   return (

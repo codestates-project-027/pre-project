@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import AnswerDelete from './AnswerDelete';
 import CommentBtn from './CommentBtn';
 
-const AnswerCard = ({ answerData, jwtToken, headers, userName, setUserName, isLogin }) => {
+const AnswerCard = ({ answerData, jwtToken, headers, userName, setUserName, isLogin, setIsLogin}) => {
   const deleteAnswerUrl = '/answer/';
   const { id } = useParams();
 
@@ -31,7 +31,7 @@ const AnswerCard = ({ answerData, jwtToken, headers, userName, setUserName, isLo
                         ):null}
                         
 
-                        <AnswerDelete deleteUrl={deleteAnswerUrl} dataEl={el} jwtToken={jwtToken} />
+                        <AnswerDelete deleteUrl={deleteAnswerUrl} dataEl={el} jwtToken={jwtToken} setIsLogin={setIsLogin} />
                       </div>
 
                       <div className="author--date">
@@ -41,8 +41,8 @@ const AnswerCard = ({ answerData, jwtToken, headers, userName, setUserName, isLo
                     </div>
                     <div className="two">
                       <div className="comment--wrapper">
-                        <CommentCard commentData={el.commentList} headers={headers} userName={userName} isLogin={isLogin} />
-                        {isLogin?( <CommentBtn style={CommentBtnStyle} id={el.id} headers={headers} userName={userName} setUserName={setUserName} />):null }
+                        <CommentCard commentData={el.commentList} headers={headers} userName={userName} isLogin={isLogin} setIsLogin={setIsLogin} />
+                        {isLogin?( <CommentBtn style={CommentBtnStyle} id={el.id} headers={headers} userName={userName} setUserName={setUserName} setIsLogin={setIsLogin}/>):null }
                        
                       </div>
                     </div>
