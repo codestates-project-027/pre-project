@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import AnswerDelete from './AnswerDelete';
 import CommentBtn from './CommentBtn';
 
-const AnswerCard = ({ answerData, jwtToken, headers, userName }) => {
+const AnswerCard = ({ answerData, jwtToken, headers, userName, setUserName }) => {
   const deleteAnswerUrl = '/answer/';
   const { id } = useParams();
 
@@ -40,7 +40,7 @@ const AnswerCard = ({ answerData, jwtToken, headers, userName }) => {
                     <div className="two">
                       <div className="comment--wrapper">
                         <CommentCard commentData={el.commentList} headers={headers} userName={userName} />
-                        <CommentBtn style={CommentBtnStyle} id={el.id} headers={headers} userName={userName}  />
+                        <CommentBtn style={CommentBtnStyle} id={el.id} headers={headers} userName={userName} setUserName={setUserName} />
                       </div>
                     </div>
                   </div>

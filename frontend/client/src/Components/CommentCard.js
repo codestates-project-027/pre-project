@@ -11,7 +11,7 @@ const CommentCard = ({ commentData, headers, userName }) => {
                 <div className="hr-line" />
                 <span className="contents">
                   {el.contents}
-                  <span className="username">&#11;-&#31;{userName}</span>
+                  <span className="username">&#11;-&#31;{localStorage.getItem('user-name')}</span>
                   <span className="createdAt">{el.createdAt}</span>
                   <DeleteCommntBtn id={el.id} headers={headers} />
                 </span>

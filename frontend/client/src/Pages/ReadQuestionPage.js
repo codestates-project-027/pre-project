@@ -160,6 +160,7 @@ const ReadQuestionPage = ({jwtToken, userInfo, getValidToken, isLogin, userName,
                   jwtToken={jwtToken}
                   headers={headers}
                   userName={userName}
+                  setUserName={setUserName}
                   />
                 </div>
 
