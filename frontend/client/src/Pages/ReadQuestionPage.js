@@ -12,12 +12,11 @@ import {
 } from 'react-icons/bs';
 import { TiCancel } from 'react-icons/ti';
 
-const ReadQuestionPage = ({jwtToken, userInfo, getValidToken}) => {
+const ReadQuestionPage = ({jwtToken, userInfo, getValidToken, isLogin, userName, setUserName}) => {
   
   const url = '/question/'; //서버경로 수정
   const voteUrl = '/vote/question';
   const postAnswerUrl = '/answer';
-  const deleteAnswerUrl = '/answer/';
   const { id } = useParams();
   const navigate = useNavigate();
   const [data, setData] = useState([]);
@@ -25,11 +24,9 @@ const ReadQuestionPage = ({jwtToken, userInfo, getValidToken}) => {
   const [commentData, setCommentData] = useState([]);
   const [questionId, setQuestionId] = useState(id);
   const [answerContents, setAnswerContents] = useState('');
-  //Reload userName Setting ::
-  const userNameFromLocalStorage = localStorage.getItem('login-token');
   
 
-  const [userName, setUserName] = useState('new comer'); //
+
   const headers = { headers: { Authorization: `Bearer ${jwtToken}` } };
   
   
@@ -39,9 +36,7 @@ const ReadQuestionPage = ({jwtToken, userInfo, getValidToken}) => {
     setData(getResponse.data);
     setAnswerData(getResponse.data.answerList);
     setCommentData(answerData.commentList);
-    if (userInfo){
-      setUserName(JSON.parse(JSON.stringify(userInfo.username)))
-    }
+    setUserName(localStorage.getItem('user-name'))
   };
 
   const deleteData = async () => {
@@ -60,12 +55,11 @@ const ReadQuestionPage = ({jwtToken, userInfo, getValidToken}) => {
   //Answer
   const postAnswer = async (e) => {
     e.preventDefault();
-    const answer = { questionId, contents: answerContents, userName };
+    const answer = { questionId, contents: answerContents, userName:localStorage.getItem('user-name') };
     await axios.post(postAnswerUrl, answer, headers);
     window.location.reload();
     
   };
-  {console.log(userName)}
   //votes
   const voteUp = async () => {
     const up = { questionId: id, userName, vote: true};
@@ -110,10 +104,10 @@ const ReadQuestionPage = ({jwtToken, userInfo, getValidToken}) => {
                 <p className="date--and--answer">{data.userName}</p>
               </div>
             </div>
-
-            <Link to="/askquestionpage">
+    {isLogin? (<Link to="/askquestionpage">
               <AskButton>Ask Question</AskButton>
-            </Link>
+            </Link>) : null }
+            
           </div>
 
           <div className="content--wrapper">

@@ -132,6 +132,10 @@ function App() {
       const resolved = parseJwt(token);
       setJwtToken(token);
       setUserInfo({ email: resolved.email, username: resolved.username });
+      if (userInfo){
+        setUserName(JSON.parse(JSON.stringify(userInfo.username)));
+        localStorage.setItem('user-name', userName)
+      }
       setIsLogin(true);
     }
     if (!localStorage.getItem('login-token')) {
@@ -142,7 +146,7 @@ function App() {
     setData(getResponse.data);
     setTotalPosts(getResponse.data.totalElements);
   };
-  {console.log(`app: ${userName}`)}
+
   useEffect(() => {
     getData();
   }, []);
@@ -169,6 +173,7 @@ function App() {
                     isLogin={isLogin}
                     limit={limit}
                     totalPosts={totalPosts}
+                    userName={userName}
                   />
                 }
               />
@@ -233,6 +238,7 @@ function App() {
               userName={userName}
               setUserName={setUserName}
               getValidToken={getValidToken}
+              isLogin={isLogin}
               />} />
 
               <Route path="/answer/edit/:id" element={<AnswerEditPage jwtToken={jwtToken}/>} />

@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import OverflowBlog from '../assets/overflowblog.png';
 import AskButton from '../Components/AskButton';
 
-const QuestionsPage = ({ isLogin, limit, totalPosts }) => {
+const QuestionsPage = ({ isLogin, limit, totalPosts}) => {
   const calculatedDate = () => {
     const createdAt = new Date();
     const year = createdAt.getFullYear();
