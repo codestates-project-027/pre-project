@@ -25,8 +25,10 @@ const ReadQuestionPage = ({jwtToken, userInfo, getValidToken}) => {
   const [commentData, setCommentData] = useState([]);
   const [questionId, setQuestionId] = useState(id);
   const [answerContents, setAnswerContents] = useState('');
-  const [userName, setUserName] = useState(JSON.parse(JSON.stringify(userInfo.username)));
+  const [userName, setUserName] = useState('new comer');
   const headers = { headers: { Authorization: `Bearer ${jwtToken}` } };
+  
+  
   
   //Question
   const getData = async () => {
@@ -34,6 +36,9 @@ const ReadQuestionPage = ({jwtToken, userInfo, getValidToken}) => {
     setData(getResponse.data);
     setAnswerData(getResponse.data.answerList);
     setCommentData(answerData.commentList);
+    if (userInfo){
+      setUserName(JSON.parse(JSON.stringify(userInfo.username)))
+    }
   };
 
   const deleteData = async () => {
