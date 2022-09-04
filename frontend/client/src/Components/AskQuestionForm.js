@@ -14,10 +14,10 @@ const AskQuestionForm = ({ jwtToken, userInfoUserName, setIsLogin }) => {
   const navigate = useNavigate();
 
   const postData = async (e) => {
-    // if (contents.length || title.length || tags.length ===0 ){alert(`내용을 입력하세요.`)}
+    e.preventDefault();
+    if (title==='' || contents==='' || tags===''){alert(`내용을 입력하세요`); return ; }
     try {
       const headers = { headers: { Authorization: `Bearer ${jwtToken}` } };
-      e.preventDefault();
       const post = {
         title,
         contents,

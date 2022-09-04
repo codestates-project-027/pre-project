@@ -59,7 +59,7 @@ const ReadQuestionPage = ({jwtToken, isLogin, userName, setUserName, setIsLogin}
 
   //Answer
   const postAnswer = async (e) => {
-    // if (answerContents.length===''){alert(`내용을 입력하세요`)}
+    if (answerContents===''){alert(`내용을 입력하세요`); return ; }
     e.preventDefault();
     const answer = { questionId, contents: answerContents, userName:localStorage.getItem('user-name') };
     try {

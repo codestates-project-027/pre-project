@@ -27,9 +27,9 @@ const AnswerEditPage = ({jwtToken, setIsLogin}) => {
   }, []);
 
   const updatePost = async () => {
+    if (contents===''){alert(`내용을 입력하세요`); return ; }
     try {
       const updateAnswer = { contents };
-      if (updateAnswer.length===0){alert(`내용을 입력하세요`)}
     await axios.patch(patchUrl + data.id, updateAnswer, headers).then(() => {
       navigate(-1);
     });

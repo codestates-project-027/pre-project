@@ -15,6 +15,7 @@ const EditPage = ({jwtToken, userInfo, getValidToken, setIsLogin}) => {
   const [tags, setTags] = useState(prevTags);
 
   const updatePost = async (e) => {
+    if (title==='' || contents==='' || tags===''){alert(`내용을 입력하세요`); return ; }
     try {
       const headers = { headers: { Authorization: `Bearer ${jwtToken}` } };
       e.preventDefault();
