@@ -26,6 +26,7 @@ const AskQuestionForm = ({ jwtToken, userInfoUserName, getValidToken }) => {
 
       await axios.post(url, post, headers).then(() => {
         navigate('/questionspage');
+        window.location.reload();
       });
     } catch (err) {
       if (err.response) {

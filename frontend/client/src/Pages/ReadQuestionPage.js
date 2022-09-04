@@ -42,7 +42,8 @@ const ReadQuestionPage = ({jwtToken, userInfo, getValidToken, isLogin, userName,
   const deleteData = async () => {
     try {
       await axios.delete(url + id, headers).then(() => {
-        navigate(-1);
+        navigate('/questionspage');
+        window.location.reload();
       });
     } catch (err) {
       if(err.response){

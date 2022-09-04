@@ -30,6 +30,7 @@ function App() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
+  const [totalPages, setTotalPages] = useState(1);
 
   const usernameHandler = (event) => {
     setUsername(event.target.value);
@@ -147,7 +148,9 @@ function App() {
     const getResponse = await axios(url);
     setData(getResponse.data);
     setTotalPosts(getResponse.data.totalElements);
+    setTotalPages(getResponse.data.totalPages);
   };
+
 
   useEffect(() => {
     getData();
@@ -176,6 +179,7 @@ function App() {
                     limit={limit}
                     totalPosts={totalPosts}
                     userName={userName}
+                    totalPages={totalPages}
                   />
                 }
               />

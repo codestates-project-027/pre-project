@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import OverflowBlog from '../assets/overflowblog.png';
 import AskButton from '../Components/AskButton';
 
-const QuestionsPage = ({ isLogin, limit, totalPosts}) => {
+const QuestionsPage = ({ isLogin, limit, totalPosts, totalPages, setTotalPages}) => {
   const calculatedDate = () => {
     const createdAt = new Date();
     const year = createdAt.getFullYear();
@@ -42,13 +42,14 @@ const QuestionsPage = ({ isLogin, limit, totalPosts}) => {
   };
   //Date calculations
   
-
+  {console.log(totalPages)}
   //GET questions
   //Newest
   const getData = async () => {
     const getResponse = await axios(pageUrl + id);
     setData(getResponse.data.content);
     setAnswerData(getResponse.data.answerList);
+    setTotalPages(getResponse.data.totalPages);
   };
   //Oldest
   const getOldestData = async () => {
@@ -67,7 +68,7 @@ const QuestionsPage = ({ isLogin, limit, totalPosts}) => {
 
   useEffect(() => {
     getData(); 
-  }, [id]);
+  }, []);
 
   //tab 메뉴 관련
   const [currentTab, setCurrentTab] = useState(0);
