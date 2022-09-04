@@ -129,16 +129,10 @@ function App() {
   };
 
   const logoutHandler = () => {
-    //로그아웃 구현-> client에서 처리 + 토큰 삭제
-    return axios
-      .post('https://localhost:4000/logout')
-      .then((res) => {
-        setUserInfo(null);
-        setIsLogin(false);
-      })
-      .catch((err) => {
-        alert(err);
-      });
+    localStorage.removeItem('login-token');
+    setUserInfo(null);
+    setIsLogin(false)
+
   };
 
   //pagination
