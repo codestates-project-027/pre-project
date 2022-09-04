@@ -84,6 +84,7 @@ function App() {
         const resolved = parseJwt(token);
         setJwtToken(token);
         setUserInfo({ email: resolved.email, username: resolved.username });
+        localStorage.setItem('user-name', userInfo.username)
         if (userInfo){
           setUserName(JSON.parse(JSON.stringify(userInfo.username)))
         }
@@ -116,6 +117,7 @@ function App() {
 
   const logoutHandler = () => {
     localStorage.removeItem('login-token');
+    localStorage.removeItem('user-name');
     setUserInfo(null);
     setIsLogin(false);
   };

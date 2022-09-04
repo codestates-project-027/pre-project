@@ -4,8 +4,14 @@ import axios from 'axios';
 const DeleteCommntBtn = ({ id, headers }) => {
   const deleteCommentUrl = '/comment/';
   const deleteComment = async () => {
-    await axios.delete(deleteCommentUrl + id, headers);
+    try {
+      await axios.delete(deleteCommentUrl + id, headers);
     window.location.reload();
+    }
+    catch (err) {
+      if(err.response){alert(`작성자가 아닙니다.`)}
+    }
+    
   };
   return (
     <>

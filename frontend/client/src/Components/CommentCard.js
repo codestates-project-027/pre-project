@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import DeleteCommntBtn from './DeleteCommntBtn';
 
-const CommentCard = ({ commentData, headers, userName }) => {
+const CommentCard = ({ commentData, headers, userName, isLogin }) => {
   return (
     <>
       <CommentCardCSS>
@@ -11,9 +11,10 @@ const CommentCard = ({ commentData, headers, userName }) => {
                 <div className="hr-line" />
                 <span className="contents">
                   {el.contents}
-                  <span className="username">&#11;-&#31;{localStorage.getItem('user-name')}</span>
+                  <span className="username">&#11;-&#31;{el.userName}</span>
                   <span className="createdAt">{el.createdAt}</span>
-                  <DeleteCommntBtn id={el.id} headers={headers} />
+                  {isLogin? (<DeleteCommntBtn id={el.id} headers={headers} />) : null}
+                  
                 </span>
 
                 <div className="hr-line" />

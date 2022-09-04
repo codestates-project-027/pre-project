@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import AnswerDelete from './AnswerDelete';
 import CommentBtn from './CommentBtn';
 
-const AnswerCard = ({ answerData, jwtToken, headers, userName, setUserName }) => {
+const AnswerCard = ({ answerData, jwtToken, headers, userName, setUserName, isLogin }) => {
   const deleteAnswerUrl = '/answer/';
   const { id } = useParams();
 
@@ -20,7 +20,8 @@ const AnswerCard = ({ answerData, jwtToken, headers, userName, setUserName }) =>
                     <div className="one">
                       <div className="answers--edit--delete">
                         {/* {localStorage.setItem('answer', el.contents)} */}
-                        <Link
+                        {isLogin?(
+                          <Link
                           to={`/answer/edit/${id}`}
                           style={{ textDecoration: 'none' }}
                           className="edit"
@@ -28,8 +29,10 @@ const AnswerCard = ({ answerData, jwtToken, headers, userName, setUserName }) =>
                         >
                           Edit
                         </Link>
+                        ):null}
+                        
 
-                        <AnswerDelete deleteUrl={deleteAnswerUrl} dataEl={el} jwtToken={jwtToken} />
+                        <AnswerDelete deleteUrl={deleteAnswerUrl} dataEl={el} isLogin={isLogin} jwtToken={jwtToken} />
                       </div>
 
                       <div className="author--date">
@@ -39,8 +42,9 @@ const AnswerCard = ({ answerData, jwtToken, headers, userName, setUserName }) =>
                     </div>
                     <div className="two">
                       <div className="comment--wrapper">
-                        <CommentCard commentData={el.commentList} headers={headers} userName={userName} />
-                        <CommentBtn style={CommentBtnStyle} id={el.id} headers={headers} userName={userName} setUserName={setUserName} />
+                        <CommentCard commentData={el.commentList} headers={headers} userName={userName} isLogin={isLogin} />
+                        {isLogin?( <CommentBtn style={CommentBtnStyle} id={el.id} headers={headers} userName={userName} setUserName={setUserName} />):null }
+                       
                       </div>
                     </div>
                   </div>

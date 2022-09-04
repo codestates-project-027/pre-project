@@ -29,10 +29,18 @@ const AnswerEditPage = ({jwtToken}) => {
   }, []);
 
   const updatePost = async () => {
-    const updateAnswer = { contents };
+    try {
+      const updateAnswer = { contents };
     await axios.patch(patchUrl + data.id, updateAnswer, headers).then(() => {
       navigate(-1);
     });
+    }
+    catch (err){
+      if (err.response){
+        alert(`작성자가 아닙니다.`)
+      }
+    }
+    
   };
 
   const goBack = () => {

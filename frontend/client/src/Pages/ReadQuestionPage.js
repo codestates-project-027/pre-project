@@ -46,9 +46,10 @@ const ReadQuestionPage = ({jwtToken, userInfo, getValidToken, isLogin, userName,
       });
     } catch (err) {
       if(err.response){
-        console.log(err);
+        alert(`작성자가 아닙니다.`);
       }
     }
+
     
   };
 
@@ -62,22 +63,39 @@ const ReadQuestionPage = ({jwtToken, userInfo, getValidToken, isLogin, userName,
   };
   //votes
   const voteUp = async () => {
-    const up = { questionId: id, userName, vote: true};
+    try {
+      const up = { questionId: id, userName:localStorage.getItem('user-name'), vote: true};
     await axios.post(voteUrl, up, headers);
     window.location.reload();
+    }
+    catch (err){ 
+      if(err.response){alert(`이미 좋아요 누름`)}
+    }
+    
   };
 
   const voteDown = async () => {
-    const down = { questionId: id, userName, vote: false};
+    try {
+      const down = { questionId: id, userName:localStorage.getItem('user-name'), vote: false};
     await axios.post(voteUrl, down, headers );
     window.location.reload();
+    }
+    catch (err){
+      if (err.response){alert(`이미 싫어요 누름`)}
+    }
+    
   };
 
-  const voteDelete = async () => { //vote Delete ..
-    const voteReset = { questionId: id, userName };
-    // console.log(id, userName)
-    await axios.delete(voteUrl, voteReset, headers);
+  const voteDelete = async () => { 
+    try {
+      const reset = { questionId: id, userName:localStorage.getItem('user-name') };
+    await axios.delete(voteUrl, reset, headers);
     window.location.reload();
+    }
+    catch (err){
+      if (err.response){alert(err.message)}
+    }
+    
   };
 
   useEffect(() => {
@@ -140,13 +158,15 @@ const ReadQuestionPage = ({jwtToken, userInfo, getValidToken, isLogin, userName,
                     {localStorage.setItem('title', data.title)}
                     {localStorage.setItem('body', data.contents)}
                     {localStorage.setItem('tags', data.tags)}
-                    <Link to={`/posts/edit/${id}`} style={LinkStyle}>
+                    {isLogin? ( <Link to={`/posts/edit/${id}`} style={LinkStyle}>
                       Edit
-                    </Link>
+                    </Link>):null}
+                   
                   </div>
-                  <div className="delete" onClick={deleteData}>
+                  {isLogin?(<div className="delete" onClick={deleteData}>
                     Delete
-                  </div>
+                  </div>):null}
+                  
                 </div>
               </div>
 
@@ -161,6 +181,7 @@ const ReadQuestionPage = ({jwtToken, userInfo, getValidToken, isLogin, userName,
                   headers={headers}
                   userName={userName}
                   setUserName={setUserName}
+                  isLogin={isLogin}
                   />
                 </div>
 

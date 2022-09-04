@@ -1,19 +1,27 @@
 import axios from 'axios';
 
-const AnswerDelete = ({ deleteUrl, dataEl, jwtToken }) => {
+const AnswerDelete = ({ deleteUrl, dataEl, jwtToken, isLogin }) => {
 
   const deleteAnswer = async () => {
-    const headers = { headers: { Authorization: `Bearer ${jwtToken}` } };
-    // const answer = { contents: dataEl.contents };
+    try {
+      const headers = { headers: { Authorization: `Bearer ${jwtToken}` } };
     await axios.delete(deleteUrl + dataEl.id, headers);
     window.location.reload();
+    }
+    catch (err) {
+      if (err.response){
+        alert(`작성자가 아닙니다.`)
+      }
+
+    }
+    
   };
 
   return (
     <>
-      <button style={style} onClick={deleteAnswer}>
+      {isLogin? (<button style={style} onClick={deleteAnswer}>
         Delete
-      </button>
+      </button>):null}
     </>
   );
 };

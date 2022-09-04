@@ -28,7 +28,7 @@ const EditPage = ({jwtToken, userInfo, getValidToken}) => {
     });
 
     } catch (err) {
-      if (err.response) {console.log(err)}
+      if (err.response) {alert(`작성자가 아닙니다.`)}
     }
     
   };
