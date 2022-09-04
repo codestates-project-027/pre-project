@@ -18,15 +18,12 @@ import EditPage from './Pages/EditPage';
 import MyPage from './Pages/MyPage';
 import AnswerEditPage from './Pages/AnswerEditPage';
 
-// const token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJjb3Mgand0IHRva2VuIiwiaWQiOjEsImV4cCI6MTY2MjExMzQxMiwiZW1haWwiOiJhYmNAZ21haWwuY29tIiwidXNlcm5hbWUiOiJhYmMifQ.42iN6om2ZiK3IQvkjqMeLZ5Q7qS-dW77LA0BJWTzw-3a8hybENK3oZVh2gqfajY_xAUTB3P3TtdhKch89tjF1A"
-
 axios.defaults.withCredentials = true;
 
 function App() {
   const url = `/question?page=1`;
   const loginUrl = '/login';
 
-  // const {decodedToken, isExpired} = useJwt(token);
   const [data, setData] = useState([]);
 
   //JOIN
@@ -48,21 +45,7 @@ function App() {
   const [isLogin, setIsLogin] = useState(false);
   const [userInfo, setUserInfo] = useState(null);
   const [jwtToken, setJwtToken] = useState('');
-
-  // const authHandler = () => { //check
-  //   axios
-  //     .get('https://localhost:4000/userinfo')
-  //     .then((res) => {
-  //       setIsLogin(true);
-  //       setUserInfo(res.data);
-  //     })
-  //     .catch((err) => {
-  //       if (err.response.status === 401) {
-  //         console.log(err.response.data);
-  //       }
-  //     });
-  // };
-  //login request
+  const [userName, setUserName] = useState('new comer');
 
   //Auth: Login
   const [loginInfo, setLoginInfo] = useState({ email: '', password: '' });
@@ -101,6 +84,9 @@ function App() {
         const resolved = parseJwt(token);
         setJwtToken(token);
         setUserInfo({ email: resolved.email, username: resolved.username });
+        if (userInfo){
+          setUserName(JSON.parse(JSON.stringify(userInfo.username)))
+        }
         setIsLogin(true);
       })
       .catch((err) => {
@@ -131,7 +117,7 @@ function App() {
   const logoutHandler = () => {
     localStorage.removeItem('login-token');
     setUserInfo(null);
-    setIsLogin(false)
+    setIsLogin(false);
   };
 
   //pagination
@@ -140,16 +126,26 @@ function App() {
 
   //GET
   const getData = async () => {
+    localStorage.getItem('login-token');
+    if (localStorage.getItem('login-token')) {
+      const token = localStorage.getItem('login-token');
+      const resolved = parseJwt(token);
+      setJwtToken(token);
+      setUserInfo({ email: resolved.email, username: resolved.username });
+      setIsLogin(true);
+    }
+    if (!localStorage.getItem('login-token')) {
+      setIsLogin(false);
+    }
+
     const getResponse = await axios(url);
     setData(getResponse.data);
     setTotalPosts(getResponse.data.totalElements);
   };
-
+  {console.log(`app: ${userName}`)}
   useEffect(() => {
     getData();
   }, []);
-
-  // {console.log(data.first)}
 
   return (
     <BrowserRouter>
@@ -234,6 +230,8 @@ function App() {
               <ReadQuestionPage 
               jwtToken={jwtToken}
               userInfo={userInfo}
+              userName={userName}
+              setUserName={setUserName}
               getValidToken={getValidToken}
               />} />
 

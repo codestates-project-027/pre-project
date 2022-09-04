@@ -4,10 +4,9 @@ const AnswerDelete = ({ deleteUrl, dataEl, jwtToken }) => {
 
   const deleteAnswer = async () => {
     const headers = { headers: { Authorization: `Bearer ${jwtToken}` } };
-    const answer = { contents: dataEl.contents };
-    // await axios.delete(deleteUrl + dataEl.id, { data: answer }, headers);
+    // const answer = { contents: dataEl.contents };
     await axios.delete(deleteUrl + dataEl.id, headers);
-    // window.location.reload();
+    window.location.reload();
   };
 
   return (

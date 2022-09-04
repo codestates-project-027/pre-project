@@ -5,7 +5,7 @@ const DeleteCommntBtn = ({ id, headers }) => {
   const deleteCommentUrl = '/comment/';
   const deleteComment = async () => {
     await axios.delete(deleteCommentUrl + id, headers);
-    // window.location.reload();
+    window.location.reload();
   };
   return (
     <>

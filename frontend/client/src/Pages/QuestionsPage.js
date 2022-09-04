@@ -6,11 +6,21 @@ import OverflowBlog from '../assets/overflowblog.png';
 import AskButton from '../Components/AskButton';
 
 const QuestionsPage = ({ isLogin, limit, totalPosts }) => {
+  const calculatedDate = () => {
+    const createdAt = new Date();
+    const year = createdAt.getFullYear();
+    const month = 
+    ('0' + (createdAt.getMonth()+1)).slice(-2);
+    const day = ('0'+ (createdAt.getDate())).slice(-2);
+    return `${year}-${month}-${day}`
+  }
   const pageUrl = '/question?page=';
   const [data, setData] = useState([]);
   const [answerData, setAnswerData] = useState([]);
   const [page, setPage] = useState(1);
   const [id, setId] = useState(1);
+  const [currentDate, setCurrnetDate] = useState(calculatedDate
+    );
 
   //Pagination
   const numPages = Math.ceil(totalPosts / limit);
@@ -30,6 +40,8 @@ const QuestionsPage = ({ isLogin, limit, totalPosts }) => {
       setId(id + 1);
     }
   };
+  //Date calculations
+  
 
   //GET questions
   //Newest
@@ -38,12 +50,20 @@ const QuestionsPage = ({ isLogin, limit, totalPosts }) => {
     setData(getResponse.data.content);
     setAnswerData(getResponse.data.answerList);
   };
+  //Oldest
+  const getOldestData = async () => {
+    const getResponse = await axios(pageUrl + id+'&sort=min');
+    setData(getResponse.data.content);
+    setAnswerData(getResponse.data.answerList);
+  }
   //Active
   const getActiveData = async () => {
     const getResponse = await axios(pageUrl + id+'&sortValue=active');
     setData(getResponse.data.content);
     setAnswerData(getResponse.data.answerList);
   }
+  //Bountied
+  
 
   useEffect(() => {
     getData(); 
@@ -51,32 +71,27 @@ const QuestionsPage = ({ isLogin, limit, totalPosts }) => {
 
   //tab 메뉴 관련
   const [currentTab, setCurrentTab] = useState(0);
-
-  // const menuArr = [
-  //   { name: 'Newest' },
-  //   { name: 'Active' },
-  //   { name: 'Bountied' },
-  //   { name: 'Unanswered' },
-  //   { name: 'More' },
-  // ];
-
   const [menuArr, setMenuArr] = useState([{ name: 'Newest' }, { name: 'Active' }, { name: 'Bountied' }, { name: 'Unanswered' },    { name: 'More' }])
  
   const selectMenuHandler = (index,el) => {
     setCurrentTab(index);
     if(index === 0 && el.name ==='Newest'){ //Oldest로 토글되게 div 띄우기
       setMenuArr([{ name: 'Oldest' }, { name: 'Active' }, { name: 'Bountied' }, { name: 'Unanswered' },    { name: 'More' }])
-      getActiveData();
+      getOldestData();
     }
     if (index === 0 && el.name ==='Oldest'){
       setMenuArr([{ name: 'Newest' }, { name: 'Active' }, { name: 'Bountied' }, { name: 'Unanswered' },    { name: 'More' }])
       getData();
+    }
+    if (index === 1){ //Active
+      getActiveData();
     }
   };
 
   return (
     <>
       <Div>
+        <button onClick={()=>{console.log(currentDate)}}>current</button>
         <div className="main--wrapper">
           <div className="head--wrapper">
             <div className="head">

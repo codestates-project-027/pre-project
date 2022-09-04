@@ -25,7 +25,11 @@ const ReadQuestionPage = ({jwtToken, userInfo, getValidToken}) => {
   const [commentData, setCommentData] = useState([]);
   const [questionId, setQuestionId] = useState(id);
   const [answerContents, setAnswerContents] = useState('');
-  const [userName, setUserName] = useState('new comer');
+  //Reload userName Setting ::
+  const userNameFromLocalStorage = localStorage.getItem('login-token');
+  
+
+  const [userName, setUserName] = useState('new comer'); //
   const headers = { headers: { Authorization: `Bearer ${jwtToken}` } };
   
   
@@ -58,27 +62,28 @@ const ReadQuestionPage = ({jwtToken, userInfo, getValidToken}) => {
     e.preventDefault();
     const answer = { questionId, contents: answerContents, userName };
     await axios.post(postAnswerUrl, answer, headers);
-    // window.location.reload();
+    window.location.reload();
+    
   };
-
+  {console.log(userName)}
   //votes
   const voteUp = async () => {
     const up = { questionId: id, userName, vote: true};
     await axios.post(voteUrl, up, headers);
-    // window.location.reload();
+    window.location.reload();
   };
 
   const voteDown = async () => {
     const down = { questionId: id, userName, vote: false};
     await axios.post(voteUrl, down, headers );
-    // window.location.reload();
+    window.location.reload();
   };
 
   const voteDelete = async () => { //vote Delete ..
     const voteReset = { questionId: id, userName };
     // console.log(id, userName)
     await axios.delete(voteUrl, voteReset, headers);
-    // window.location.reload();
+    window.location.reload();
   };
 
   useEffect(() => {

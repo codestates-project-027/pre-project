@@ -11,7 +11,7 @@ const CommentBtn = ({ id, headers, userName }) => {
   };
   const postComment = async () => {
     await axios.post(postCommentUrl, { answerId: id, contents, userName }, headers);
-    // window.location.reload();
+    window.location.reload();
   };
 
   return (
