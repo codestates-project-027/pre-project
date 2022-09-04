@@ -4,9 +4,10 @@ import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
 
-const AnswerEditPage = () => {
+const AnswerEditPage = ({jwtToken}) => {
   const navigate = useNavigate();
-
+  const headers = { headers: { Authorization: `Bearer ${jwtToken}` } };
+  
   const url = '/question/';
   const patchUrl = '/answer/';
 
@@ -29,7 +30,7 @@ const AnswerEditPage = () => {
 
   const updatePost = async () => {
     const updateAnswer = { contents };
-    await axios.patch(patchUrl + data.id, updateAnswer).then(() => {
+    await axios.patch(patchUrl + data.id, updateAnswer, headers).then(() => {
       navigate(-1);
     });
   };

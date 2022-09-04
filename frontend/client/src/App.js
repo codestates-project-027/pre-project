@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 
 import styled from 'styled-components';
 import axios from 'axios';
-import {useJwt} from 'react-jwt';
+import { useJwt } from 'react-jwt';
 import Navbar from './Components/Navbar';
 import LeftSidebar from './Components/LeftSidebar';
 
@@ -18,15 +18,17 @@ import EditPage from './Pages/EditPage';
 import MyPage from './Pages/MyPage';
 import AnswerEditPage from './Pages/AnswerEditPage';
 
-const token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJjb3Mgand0IHRva2VuIiwiaWQiOjEsImV4cCI6MTY2MjExMzQxMiwiZW1haWwiOiJhYmNAZ21haWwuY29tIiwidXNlcm5hbWUiOiJhYmMifQ.42iN6om2ZiK3IQvkjqMeLZ5Q7qS-dW77LA0BJWTzw-3a8hybENK3oZVh2gqfajY_xAUTB3P3TtdhKch89tjF1A"
-const url = `/question?page=1`;
-const loginUrl = '/login';
+// const token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJjb3Mgand0IHRva2VuIiwiaWQiOjEsImV4cCI6MTY2MjExMzQxMiwiZW1haWwiOiJhYmNAZ21haWwuY29tIiwidXNlcm5hbWUiOiJhYmMifQ.42iN6om2ZiK3IQvkjqMeLZ5Q7qS-dW77LA0BJWTzw-3a8hybENK3oZVh2gqfajY_xAUTB3P3TtdhKch89tjF1A"
 
 axios.defaults.withCredentials = true;
 
 function App() {
-  const {decodedToken, isExpired} = useJwt(token);
+  const url = `/question?page=1`;
+  const loginUrl = '/login';
+
+  // const {decodedToken, isExpired} = useJwt(token);
   const [data, setData] = useState([]);
+
   //JOIN
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -45,8 +47,7 @@ function App() {
   //GET Auth : Login and get token to CRUD
   const [isLogin, setIsLogin] = useState(false);
   const [userInfo, setUserInfo] = useState(null);
-  const [loginToken, setLoginToken] = useState('');
-  const [jwtForUserInfo, setJwtForUserInfo] = useState('');
+  const [jwtToken, setJwtToken] = useState('');
 
   // const authHandler = () => { //check
   //   axios
@@ -63,19 +64,27 @@ function App() {
   // };
   //login request
 
-
-
-
-  const loginUrl = '/login';
-  
   //Auth: Login
   const [loginInfo, setLoginInfo] = useState({ email: '', password: '' });
   const [keepLogin, setKeepLogin] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
 
-  
+  const parseJwt = (token) => {
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = decodeURIComponent(
+      window
+        .atob(base64)
+        .split('')
+        .map(function (c) {
+          return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        })
+        .join('')
+    );
+    return JSON.parse(jsonPayload);
+  };
 
-  const loginRQHandler = () => {
+  const loginRQHandler = async () => {
     const { email, password } = loginInfo;
     if (!email || !password) {
       setErrorMessage('아이디와 비밀번호를 입력하세요');
@@ -83,26 +92,41 @@ function App() {
     } else {
       setErrorMessage('');
     }
-    return axios
-      .post(loginUrl, { email, password }) 
+
+    await axios
+      .post(loginUrl, { email, password })
       .then((res) => {
         localStorage.setItem('login-token', res.headers.authorization);
-        setLoginToken(localStorage.getItem('login-token'));
-        setJwtForUserInfo(loginToken.slice(7));
-
+        const token = localStorage.getItem('login-token');
+        const resolved = parseJwt(token);
+        setJwtToken(token);
+        setUserInfo({ email: resolved.email, username: resolved.username });
         setIsLogin(true);
-    
       })
       .catch((err) => {
-        if (err.response.data === 401) {
+        if (err.response.data.status === 401) {
           setErrorMessage('로그인에 실패함');
         }
       });
   };
-  
-  {console.log(decodedToken)}
-  // {    console.log(jwt.decode(jwtForUserInfo))}
-  
+
+  const getValidToken = async () => {
+    await axios
+      .post(loginUrl, { email, password })
+      .then((res) => {
+        localStorage.setItem('login-token', res.headers.authorization);
+        const token = localStorage.getItem('login-token');
+        const resolved = parseJwt(token);
+        setJwtToken(token);
+        setUserInfo({ email: resolved.email, username: resolved.username });
+        setIsLogin(true);
+      })
+      .catch((err) => {
+        if (err.response.data.status === 401) {
+          setErrorMessage('로그인에 실패함');
+        }
+      });
+  };
 
   const logoutHandler = () => {
     //로그아웃 구현-> client에서 처리 + 토큰 삭제
@@ -129,11 +153,7 @@ function App() {
   };
 
   useEffect(() => {
-    const getAllPosts = async () => {
-      const allPosts = await getData();
-      if (allPosts) setData(allPosts);
-    };
-    getAllPosts();
+    getData();
   }, []);
 
   // {console.log(data.first)}
@@ -164,14 +184,24 @@ function App() {
                 }
               />
 
-              <Route path="/askquestionpage" element={<AskQuestionPage />} />
+              <Route
+                path="/askquestionpage"
+                element={
+                  <AskQuestionPage
+                    jwtToken={jwtToken}
+                    userInfo={userInfo}
+                    getValidToken={getValidToken}
+                  />
+                }
+              />
 
               <Route
                 path="/login"
                 element={
                   <LogInPage
+                    jwtToken={jwtToken}
                     isLogin={isLogin}
-                    setLoginToken={setLoginToken}
+                    setJwtToken={setJwtToken}
                     setIsLogin={setIsLogin}
                     loginRQHandler={loginRQHandler}
                     setLoginInfo={setLoginInfo}
@@ -208,21 +238,25 @@ function App() {
                 }
               />
 
-              <Route
-                path="/posts/:id"
-                element={
-                  <ReadQuestionPage
-                  />
-                }
-              />
+              <Route path="/posts/:id" element={
+              <ReadQuestionPage 
+              jwtToken={jwtToken}
+              userInfo={userInfo}
+              getValidToken={getValidToken}
+              />} />
 
-              <Route path="/answer/edit/:id" element={<AnswerEditPage />} />
+              <Route path="/answer/edit/:id" element={<AnswerEditPage jwtToken={jwtToken}/>} />
 
               <Route path="/posts/:id" element={<NotFoundPage />} />
 
               <Route
                 path="/posts/edit/:id"
-                element={<EditPage data={data} />}
+                element={
+                <EditPage 
+                jwtToken={jwtToken}
+                userInfo={userInfo}
+                getValidToken={getValidToken}
+                />}
               />
             </Routes>
           </RoutesWrapper>

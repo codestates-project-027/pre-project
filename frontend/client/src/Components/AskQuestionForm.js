@@ -3,9 +3,9 @@ import styled from 'styled-components';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const AskQuestionForm = () => {
-  const url = '/question'; //서버경로 수정
-  const [userName, setUsername] = useState('userName');
+const AskQuestionForm = ({ jwtToken, userInfoUserName, getValidToken }) => {
+  const url = '/question';
+  const [userName, setUsername] = useState(userInfoUserName);
 
   const [title, setTitle] = useState('');
   const [contents, setContents] = useState('');
@@ -14,16 +14,25 @@ const AskQuestionForm = () => {
   const navigate = useNavigate();
 
   const postData = async (e) => {
-    e.preventDefault();
-    const post = {
-      title,
-      contents,
-      userName,
-      tags: [JSON.parse(JSON.stringify(tags))],
-    };
-    await axios.post(url, post).then(() => {
-      navigate('/questionspage');
-    });
+    try {
+      const headers = { headers: { Authorization: `Bearer ${jwtToken}` } };
+      e.preventDefault();
+      const post = {
+        title,
+        contents,
+        userName,
+        tags: [JSON.parse(JSON.stringify(tags))],
+      };
+
+      await axios.post(url, post, headers).then(() => {
+        navigate('/questionspage');
+      });
+    } catch (err) {
+      if (err.response) {
+        console.log(err);
+      }
+    }
+    //토큰 만료시 getValidToken 실행+ReadQuestionPage+
   };
 
   return (
@@ -71,7 +80,6 @@ const AskQuestionForm = () => {
             onChange={(e) => setTags(e.target.value)}
             placeholder="e.g. (iphone android sql)"
           />
-          {console.log(tags)}
 
           <div className="wrapper-button">
             <Button1 onClick={postData}>Review your question</Button1>

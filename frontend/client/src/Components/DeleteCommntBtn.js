@@ -1,11 +1,11 @@
 import styled from 'styled-components';
 import axios from 'axios';
 
-const DeleteCommntBtn = ({ id }) => {
+const DeleteCommntBtn = ({ id, headers }) => {
   const deleteCommentUrl = '/comment/';
   const deleteComment = async () => {
-    await axios.delete(deleteCommentUrl + id);
-    window.location.reload();
+    await axios.delete(deleteCommentUrl + id, headers);
+    // window.location.reload();
   };
   return (
     <>
