@@ -31,30 +31,47 @@ const QuestionsPage = ({ isLogin, limit, totalPosts }) => {
     }
   };
 
-  //GET 요청
+  //GET questions
+  //Newest
   const getData = async () => {
     const getResponse = await axios(pageUrl + id);
     setData(getResponse.data.content);
     setAnswerData(getResponse.data.answerList);
   };
+  //Active
+  const getActiveData = async () => {
+    const getResponse = await axios(pageUrl + id+'&sortValue=active');
+    setData(getResponse.data.content);
+    setAnswerData(getResponse.data.answerList);
+  }
 
   useEffect(() => {
-    getData();
+    getData(); 
   }, [id]);
 
   //tab 메뉴 관련
   const [currentTab, setCurrentTab] = useState(0);
 
-  const menuArr = [
-    { name: 'Newest' },
-    { name: 'Active' },
-    { name: 'Bountied' },
-    { name: 'Unanswered' },
-    { name: 'More' },
-  ];
+  // const menuArr = [
+  //   { name: 'Newest' },
+  //   { name: 'Active' },
+  //   { name: 'Bountied' },
+  //   { name: 'Unanswered' },
+  //   { name: 'More' },
+  // ];
 
-  const selectMenuHandler = (index) => {
+  const [menuArr, setMenuArr] = useState([{ name: 'Newest' }, { name: 'Active' }, { name: 'Bountied' }, { name: 'Unanswered' },    { name: 'More' }])
+ 
+  const selectMenuHandler = (index,el) => {
     setCurrentTab(index);
+    if(index === 0 && el.name ==='Newest'){ //Oldest로 토글되게 div 띄우기
+      setMenuArr([{ name: 'Oldest' }, { name: 'Active' }, { name: 'Bountied' }, { name: 'Unanswered' },    { name: 'More' }])
+      getActiveData();
+    }
+    if (index === 0 && el.name ==='Oldest'){
+      setMenuArr([{ name: 'Newest' }, { name: 'Active' }, { name: 'Bountied' }, { name: 'Unanswered' },    { name: 'More' }])
+      getData();
+    }
   };
 
   return (
@@ -89,7 +106,7 @@ const QuestionsPage = ({ isLogin, limit, totalPosts }) => {
                         className={
                           currentTab === index ? 'submenu active' : 'submenu'
                         }
-                        onClick={() => selectMenuHandler(index)}
+                        onClick={() => selectMenuHandler(index, el)}
                       >
                         {el.name}
                       </li>

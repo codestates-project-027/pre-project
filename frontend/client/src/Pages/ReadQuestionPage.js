@@ -29,7 +29,6 @@ const ReadQuestionPage = ({jwtToken, userInfo, getValidToken}) => {
   const headers = { headers: { Authorization: `Bearer ${jwtToken}` } };
   
   
-  
   //Question
   const getData = async () => {
     const getResponse = await axios(url + id);

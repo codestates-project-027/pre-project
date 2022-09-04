@@ -132,7 +132,6 @@ function App() {
     localStorage.removeItem('login-token');
     setUserInfo(null);
     setIsLogin(false)
-
   };
 
   //pagination
@@ -225,9 +224,8 @@ function App() {
                 element={
                   <MyPage
                     userInfo={userInfo}
-                    setIsLogin={setIsLogin}
-                    setUserInfo={setUserInfo}
                     isLogin={isLogin}
+                    logoutHandler={logoutHandler}
                   />
                 }
               />
