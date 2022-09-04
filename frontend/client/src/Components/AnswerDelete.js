@@ -19,7 +19,7 @@ const AnswerDelete = ({ deleteUrl, dataEl, jwtToken, isLogin }) => {
 
   return (
     <>
-      {isLogin? (<button style={style} onClick={deleteAnswer}>
+      {dataEl.userName === localStorage.getItem('user-name')? (<button style={style} onClick={deleteAnswer}>
         Delete
       </button>):null}
     </>

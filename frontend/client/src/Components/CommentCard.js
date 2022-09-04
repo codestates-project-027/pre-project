@@ -13,7 +13,7 @@ const CommentCard = ({ commentData, headers, userName, isLogin }) => {
                   {el.contents}
                   <span className="username">&#11;-&#31;{el.userName}</span>
                   <span className="createdAt">{el.createdAt}</span>
-                  {isLogin? (<DeleteCommntBtn id={el.id} headers={headers} />) : null}
+                  {el.userName===localStorage.getItem('user-name')? (<DeleteCommntBtn id={el.id} headers={headers} />) : null}
                   
                 </span>
 

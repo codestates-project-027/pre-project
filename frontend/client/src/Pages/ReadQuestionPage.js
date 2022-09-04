@@ -167,12 +167,12 @@ const ReadQuestionPage = ({jwtToken, isLogin, userName, setUserName}) => {
                     {localStorage.setItem('title', data.title)}
                     {localStorage.setItem('body', data.contents)}
                     {localStorage.setItem('tags', data.tags)}
-                    {isLogin? ( <Link to={`/posts/edit/${id}`} style={LinkStyle}>
+                    {data.userName === localStorage.getItem('user-name')? ( <Link to={`/posts/edit/${id}`} style={LinkStyle}>
                       Edit
                     </Link>):null}
                    
                   </div>
-                  {isLogin?(<div className="delete" onClick={deleteData}>
+                  {data.userName === localStorage.getItem('user-name')?(<div className="delete" onClick={deleteData}>
                     Delete
                   </div>):null}
                   

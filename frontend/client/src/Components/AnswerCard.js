@@ -19,7 +19,7 @@ const AnswerCard = ({ answerData, jwtToken, headers, userName, setUserName, isLo
                   <div className="answers--edit--delete--author">
                     <div className="one">
                       <div className="answers--edit--delete">
-                        {isLogin?(
+                        {el.userName === localStorage.getItem('user-name')?(
                           <Link
                           to={`/answer/edit/${id}`}
                           style={{ textDecoration: 'none' }}
@@ -31,7 +31,7 @@ const AnswerCard = ({ answerData, jwtToken, headers, userName, setUserName, isLo
                         ):null}
                         
 
-                        <AnswerDelete deleteUrl={deleteAnswerUrl} dataEl={el} isLogin={isLogin} jwtToken={jwtToken} />
+                        <AnswerDelete deleteUrl={deleteAnswerUrl} dataEl={el} jwtToken={jwtToken} />
                       </div>
 
                       <div className="author--date">

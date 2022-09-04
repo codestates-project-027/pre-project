@@ -35,7 +35,7 @@ const AnswerEditPage = ({jwtToken}) => {
     }
     catch (err){
       if (err.response){
-        alert(`작성자가 아닙니다.`)
+        alert(`내용을 입력하세요`)
       }
     }
     
