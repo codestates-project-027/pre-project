@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { useJwt } from 'react-jwt';
 import { useNavigate } from 'react-router-dom';
 import { ReactComponent as Logo } from '../assets/LogoGlyphMd.svg';
-import axios from 'axios';
 
 const LogInPage = ({
   isLogin,

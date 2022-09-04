@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react';
 
 import styled from 'styled-components';
 import axios from 'axios';
-import { useJwt } from 'react-jwt';
 import Navbar from './Components/Navbar';
 import LeftSidebar from './Components/LeftSidebar';
 
@@ -76,8 +75,8 @@ function App() {
     } else {
       setErrorMessage('');
     }
-
-    await axios
+    try {
+      await axios
       .post(loginUrl, { email, password })
       .then((res) => {
         localStorage.setItem('login-token', res.headers.authorization);
@@ -91,15 +90,22 @@ function App() {
         }
         setIsLogin(true);
       })
-      .catch((err) => {
-        if (err.response.data.status === 401) {
-          setErrorMessage('로그인에 실패함');
-        }
-      });
+    }
+    catch (err) {
+      if (err.response){alert(err)}
+    }
+      // .catch((err) => {
+      //   if (err.response.data.status === 401) {
+      //     setErrorMessage('로그인에 실패함');
+      //   }
+      // });
   };
 
-  const getValidToken = async () => {
-    await axios
+  const getValidToken = async () => { //아마 필요없을듯
+    localStorage.removeItem('login-token');
+    localStorage.removeItem('user-name');
+    try {
+      await axios
       .post(loginUrl, { email, password })
       .then((res) => {
         localStorage.setItem('login-token', res.headers.authorization);
@@ -109,11 +115,10 @@ function App() {
         setUserInfo({ email: resolved.email, username: resolved.username });
         setIsLogin(true);
       })
-      .catch((err) => {
-        if (err.response.data.status === 401) {
-          setErrorMessage('로그인에 실패함');
-        }
-      });
+    }
+    catch (err) {
+      if (err.response){alert(err)}
+    }
   };
 
   const logoutHandler = () => {
@@ -191,6 +196,7 @@ function App() {
                     jwtToken={jwtToken}
                     userInfo={userInfo}
                     getValidToken={getValidToken}
+                    setIsLogin={setIsLogin}
                   />
                 }
               />
@@ -240,11 +246,9 @@ function App() {
               <Route path="/posts/:id" element={
               <ReadQuestionPage 
               jwtToken={jwtToken}
-              userInfo={userInfo}
+              isLogin={isLogin}
               userName={userName}
               setUserName={setUserName}
-              getValidToken={getValidToken}
-              isLogin={isLogin}
               />} />
 
               <Route path="/answer/edit/:id" element={<AnswerEditPage jwtToken={jwtToken}/>} />

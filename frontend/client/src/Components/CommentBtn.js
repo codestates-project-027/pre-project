@@ -11,8 +11,10 @@ const CommentBtn = ({ id, headers, userName, setUserName }) => {
   };
   const postComment = async () => {
     setUserName(localStorage.getItem('user-name'));
-    await axios.post(postCommentUrl, { answerId: id, contents, userName }, headers);
-    window.location.reload();
+    try {await axios.post(postCommentUrl, { answerId: id, contents, userName }, headers);
+    window.location.reload();}
+    catch (err){alert(err)}
+    
   };
 
   return (

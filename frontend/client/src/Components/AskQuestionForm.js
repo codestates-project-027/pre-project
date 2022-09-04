@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const AskQuestionForm = ({ jwtToken, userInfoUserName, getValidToken }) => {
+const AskQuestionForm = ({ jwtToken, userInfoUserName, setIsLogin }) => {
   const url = '/question';
   const [userName, setUsername] = useState(userInfoUserName);
 
@@ -30,7 +30,9 @@ const AskQuestionForm = ({ jwtToken, userInfoUserName, getValidToken }) => {
       });
     } catch (err) {
       if (err.response) {
-        console.log(err);
+        alert(`만료된 토큰입니다. 다시 로그인해주세요`);
+        setIsLogin(false)
+        navigate('/login');
       }
     }
     //토큰 만료시 getValidToken 실행+ReadQuestionPage+

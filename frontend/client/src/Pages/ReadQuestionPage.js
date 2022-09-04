@@ -12,7 +12,7 @@ import {
 } from 'react-icons/bs';
 import { TiCancel } from 'react-icons/ti';
 
-const ReadQuestionPage = ({jwtToken, userInfo, getValidToken, isLogin, userName, setUserName}) => {
+const ReadQuestionPage = ({jwtToken, isLogin, userName, setUserName}) => {
   
   const url = '/question/'; //서버경로 수정
   const voteUrl = '/vote/question';
