@@ -42,7 +42,7 @@ const QuestionsPage = ({ isLogin, limit, totalPosts, totalPages, setTotalPages})
   };
   //Date calculations
   
-  {console.log(totalPages)}
+  
   //GET questions
   //Newest
   const getData = async () => {
