@@ -6,32 +6,28 @@ import OverflowBlog from '../assets/overflowblog.png';
 import AskButton from '../Components/AskButton';
 import QuestionCard from '../Components/QuestionCard';
 
-const QuestionsPage = ({ isLogin, limit, totalPosts }) => {
-  const calculatedTime = () => {
-    //2022.09.04 10:00
+const QuestionsPage = ({ isLogin, limit, totalPosts}) => {
+  
+  const calculatedTime = () => { //2022.09.04 10:00
     const createdAt = new Date();
     const year = createdAt.getFullYear();
-    const month =
-      createdAt.getMonth() <= 8
-        ? '0' + (createdAt.getMonth() + 1)
-        : createdAt.getMonth() + 1;
-    const day =
-      createdAt.getDate() <= 9
-        ? '0' + createdAt.getDate()
-        : createdAt.getDate();
+    const month = 
+    createdAt.getMonth()<=8? 
+    ('0' + (createdAt.getMonth()+1)): (createdAt.getMonth()+1);
+    const day = 
+    createdAt.getDate()<=9?
+    ('0'+ (createdAt.getDate())): (createdAt.getDate());
 
-    const hour =
-      createdAt.getHours() <= 9
-        ? '0' + createdAt.getHours()
-        : createdAt.getHours();
+    const hour = 
+    createdAt.getHours()<=9?
+    ('0'+ (createdAt.getHours())): (createdAt.getHours());
 
-    const minute =
-      createdAt.getMinutes() <= 9
-        ? '0' + createdAt.getMinutes()
-        : createdAt.getMinutes();
+    const minute = 
+    createdAt.getMinutes()<=9?
+    ('0'+ (createdAt.getMinutes())): (createdAt.getMinutes());
 
-    return `${year}-${month}-${day} ${hour}:${minute}`;
-  };
+    return `${year}-${month}-${day} ${hour}:${minute}`
+  }
 
   const pageUrl = '/question?page=';
   const [data, setData] = useState([]);
@@ -61,7 +57,7 @@ const QuestionsPage = ({ isLogin, limit, totalPosts }) => {
   //Date calculations
   const newlyDated = () => {
     // calculatedTime
-  };
+  }
 
   //GET questions
   //Newest
@@ -72,57 +68,38 @@ const QuestionsPage = ({ isLogin, limit, totalPosts }) => {
   };
   //Oldest
   const getOldestData = async () => {
-    const getResponse = await axios(pageUrl + id + '&sort=min');
+    const getResponse = await axios(pageUrl + id+'&sort=min');
     setData(getResponse.data.content);
     setAnswerData(getResponse.data.answerList);
-  };
+  }
   //Active
   const getActiveData = async () => {
-    const getResponse = await axios(pageUrl + id + '&sortValue=active');
+    const getResponse = await axios(pageUrl + id+'&sortValue=active');
     setData(getResponse.data.content);
     setAnswerData(getResponse.data.answerList);
-  };
+  }
   //Bountied
+  
 
   useEffect(() => {
-    getData();
+    getData(); 
   }, []);
 
   //tab 메뉴 관련
   const [currentTab, setCurrentTab] = useState(0);
-  const [menuArr, setMenuArr] = useState([
-    { name: 'Newest' },
-    { name: 'Active' },
-    { name: 'Bountied' },
-    { name: 'Unanswered' },
-    { name: 'More' },
-  ]);
-
-  const selectMenuHandler = (index, el) => {
+  const [menuArr, setMenuArr] = useState([{ name: 'Newest' }, { name: 'Active' }, { name: 'Bountied' }, { name: 'Unanswered' },    { name: 'More' }])
+ 
+  const selectMenuHandler = (index,el) => {
     setCurrentTab(index);
-    if (index === 0 && el.name === 'Newest') {
-      //Oldest로 토글되게 div 띄우기
-      setMenuArr([
-        { name: 'Oldest' },
-        { name: 'Active' },
-        { name: 'Bountied' },
-        { name: 'Unanswered' },
-        { name: 'More' },
-      ]);
+    if(index === 0 && el.name ==='Newest'){ //Oldest로 토글되게 div 띄우기
+      setMenuArr([{ name: 'Oldest' }, { name: 'Active' }, { name: 'Bountied' }, { name: 'Unanswered' },    { name: 'More' }])
       getOldestData();
     }
-    if (index === 0 && el.name === 'Oldest') {
-      setMenuArr([
-        { name: 'Newest' },
-        { name: 'Active' },
-        { name: 'Bountied' },
-        { name: 'Unanswered' },
-        { name: 'More' },
-      ]);
+    if (index === 0 && el.name ==='Oldest'){
+      setMenuArr([{ name: 'Newest' }, { name: 'Active' }, { name: 'Bountied' }, { name: 'Unanswered' },    { name: 'More' }])
       getData();
     }
-    if (index === 1) {
-      //Active
+    if (index === 1){ //Active
       getActiveData();
     }
   };
@@ -173,12 +150,7 @@ const QuestionsPage = ({ isLogin, limit, totalPosts }) => {
             <div className="questions-wrapper">
               {data.slice(offset, offset + limit).map((item) => (
                 <div style={{ width: '100%' }} key={item.id}>
-                  <QuestionCard
-                    activeTime={item.active}
-                    calculatedTime={calculatedTime}
-                    item={item}
-                    answerData={answerData}
-                  />
+                  <QuestionCard activeTime={item.active} calculatedTime={calculatedTime} item={item} answerData={answerData}/>
                 </div>
               ))}
             </div>
@@ -267,6 +239,7 @@ const Div = styled.div`
     align-items: center;
   }
 `;
+
 
 const TabMenu = styled.ul`
   display: flex;

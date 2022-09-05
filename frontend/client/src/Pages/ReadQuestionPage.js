@@ -11,6 +11,7 @@ import {
   BsFillBookmarkStarFill,
 } from 'react-icons/bs';
 import { TiCancel } from 'react-icons/ti';
+import TagBlank from '../Components/TagBlank';
 
 
 const ReadQuestionPage = ({
@@ -26,7 +27,6 @@ const ReadQuestionPage = ({
   const { id } = useParams();
   const navigate = useNavigate();
   const [data, setData] = useState([]);
-  const [tags, setTags] = useState('');
   const [answerData, setAnswerData] = useState([]); //불러온 answer data
   const [commentData, setCommentData] = useState([]);
   const [questionId, setQuestionId] = useState(id);
@@ -38,9 +38,7 @@ const ReadQuestionPage = ({
   const headers = { headers: { Authorization: `Bearer ${jwtToken}` } };
 
   //TagBlock handler
-  const tagBlockHandler = (tags) => {
-    if (tags!==[]){setTags(tags)}
-  }
+  
   //Question
   const getData = async () => {
     const getResponse = await axios(url + id);
@@ -48,6 +46,7 @@ const ReadQuestionPage = ({
     setAnswerData(getResponse.data.answerList);
     setCommentData(answerData.commentList);
     setUserName(localStorage.getItem('user-name'));
+    localStorage.setItem('tags-block',getResponse.data.tags);
   };
 
   const deleteData = async () => {
@@ -218,8 +217,8 @@ const ReadQuestionPage = ({
             <div className="content--comment--answer">
               <pre className="content">{data.contents}</pre>
               <div className="tags--edit--delete">
-                <div className="tags">{data.tags}
-               
+                <div className="tags">
+                <TagBlank tags={localStorage.getItem('tags-block')}/>
                   </div>
 
 
@@ -364,14 +363,9 @@ const Div = styled.div`
     margin-top: 30px;
   }
   .tags {
-    width: fit-content;
-    background-color: rgb(227, 236, 243);
-    color: rgb(72, 114, 153);
-    border-radius: 5px;
-    padding: 4px;
-    padding-left: 7px;
-    padding-right: 7px;
-    cursor: pointer;
+   display: flex;
+   justify-content: left;
+   align-items : center;
   }
   .edit--delete {
     display: flex;
