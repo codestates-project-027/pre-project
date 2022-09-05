@@ -136,9 +136,7 @@ const SignUpPage = ({
                 />
                 Opt-in to receive occasional product updates, user research
                 invitations, company announcements, and digests.
-                {click && checked === false ? (
-                  <div className="signup-error">필수 체크항목입니다.</div>
-                ) : null}
+                {/* {click && checked === false ? ( <div className="signup-error">필수 체크항목입니다.</div> ) : null} */}
               </div>
               <div>
                 <button onClick={submitHandler}>Sign up</button>
