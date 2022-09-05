@@ -119,7 +119,7 @@ const ReadQuestionPage = ({
         userName: localStorage.getItem('user-name'),
         vote: false,
       };
-      // await axios.post(voteUrl, down, headers);
+      await axios.post(voteUrl, down, headers);
       setVotedDown(true);
       setVotedUp(false);
       setVoteCanceled(false);
@@ -243,7 +243,6 @@ const ReadQuestionPage = ({
                 <div className="tags">{localStorage.setItem('tags-block',data.tags)}
                 <TagBlank tags={localStorage.getItem('tags-block')}/>
                   </div>
-
 
                 <div className="edit--delete">
                   <div className="edit">

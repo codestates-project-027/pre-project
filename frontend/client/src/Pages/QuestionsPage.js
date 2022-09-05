@@ -50,16 +50,19 @@ const QuestionsPage = ({ isLogin, limit, totalPosts}) => {
 
   const selectPage = (el) => {
     setId(el + 1);
+    setPage(el + 1);
   };
   const toPrevPage = () => {
     if (id !== 1) {
       setId(id - 1);
+      setPage(page - 1);
     }
   };
 
   const toNextPage = () => {
     if (id !== numPages) {
       setId(id + 1);
+      setPage(page + 1);
     }
   };
   //Date calculations
@@ -208,7 +211,7 @@ const QuestionsPage = ({ isLogin, limit, totalPosts}) => {
             leastViews={leastViews} leastVotes={leastVotes} leastAnswers={leastAnswers} open={open}/>):null}
 
             <div className="questions-wrapper">
-              {data.slice(offset, offset + limit).map((item) => (
+              {data.map((item) => (
                 <div style={{ width: '100%' }} key={item.id}>
                   <QuestionCard activeTime={item.active} calculatedTime={calculatedTime} item={item}/>
                   {console.log(answerData)}
