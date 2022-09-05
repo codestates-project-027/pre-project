@@ -41,4 +41,8 @@ const LoginGlobalStyle = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  .logout-btn {
+    margin-top : 20px;
+    cursor: pointer;
+  }
 `;

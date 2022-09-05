@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import TagBlock from './TagBlock';
 
-const QuestionCard = ({ activeTime, calculatedTime, item, answerData }) => {
+const QuestionCard = ({ activeTime, calculatedTime, item}) => {
   return (
     <>
       <QuestionCardCSS>

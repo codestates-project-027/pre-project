@@ -42,6 +42,7 @@ const QuestionsPage = ({ isLogin, limit, totalPosts}) => {
   const [page, setPage] = useState(1);
   const [id, setId] = useState(1);
   const [currentTime, setCurrentTime] = useState(calculatedTime);
+  const [open, setOpen] = useState(false);
 
   //Pagination
   const numPages = Math.ceil(totalPosts / limit);
@@ -155,7 +156,7 @@ const QuestionsPage = ({ isLogin, limit, totalPosts}) => {
     }
 
     if (index ===4){
-     
+     setOpen(!open);
     }
   };
 
@@ -204,12 +205,12 @@ const QuestionsPage = ({ isLogin, limit, totalPosts}) => {
               
             </div>
             {currentTab === 4 ? (<MoreTab mostViews={mostViews} mostVotes={mostVotes} mostAnswers={mostAnswers}
-            leastViews={leastViews} leastVotes={leastVotes} leastAnswers={leastAnswers}/>):null}
+            leastViews={leastViews} leastVotes={leastVotes} leastAnswers={leastAnswers} open={open}/>):null}
 
             <div className="questions-wrapper">
               {data.slice(offset, offset + limit).map((item) => (
                 <div style={{ width: '100%' }} key={item.id}>
-                  <QuestionCard activeTime={item.active} calculatedTime={calculatedTime} item={item} answerData={answerData}/>
+                  <QuestionCard activeTime={item.active} calculatedTime={calculatedTime} item={item}/>
                   {console.log(answerData)}
                 </div>
               ))}

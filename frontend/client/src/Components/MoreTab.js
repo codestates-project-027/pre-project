@@ -1,9 +1,8 @@
 import styled from "styled-components";
 
-const MoreTab = ({mostViews,mostVotes, mostAnswers, leastViews, leastVotes, leastAnswers}) => {
+const MoreTab = ({mostViews,mostVotes, mostAnswers, leastViews, leastVotes, leastAnswers, open}) => {
     return (
-        <>
-        <MoreTabCSS>
+        <>{open? (<MoreTabCSS>
             <div className="wrapper">
                 <div className="criteria">
                     most
@@ -20,7 +19,8 @@ const MoreTab = ({mostViews,mostVotes, mostAnswers, leastViews, leastVotes, leas
                 <div className="criteria--sub" onClick={leastAnswers}>answers</div>
             </div>
         
-        </MoreTabCSS>
+        </MoreTabCSS>) : null }
+        
         </>
     )
 }
