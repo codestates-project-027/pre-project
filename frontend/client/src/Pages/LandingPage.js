@@ -3,6 +3,11 @@ import styled from 'styled-components';
 import img from '../assets/landingScroll.png';
 
 const LandingPage = () => {
+  localStorage.removeItem('title');
+  localStorage.removeItem('body');
+  localStorage.removeItem('edit-answer');
+  localStorage.removeItem('tags-block');
+  localStorage.removeItem('tags');
   return (
     <div className="landingpage-container">
       <Div>

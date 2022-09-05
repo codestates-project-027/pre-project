@@ -4,6 +4,10 @@ import styled from 'styled-components';
 import axios from 'axios';
 
 const EditPage = ({ jwtToken, userInfo, getValidToken, setIsLogin }) => {
+  localStorage.removeItem('edit-answer');
+  localStorage.removeItem('tags-block');
+
+
   const url = '/question/';
   const { id } = useParams();
   const navigate = useNavigate();

@@ -12,6 +12,12 @@ const LogInPage = ({
   errorMessage,
   jwtToken,
 }) => {
+  localStorage.removeItem('title');
+  localStorage.removeItem('body');
+  localStorage.removeItem('edit-answer');
+  localStorage.removeItem('tags-block');
+  localStorage.removeItem('tags');
+  
   const navigate = useNavigate();
   const parseJwt = (token) => {
     var base64Url = token.split('.')[1];

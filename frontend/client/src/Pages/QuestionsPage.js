@@ -7,6 +7,12 @@ import AskButton from '../Components/AskButton';
 import QuestionCard from '../Components/QuestionCard';
 
 const QuestionsPage = ({ isLogin, limit, totalPosts}) => {
+  localStorage.removeItem('title');
+  localStorage.removeItem('body');
+  localStorage.removeItem('edit-answer');
+  localStorage.removeItem('tags-block');
+  localStorage.removeItem('tags');
+
   
   const calculatedTime = () => { //2022.09.04 10:00
     const createdAt = new Date();

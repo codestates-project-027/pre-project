@@ -3,6 +3,12 @@ import AskQuestionForm from '../Components/AskQuestionForm';
 import QSidebar from '../Components/QSidebar';
 
 const AskQuestionPage = ({ jwtToken, userInfo, getValidToken, setIsLogin }) => {
+  localStorage.removeItem('title');
+  localStorage.removeItem('body');
+  localStorage.removeItem('edit-answer');
+  localStorage.removeItem('tags-block');
+  localStorage.removeItem('tags');
+  
   return (
     <>
       <Title>Ask Question</Title>

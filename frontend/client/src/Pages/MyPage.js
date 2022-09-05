@@ -2,6 +2,11 @@ import styled from 'styled-components';
 import PleaseLoginPage from './PleaseLoginPage';
 
 export default function Mypage({ userInfo, isLogin, logoutHandler }) {
+  localStorage.removeItem('title');
+  localStorage.removeItem('body');
+  localStorage.removeItem('edit-answer');
+  localStorage.removeItem('tags-block');
+  localStorage.removeItem('tags');
   return (
     <>
       {isLogin ? (
