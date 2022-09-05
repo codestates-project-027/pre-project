@@ -4,10 +4,10 @@ import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
 
-const AnswerEditPage = ({jwtToken, setIsLogin}) => {
+const AnswerEditPage = ({ jwtToken, setIsLogin }) => {
   const navigate = useNavigate();
   const headers = { headers: { Authorization: `Bearer ${jwtToken}` } };
-  
+
   const url = '/question/';
   const patchUrl = '/answer/';
 
@@ -27,20 +27,22 @@ const AnswerEditPage = ({jwtToken, setIsLogin}) => {
   }, []);
 
   const updatePost = async () => {
-    if (contents===''){alert(`내용을 입력하세요`); return ; }
+    if (contents === '') {
+      alert(`내용을 입력하세요`);
+      return;
+    }
     try {
       const updateAnswer = { contents };
-    await axios.patch(patchUrl + data.id, updateAnswer, headers).then(() => {
-      navigate(-1);
-    });
-  } catch (err) {
-    if (err.response) {
-      alert(`만료된 토큰입니다. 다시 로그인해주세요`);
-      setIsLogin(false)
-      navigate('/login');
+      await axios.patch(patchUrl + data.id, updateAnswer, headers).then(() => {
+        navigate(-1);
+      });
+    } catch (err) {
+      if (err.response) {
+        alert(`만료된 토큰입니다. 다시 로그인해주세요`);
+        setIsLogin(false);
+        navigate('/login');
+      }
     }
-  }
-    
   };
 
   const goBack = () => {

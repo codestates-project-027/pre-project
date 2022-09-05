@@ -76,48 +76,47 @@ function App() {
       setErrorMessage('');
     }
     try {
-      await axios
-      .post(loginUrl, { email, password })
-      .then((res) => {
+      await axios.post(loginUrl, { email, password }).then((res) => {
         localStorage.setItem('login-token', res.headers.authorization);
         const token = localStorage.getItem('login-token');
         const resolved = parseJwt(token);
         setJwtToken(token);
         setUserInfo({ email: resolved.email, username: resolved.username });
-        localStorage.setItem('user-name', userInfo.username)
-        if (userInfo){
-          setUserName(JSON.parse(JSON.stringify(userInfo.username)))
+        localStorage.setItem('user-name', userInfo.username);
+        if (userInfo) {
+          setUserName(JSON.parse(JSON.stringify(userInfo.username)));
         }
         setIsLogin(true);
-      })
+      });
+    } catch (err) {
+      if (err.response) {
+        alert(err);
+      }
     }
-    catch (err) {
-      if (err.response){alert(err)}
-    }
-      // .catch((err) => {
-      //   if (err.response.data.status === 401) {
-      //     setErrorMessage('로그인에 실패함');
-      //   }
-      // });
+    // .catch((err) => {
+    //   if (err.response.data.status === 401) {
+    //     setErrorMessage('로그인에 실패함');
+    //   }
+    // });
   };
 
-  const getValidToken = async () => { //아마 필요없을듯
+  const getValidToken = async () => {
+    //아마 필요없을듯
     localStorage.removeItem('login-token');
     localStorage.removeItem('user-name');
     try {
-      await axios
-      .post(loginUrl, { email, password })
-      .then((res) => {
+      await axios.post(loginUrl, { email, password }).then((res) => {
         localStorage.setItem('login-token', res.headers.authorization);
         const token = localStorage.getItem('login-token');
         const resolved = parseJwt(token);
         setJwtToken(token);
         setUserInfo({ email: resolved.email, username: resolved.username });
         setIsLogin(true);
-      })
-    }
-    catch (err) {
-      if (err.response){alert(err)}
+      });
+    } catch (err) {
+      if (err.response) {
+        alert(err);
+      }
     }
   };
 
@@ -140,9 +139,9 @@ function App() {
       const resolved = parseJwt(token);
       setJwtToken(token);
       setUserInfo({ email: resolved.email, username: resolved.username });
-      if (userInfo){
+      if (userInfo) {
         setUserName(JSON.parse(JSON.stringify(userInfo.username)));
-        localStorage.setItem('user-name', userName)
+        localStorage.setItem('user-name', userName);
       }
       setIsLogin(true);
     }
@@ -155,7 +154,6 @@ function App() {
     setTotalPosts(getResponse.data.totalElements);
     setTotalPages(getResponse.data.totalPages);
   };
-
 
   useEffect(() => {
     getData();
@@ -243,28 +241,38 @@ function App() {
                 }
               />
 
-              <Route path="/posts/:id" element={
-              <ReadQuestionPage 
-              jwtToken={jwtToken}
-              isLogin={isLogin}
-              userName={userName}
-              setUserName={setUserName}
-              setIsLogin={setIsLogin}
-              />} />
+              <Route
+                path="/posts/:id"
+                element={
+                  <ReadQuestionPage
+                    jwtToken={jwtToken}
+                    isLogin={isLogin}
+                    userName={userName}
+                    setUserName={setUserName}
+                    setIsLogin={setIsLogin}
+                  />
+                }
+              />
 
-              <Route path="/answer/edit/:id" element={<AnswerEditPage jwtToken={jwtToken} setIsLogin={setIsLogin}/>} />
+              <Route
+                path="/answer/edit/:id"
+                element={
+                  <AnswerEditPage jwtToken={jwtToken} setIsLogin={setIsLogin} />
+                }
+              />
 
               <Route path="/posts/:id" element={<NotFoundPage />} />
 
               <Route
                 path="/posts/edit/:id"
                 element={
-                <EditPage 
-                jwtToken={jwtToken}
-                userInfo={userInfo}
-                getValidToken={getValidToken}
-                setIsLogin={setIsLogin}
-                />}
+                  <EditPage
+                    jwtToken={jwtToken}
+                    userInfo={userInfo}
+                    getValidToken={getValidToken}
+                    setIsLogin={setIsLogin}
+                  />
+                }
               />
             </Routes>
           </RoutesWrapper>

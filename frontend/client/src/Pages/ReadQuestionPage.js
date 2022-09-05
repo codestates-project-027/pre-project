@@ -12,14 +12,21 @@ import {
 } from 'react-icons/bs';
 import { TiCancel } from 'react-icons/ti';
 
-const ReadQuestionPage = ({jwtToken, isLogin, userName, setUserName, setIsLogin}) => {
-  
+
+const ReadQuestionPage = ({
+  jwtToken,
+  isLogin,
+  userName,
+  setUserName,
+  setIsLogin,
+}) => {
   const url = '/question/'; //서버경로 수정
   const voteUrl = '/vote/question';
   const postAnswerUrl = '/answer';
   const { id } = useParams();
   const navigate = useNavigate();
   const [data, setData] = useState([]);
+  const [tags, setTags] = useState('');
   const [answerData, setAnswerData] = useState([]); //불러온 answer data
   const [commentData, setCommentData] = useState([]);
   const [questionId, setQuestionId] = useState(id);
@@ -27,19 +34,20 @@ const ReadQuestionPage = ({jwtToken, isLogin, userName, setUserName, setIsLogin}
   const [votedUp, setVotedUp] = useState(false);
   const [votedDown, setVotedDown] = useState(false);
   const [voteCanceled, setVoteCanceled] = useState(false);
-  
-
 
   const headers = { headers: { Authorization: `Bearer ${jwtToken}` } };
-  
-  
+
+  //TagBlock handler
+  const tagBlockHandler = (tags) => {
+    if (tags!==[]){setTags(tags)}
+  }
   //Question
   const getData = async () => {
     const getResponse = await axios(url + id);
     setData(getResponse.data);
     setAnswerData(getResponse.data.answerList);
     setCommentData(answerData.commentList);
-    setUserName(localStorage.getItem('user-name'))
+    setUserName(localStorage.getItem('user-name'));
   };
 
   const deleteData = async () => {
@@ -51,7 +59,7 @@ const ReadQuestionPage = ({jwtToken, isLogin, userName, setUserName, setIsLogin}
     } catch (err) {
       if (err.response) {
         alert(`만료된 토큰입니다. 다시 로그인해주세요`);
-        setIsLogin(false)
+        setIsLogin(false);
         navigate('/login');
       }
     }
@@ -59,78 +67,100 @@ const ReadQuestionPage = ({jwtToken, isLogin, userName, setUserName, setIsLogin}
 
   //Answer
   const postAnswer = async (e) => {
-    if (answerContents===''){alert(`내용을 입력하세요`); return ; }
+    if (answerContents === '') {
+      alert(`내용을 입력하세요`);
+      return;
+    }
     e.preventDefault();
-    const answer = { questionId, contents: answerContents, userName:localStorage.getItem('user-name') };
+    const answer = {
+      questionId,
+      contents: answerContents,
+      userName: localStorage.getItem('user-name'),
+    };
     try {
       await axios.post(postAnswerUrl, answer, headers);
-    window.location.reload();
-  } catch (err) {
-    if (err.response) {
-      alert(`만료된 토큰입니다. 다시 로그인해주세요`);
-      setIsLogin(false)
-      navigate('/login');
+      window.location.reload();
+    } catch (err) {
+      if (err.response) {
+        alert(`만료된 토큰입니다. 다시 로그인해주세요`);
+        setIsLogin(false);
+        navigate('/login');
+      }
     }
-  }
-    
-    
   };
   //votes
   const voteUp = async () => {
     try {
-      const up = { questionId: id, userName:localStorage.getItem('user-name'), vote: true};
+      const up = {
+        questionId: id,
+        userName: localStorage.getItem('user-name'),
+        vote: true,
+      };
       await axios.post(voteUrl, up, headers);
-      setVotedUp(true); setVotedDown(false); setVoteCanceled(false);
+      setVotedUp(true);
+      setVotedDown(false);
+      setVoteCanceled(false);
       window.location.reload();
     } catch (err) {
-      if (err.response){
-        if (err.response.status===409){alert(`Already liked`)}
-        else {
-        alert(`만료된 토큰입니다. 다시 로그인해주세요`);
-        setIsLogin(false)
-        navigate('/login');
+      if (err.response) {
+        if (err.response.status === 409) {
+          alert(`Already liked`);
+        } else {
+          alert(`만료된 토큰입니다. 다시 로그인해주세요`);
+          setIsLogin(false);
+          navigate('/login');
         }
       }
     }
-    
   };
 
   const voteDown = async () => {
     try {
-      const down = { questionId: id, userName:localStorage.getItem('user-name'), vote: false};
-    await axios.post(voteUrl, down, headers );
-    setVotedDown(true); setVotedUp(false); setVoteCanceled(false);
-    window.location.reload();
-  } catch (err) {
-    if (err.response){
-      if (err.response.status===409){alert(`Already disliked`)}
-      else {
-      alert(`만료된 토큰입니다. 다시 로그인해주세요`);
-      setIsLogin(false)
-      navigate('/login');
+      const down = {
+        questionId: id,
+        userName: localStorage.getItem('user-name'),
+        vote: false,
+      };
+      await axios.post(voteUrl, down, headers);
+      setVotedDown(true);
+      setVotedUp(false);
+      setVoteCanceled(false);
+      window.location.reload();
+    } catch (err) {
+      if (err.response) {
+        if (err.response.status === 409) {
+          alert(`Already disliked`);
+        } else {
+          alert(`만료된 토큰입니다. 다시 로그인해주세요`);
+          setIsLogin(false);
+          navigate('/login');
+        }
       }
     }
-  }
-    
   };
 
-  const voteCancel = async () => { 
+  const voteCancel = async () => {
     try {
-      const reset = { questionId: id, userName:localStorage.getItem('user-name') };
-    await axios.delete(voteUrl, reset, headers);
-    setVoteCanceled(true); setVotedUp(false); setVotedDown(false);
-    window.location.reload();
-  } catch (err) {
-    if (err.response){
-      if (err.response.status===409){alert(`Already canceled`)}
-      else {
-      alert(`만료된 토큰입니다. 다시 로그인해주세요`);
-      setIsLogin(false)
-      navigate('/login');
+      const reset = {
+        questionId: id,
+        userName: localStorage.getItem('user-name'),
+      };
+      await axios.delete(voteUrl, reset, headers);
+      setVoteCanceled(true);
+      setVotedUp(false);
+      setVotedDown(false);
+      window.location.reload();
+    } catch (err) {
+      if (err.response) {
+        if (err.response.status === 409) {
+          alert(`Already canceled`);
+        } else {
+          alert(`만료된 토큰입니다. 다시 로그인해주세요`);
+          setIsLogin(false);
+          navigate('/login');
+        }
       }
     }
-  }
-    
   };
 
   useEffect(() => {
@@ -157,10 +187,11 @@ const ReadQuestionPage = ({jwtToken, isLogin, userName, setUserName, setIsLogin}
                 <p className="date--and--answer">{data.userName}</p>
               </div>
             </div>
-    {isLogin? (<Link to="/askquestionpage">
-              <AskButton>Ask Question</AskButton>
-            </Link>) : null }
-            
+            {isLogin ? (
+              <Link to="/askquestionpage">
+                <AskButton>Ask Question</AskButton>
+              </Link>
+            ) : null}
           </div>
 
           <div className="content--wrapper">
@@ -187,21 +218,27 @@ const ReadQuestionPage = ({jwtToken, isLogin, userName, setUserName, setIsLogin}
             <div className="content--comment--answer">
               <pre className="content">{data.contents}</pre>
               <div className="tags--edit--delete">
-                <div className="tags">{data.tags}</div>
+                <div className="tags">{data.tags}
+               
+                  </div>
+
+
                 <div className="edit--delete">
                   <div className="edit">
                     {localStorage.setItem('title', data.title)}
                     {localStorage.setItem('body', data.contents)}
                     {localStorage.setItem('tags', data.tags)}
-                    {data.userName === localStorage.getItem('user-name')? ( <Link to={`/posts/edit/${id}`} style={LinkStyle}>
-                      Edit
-                    </Link>):null}
-                   
+                    {data.userName === localStorage.getItem('user-name') ? (
+                      <Link to={`/posts/edit/${id}`} style={LinkStyle}>
+                        Edit
+                      </Link>
+                    ) : null}
                   </div>
-                  {data.userName === localStorage.getItem('user-name')?(<div className="delete" onClick={deleteData}>
-                    Delete
-                  </div>):null}
-                  
+                  {data.userName === localStorage.getItem('user-name') ? (
+                    <div className="delete" onClick={deleteData}>
+                      Delete
+                    </div>
+                  ) : null}
                 </div>
               </div>
 
@@ -210,14 +247,14 @@ const ReadQuestionPage = ({jwtToken, isLogin, userName, setUserName, setIsLogin}
                   <div className="read--answer--desc">
                     {answerData ? answerData.length : null}&nbsp;Answers
                   </div>
-                  <AnswerCard 
-                  answerData={answerData} 
-                  jwtToken={jwtToken}
-                  headers={headers}
-                  userName={userName}
-                  setUserName={setUserName}
-                  isLogin={isLogin}
-                  setIsLogin={setIsLogin}
+                  <AnswerCard
+                    answerData={answerData}
+                    jwtToken={jwtToken}
+                    headers={headers}
+                    userName={userName}
+                    setUserName={setUserName}
+                    isLogin={isLogin}
+                    setIsLogin={setIsLogin}
                   />
                 </div>
 
@@ -233,7 +270,6 @@ const ReadQuestionPage = ({jwtToken, isLogin, userName, setUserName, setIsLogin}
                 {' '}
                 Post your Answer{' '}
               </AskButton>
- 
             </div>
 
             <div className="sub--wrapper">

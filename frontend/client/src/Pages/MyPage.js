@@ -2,7 +2,6 @@ import styled from 'styled-components';
 import PleaseLoginPage from './PleaseLoginPage';
 
 export default function Mypage({ userInfo, isLogin, logoutHandler }) {
-
   return (
     <>
       {isLogin ? (

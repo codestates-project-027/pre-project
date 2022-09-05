@@ -8,15 +8,14 @@ const DeleteCommntBtn = ({ id, headers, setIsLogin }) => {
   const deleteComment = async () => {
     try {
       await axios.delete(deleteCommentUrl + id, headers);
-    window.location.reload();
-  } catch (err) {
-    if (err.response) {
-      alert(`만료된 토큰입니다. 다시 로그인해주세요`);
-      setIsLogin(false)
-      navigate('/login');
+      window.location.reload();
+    } catch (err) {
+      if (err.response) {
+        alert(`만료된 토큰입니다. 다시 로그인해주세요`);
+        setIsLogin(false);
+        navigate('/login');
+      }
     }
-  }
-    
   };
   return (
     <>

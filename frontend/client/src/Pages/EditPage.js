@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
 
-const EditPage = ({jwtToken, userInfo, getValidToken, setIsLogin}) => {
+const EditPage = ({ jwtToken, userInfo, getValidToken, setIsLogin }) => {
   const url = '/question/';
   const { id } = useParams();
   const navigate = useNavigate();
@@ -15,27 +15,28 @@ const EditPage = ({jwtToken, userInfo, getValidToken, setIsLogin}) => {
   const [tags, setTags] = useState(prevTags);
 
   const updatePost = async (e) => {
-    if (title==='' || contents==='' || tags===''){alert(`내용을 입력하세요`); return ; }
+    if (title === '' || contents === '' || tags === '') {
+      alert(`내용을 입력하세요`);
+      return;
+    }
     try {
       const headers = { headers: { Authorization: `Bearer ${jwtToken}` } };
       e.preventDefault();
-    const updatePost = {
-      title,
-      contents,
-      tags: [JSON.parse(JSON.stringify(tags))],
-    };
-    await axios.patch(url + id, updatePost, headers).then(() => {
-      navigate('/questionspage');
-    });
-
-  } catch (err) {
-    if (err.response) {
-      alert(`만료된 토큰입니다. 다시 로그인해주세요`);
-      setIsLogin(false)
-      navigate('/login');
+      const updatePost = {
+        title,
+        contents,
+        tags: [JSON.parse(JSON.stringify(tags))],
+      };
+      await axios.patch(url + id, updatePost, headers).then(() => {
+        navigate('/questionspage');
+      });
+    } catch (err) {
+      if (err.response) {
+        alert(`만료된 토큰입니다. 다시 로그인해주세요`);
+        setIsLogin(false);
+        navigate('/login');
+      }
     }
-  }
-    
   };
 
   const discardDraft = () => {

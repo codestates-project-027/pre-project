@@ -15,7 +15,10 @@ const AskQuestionForm = ({ jwtToken, userInfoUserName, setIsLogin }) => {
 
   const postData = async (e) => {
     e.preventDefault();
-    if (title==='' || contents==='' || tags===''){alert(`내용을 입력하세요`); return ; }
+    if (title === '' || contents === '' || tags === '') {
+      alert(`내용을 입력하세요`);
+      return;
+    }
     try {
       const headers = { headers: { Authorization: `Bearer ${jwtToken}` } };
       const post = {
@@ -32,7 +35,7 @@ const AskQuestionForm = ({ jwtToken, userInfoUserName, setIsLogin }) => {
     } catch (err) {
       if (err.response) {
         alert(`만료된 토큰입니다. 다시 로그인해주세요`);
-        setIsLogin(false)
+        setIsLogin(false);
         navigate('/login');
       }
     }
