@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import OverflowBlog from '../assets/overflowblog.png';
 import AskButton from '../Components/AskButton';
 import QuestionCard from '../Components/QuestionCard';
+import MoreTab from '../Components/MoreTab';
 
 const QuestionsPage = ({ isLogin, limit, totalPosts}) => {
   localStorage.removeItem('title');
@@ -84,7 +85,51 @@ const QuestionsPage = ({ isLogin, limit, totalPosts}) => {
     setData(getResponse.data.content);
     setAnswerData(getResponse.data.answerList);
   }
-  //Bountied
+  //MoreTab
+  const mostViews = async () => {
+    const getResponse = await axios(pageUrl + id+'&sortValue=views');
+    setData(getResponse.data.content);
+    setAnswerData(getResponse.data.answerList);
+  }
+
+  const mostVotes = async () => {
+    const getResponse = await axios(pageUrl + id+'&sortValue=votes');
+    setData(getResponse.data.content);
+    setAnswerData(getResponse.data.answerList);
+  }
+
+  const mostAnswers = async () => {
+    const getResponse = await axios(pageUrl + id+'&sortValue=answers');
+    setData(getResponse.data.content);
+    setAnswerData(getResponse.data.answerList);
+  }
+
+  const leastViews = async () => {
+    const getResponse = await axios(pageUrl + id+'&sortValue=views&sort=min');
+    setData(getResponse.data.content);
+    setAnswerData(getResponse.data.answerList);
+  }
+
+  const leastVotes = async () => {
+    const getResponse = await axios(pageUrl + id+'&sortValue=votes&sort=min');
+    setData(getResponse.data.content);
+    setAnswerData(getResponse.data.answerList);
+  }
+
+  const leastAnswers = async () => {
+    const getResponse = await axios(pageUrl + id+'&sortValue=answers&sort=min');
+    setData(getResponse.data.content);
+    setAnswerData(getResponse.data.answerList);
+  }
+
+
+
+
+
+
+
+
+
   
 
   useEffect(() => {
@@ -107,6 +152,10 @@ const QuestionsPage = ({ isLogin, limit, totalPosts}) => {
     }
     if (index === 1){ //Active
       getActiveData();
+    }
+
+    if (index ===4){
+     
     }
   };
 
@@ -148,15 +197,20 @@ const QuestionsPage = ({ isLogin, limit, totalPosts}) => {
                       </li>
                     );
                   })}
+                 
                 </TabMenu>
                 <Filter>Filter</Filter>
               </div>
+              
             </div>
+            {currentTab === 4 ? (<MoreTab mostViews={mostViews} mostVotes={mostVotes} mostAnswers={mostAnswers}
+            leastViews={leastViews} leastVotes={leastVotes} leastAnswers={leastAnswers}/>):null}
 
             <div className="questions-wrapper">
               {data.slice(offset, offset + limit).map((item) => (
                 <div style={{ width: '100%' }} key={item.id}>
                   <QuestionCard activeTime={item.active} calculatedTime={calculatedTime} item={item} answerData={answerData}/>
+                  {console.log(answerData)}
                 </div>
               ))}
             </div>

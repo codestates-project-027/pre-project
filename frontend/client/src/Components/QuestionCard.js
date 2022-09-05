@@ -10,7 +10,7 @@ const QuestionCard = ({ activeTime, calculatedTime, item, answerData }) => {
           <div className="sidequestion--wrapper">
             <div className="vote">{item.votes} votes</div>
             <div className="answerview">
-              {answerData ? answerData.length : 0} answers
+              {item.answers} answers
             </div>
             <div className="answerview">{item.views} views</div>
           </div>
