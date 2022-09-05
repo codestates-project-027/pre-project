@@ -164,17 +164,12 @@ const QuestionsPage = ({ isLogin, limit, totalPosts}) => {
             <GlobalDiv>
               {console.log(`id:${id},page:${page},offset:${offset}`)}
               <Button onClick={toPrevPage}>&lt;</Button>
-              {Array(numPages)
-                .fill()
-                .map((_, el) => (
+              {Array(numPages).fill().map((_, el) => (
                   <Button
                     className="page--btn"
                     key={el + 1}
-                    onClick={() => {
-                      selectPage(el);
-                    }}
-                    aria-current={id === el + 1 ? 'page' : null}
-                  >
+                    onClick={() => { selectPage(el);}}
+                    aria-current={id === el + 1 ? 'page' : null}>
                     {el + 1} {/*setPage */}
                   </Button>
                 ))}

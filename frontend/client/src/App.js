@@ -130,6 +130,7 @@ function App() {
   //pagination
   const [limit, setLimit] = useState(10);
   const [totalPosts, setTotalPosts] = useState(0);
+  const [offset, setOffset] = useState(0);
 
   //GET
   const getData = async () => {
@@ -153,6 +154,7 @@ function App() {
     setData(getResponse.data);
     setTotalPosts(getResponse.data.totalElements);
     setTotalPages(getResponse.data.totalPages);
+    localStorage.setItem('offset',getResponse.data.pageable.offset);
   };
 
   useEffect(() => {
@@ -183,6 +185,8 @@ function App() {
                     totalPosts={totalPosts}
                     userName={userName}
                     totalPages={totalPages}
+                    offset={offset}
+                    setOffset={setOffset}
                   />
                 }
               />

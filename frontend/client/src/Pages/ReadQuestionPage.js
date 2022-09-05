@@ -119,11 +119,14 @@ const ReadQuestionPage = ({
         userName: localStorage.getItem('user-name'),
         vote: false,
       };
-      await axios.post(voteUrl, down, headers);
+      // await axios.post(voteUrl, down, headers);
       setVotedDown(true);
       setVotedUp(false);
       setVoteCanceled(false);
-      window.location.reload();
+      // window.location.reload();
+
+      {console.log(down)}
+      {console.log(headers)}
     } catch (err) {
       if (err.response) {
         if (err.response.status === 409) {
@@ -139,26 +142,47 @@ const ReadQuestionPage = ({
 
   const voteCancel = async () => {
     try {
-      const reset = {
-        questionId: id,
-        userName: localStorage.getItem('user-name'),
-      };
-      await axios.delete(voteUrl, reset, headers);
+      // const cancel = {
+      //   questionId: id,
+      //   userName: localStorage.getItem('user-name'),
+      // };
+      // await axios.delete(voteUrl, {
+      //     data: {
+      //       questionId: id,
+      //       userName: localStorage.getItem('user-name'),
+      //     }, 
+      //     headers
+      //   });
+      const cancel = { questionId: id, userName: localStorage.getItem('user-name')};
+      // await axios.delete(voteUrl, { data: cancel }, headers);
+      await axios.delete(voteUrl)
+      {console.log(cancel)}
+      {console.log(headers)}
+
+      
+
       setVoteCanceled(true);
       setVotedUp(false);
       setVotedDown(false);
-      window.location.reload();
+      // window.location.reload();
+    // } catch (err) {
+    //   if (err.response) {
+    //     if (err.response.status === 409) {
+    //       alert(`Already canceled`);
+    //     } else {
+    //       alert(`만료된 토큰입니다. 다시 로그인해주세요`);
+    //       setIsLogin(false);
+    //       navigate('/login');
+    //     }
+    //   }
+    // }
     } catch (err) {
-      if (err.response) {
-        if (err.response.status === 409) {
-          alert(`Already canceled`);
-        } else {
-          alert(`만료된 토큰입니다. 다시 로그인해주세요`);
-          setIsLogin(false);
-          navigate('/login');
-        }
-      }
+    if (err.response) {
+      if (err.response.status === 403) {
+        console.log(err.response.data);
+      } 
     }
+  }
   };
 
   useEffect(() => {

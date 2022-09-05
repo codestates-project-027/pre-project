@@ -33,7 +33,10 @@ const AskQuestionForm = ({ jwtToken, userInfoUserName, setIsLogin }) => {
         window.location.reload();
       });
     } catch (err) {
-      if (err.response) {
+      if (err.response.status===400){
+        alert(`내용을 입력하세요`)
+      }
+      else if (err.response.status===403) {
         alert(`만료된 토큰입니다. 다시 로그인해주세요`);
         setIsLogin(false);
         navigate('/login');
@@ -43,7 +46,7 @@ const AskQuestionForm = ({ jwtToken, userInfoUserName, setIsLogin }) => {
 
   return (
     <Test>
-      <form>
+      <div className="form">
         <div className="wrapper">
           <div className="main-first">Title</div>
           <div className="main">
@@ -95,7 +98,7 @@ const AskQuestionForm = ({ jwtToken, userInfoUserName, setIsLogin }) => {
             <Button2>Discard draft</Button2>
           </div>
         </div>
-      </form>
+      </div>
     </Test>
   );
 };
@@ -110,7 +113,7 @@ const Test = styled.div`
   height: 100vh;
   color: rgb(47, 47, 47);
 
-  form {
+  .form {
     display: flex;
     flex-direction: column;
     width: 80%;
