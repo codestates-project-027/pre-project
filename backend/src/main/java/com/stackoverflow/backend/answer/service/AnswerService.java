@@ -3,19 +3,15 @@ package com.stackoverflow.backend.answer.service;
 import com.stackoverflow.backend.answer.domain.Answer;
 import com.stackoverflow.backend.answer.domain.AnswerDTO;
 import com.stackoverflow.backend.answer.domain.AnswerRepository;
-import com.stackoverflow.backend.answer.mapper.AnswerMapper;
 import com.stackoverflow.backend.exception.CustomException;
 import com.stackoverflow.backend.exception.ErrorMessage;
 import com.stackoverflow.backend.question.domain.Question;
-import com.stackoverflow.backend.question.domain.QuestionDTO;
 import com.stackoverflow.backend.question.domain.QuestionRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -31,7 +27,7 @@ public class AnswerService {
         checkAuth(answerDTO.getUserName(), UserName);
         Question question = questionRepository.findById(answerDTO.getQuestionId())
                 .orElseThrow(()->new CustomException(ErrorMessage.QUESTION_NOT_FOUND));
-        countAnswer(question, "add");
+        countAnswerAndActive(question, "add");
         answerRepository.save(new Answer(answerDTO.getContents(), answerDTO.getUserName(), question));
     }
 
@@ -41,6 +37,7 @@ public class AnswerService {
         checkAuth(answer.getUserName(), UserName);
         if (answerDTO.getContents()!=null) answer.setContents(answerDTO.getContents());
         answerRepository.save(answer);
+        countAnswerAndActive(answer.getQuestion(),"none");
     }
 
     @Transactional
@@ -48,20 +45,16 @@ public class AnswerService {
         Answer answer = answerRepository.findById(answer_id)
                 .orElseThrow(()->new CustomException(ErrorMessage.ANSWER_NOT_FOUND));
         checkAuth(answer.getUserName(), UserName);
-        countAnswer(answer.getQuestion(), "sub");
+        countAnswerAndActive(answer.getQuestion(), "sub");
         answerRepository.deleteById(answer_id);
     }
 
 
-    private void countAnswer(Question question, String fun){
-        if (fun.equals("add")) {
-            question.addAnswerCount();
-            questionRepository.save(question);
-        }
-        else {
-            question.subAnswerCount();
-            questionRepository.save(question);
-        }
+    private void countAnswerAndActive(Question question, String fun){
+        if (fun.equals("add")) question.addAnswerCount();
+        if (fun.equals("sub")) question.subAnswerCount();
+        question.setActiveTime();
+        questionRepository.save(question);
     }
 
     private void checkAuth(String userName1, String userName2) {

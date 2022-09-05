@@ -5,7 +5,6 @@ import com.stackoverflow.backend.question.domain.Question;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Map;
 
 @Getter
 @Setter

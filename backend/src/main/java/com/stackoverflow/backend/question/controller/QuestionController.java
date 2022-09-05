@@ -4,24 +4,17 @@ package com.stackoverflow.backend.question.controller;
 import com.stackoverflow.backend.auth.oauth.PrincipalDetails;
 import com.stackoverflow.backend.exception.CustomException;
 import com.stackoverflow.backend.exception.ErrorMessage;
-import com.stackoverflow.backend.question.domain.Question;
 import com.stackoverflow.backend.question.domain.QuestionDTO;
-import com.stackoverflow.backend.question.domain.QuestionRepository;
-import com.stackoverflow.backend.question.mapper.QuestionMapper;
 import com.stackoverflow.backend.question.service.QuestionService;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.annotations.Filter;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/question")

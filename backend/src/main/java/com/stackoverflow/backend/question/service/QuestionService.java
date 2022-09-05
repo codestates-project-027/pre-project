@@ -8,7 +8,6 @@ import com.stackoverflow.backend.tag.domain.Tag;
 import com.stackoverflow.backend.tag.domain.TagRepository;
 import com.stackoverflow.backend.tag.domain.questiontag.QuestionTag;
 import com.stackoverflow.backend.tag.domain.questiontag.QuestionTagRepository;
-import com.stackoverflow.backend.vote.domain.QuestionVote;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
@@ -18,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -36,19 +34,15 @@ public class QuestionService {
     public Page<QuestionDTO.responsePage> getQuestions(int page, String sortValue,String sort){
         if (page==0) page++;
         if (sortValue==null) sortValue="createdAt";
-        //todo generic refactoring
         if (sort==null || sort.equals("max")) {
-            return questionRepository.findBy(PageRequest.of(page-1,10, Sort.by(sortValue).descending()))
-                    .map(questionMapper::questionToQuestionResponsePage);
+            return getResponsePage(page, Sort.by(sortValue).descending());
         }
-        return questionRepository.findBy(PageRequest.of(page-1,10, Sort.by(sortValue).ascending()))
-                .map(questionMapper::questionToQuestionResponsePage);
+        return getResponsePage(page, Sort.by(sortValue).ascending());
     }
 
     public QuestionDTO.response getQuestion(Long question_id, String userIp){
         Question question = checkQuestion(question_id);
         eventPublisher.publishEvent(new ViewEvent(eventPublisher,question_id, secureIp(userIp)));
-        question.setVotes(getQuestionVotes(question));
         return questionMapper.questionToQuestionResponse(question);
     }
 
@@ -70,6 +64,7 @@ public class QuestionService {
             questionTagRepository.deleteAllByQuestion(question);
             saveTag(questionDTO.getTags(), question);
             question.setTags(questionDTO.getTags());
+            question.setActiveTime();
         }
         questionRepository.save(question);
     }
@@ -101,15 +96,22 @@ public class QuestionService {
         }
     }
 
-    private Long getQuestionVotes(Question question) {
-        Long votes = 0L;
-        for(QuestionVote questionVotes: question.getQuestionVoteList()){
-            if (questionVotes.getVote()) votes++;
-            else votes--;
-        }
-        return votes;
+    private Page<QuestionDTO.responsePage> getResponsePage(int page, Sort sortValue) {
+        return questionRepository.findBy(PageRequest.of(page - 1, 10, sortValue))
+                .map(questionMapper::questionToQuestionResponsePage);
     }
+
     private void checkAuth(String userName1, String userName2) {
         if (!userName1.equals(userName2)) throw new CustomException(ErrorMessage.USERNAME_NOT_EQUAL);
     }
+
+//    //disabled
+//    private Long getQuestionVotes(Question question) {
+//        Long votes = 0L;
+//        for(QuestionVote questionVotes: question.getQuestionVoteList()){
+//            if (questionVotes.getVote()) votes++;
+//            else votes--;
+//        }
+//        return votes;
+//    }
 }

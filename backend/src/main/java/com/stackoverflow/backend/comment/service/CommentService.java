@@ -8,8 +8,11 @@ import com.stackoverflow.backend.comment.domain.CommentDTO;
 import com.stackoverflow.backend.comment.domain.CommentRepository;
 import com.stackoverflow.backend.exception.CustomException;
 import com.stackoverflow.backend.exception.ErrorMessage;
+import com.stackoverflow.backend.question.domain.Question;
+import com.stackoverflow.backend.question.domain.QuestionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
 
 @Service
 @RequiredArgsConstructor
@@ -17,12 +20,16 @@ public class CommentService {
 
     private final CommentRepository commentRepository;
     private final AnswerRepository answerRepository;
+    private final QuestionRepository questionRepository;
 
     public void createComment(CommentDTO commentDTO, String UserName) {
         checkAuth(commentDTO.getUserName(), UserName);
         Answer answer = answerRepository.findById(commentDTO.getAnswerId())
                 .orElseThrow(()-> new CustomException(ErrorMessage.ANSWER_NOT_FOUND));
         commentRepository.save(new Comment(commentDTO.getContents(), commentDTO.getUserName(),answer));
+        Question question = answer.getQuestion();
+        question.setActiveTime();
+        questionRepository.save(question);
     }
 
     public void deleteComment(Long comment_id, String UserName) {

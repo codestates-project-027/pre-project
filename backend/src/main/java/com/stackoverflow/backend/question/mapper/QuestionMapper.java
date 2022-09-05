@@ -6,7 +6,6 @@ import com.stackoverflow.backend.question.domain.QuestionDTO;
 import org.mapstruct.Mapper;
 
 import java.util.List;
-import java.util.Optional;
 
 @Mapper(componentModel = "spring")
 public interface QuestionMapper {
