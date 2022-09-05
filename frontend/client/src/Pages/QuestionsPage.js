@@ -7,7 +7,7 @@ import AskButton from '../Components/AskButton';
 import QuestionCard from '../Components/QuestionCard';
 import MoreTab from '../Components/MoreTab';
 
-const QuestionsPage = ({ isLogin, limit, totalPosts}) => {
+const QuestionsPage = ({ isLogin, limit, totalPosts, currentPage, setCurrentPage}) => {
   localStorage.removeItem('title');
   localStorage.removeItem('body');
   localStorage.removeItem('edit-answer');
@@ -39,32 +39,28 @@ const QuestionsPage = ({ isLogin, limit, totalPosts}) => {
   const pageUrl = '/question?page=';
   const [data, setData] = useState([]);
   const [answerData, setAnswerData] = useState([]);
-  const [page, setPage] = useState(1);
   const [id, setId] = useState(1);
   const [currentTime, setCurrentTime] = useState(calculatedTime);
   const [open, setOpen] = useState(false);
 
   //Pagination
   const numPages = Math.ceil(totalPosts / limit);
-  const offset = (page - 1) * limit;
 
   const selectPage = (el) => {
     setId(el + 1);
-    setPage(el + 1);
   };
   const toPrevPage = () => {
     if (id !== 1) {
       setId(id - 1);
-      setPage(page - 1);
     }
   };
-
+  {console.log(currentPage)}
   const toNextPage = () => {
     if (id !== numPages) {
       setId(id + 1);
-      setPage(page + 1);
     }
   };
+  
   //Date calculations
   const newlyDated = () => {
     // calculatedTime
@@ -138,7 +134,7 @@ const QuestionsPage = ({ isLogin, limit, totalPosts}) => {
 
   useEffect(() => {
     getData(); 
-  }, []);
+  }, [id]);
 
   //tab 메뉴 관련
   const [currentTab, setCurrentTab] = useState(0);
@@ -214,13 +210,11 @@ const QuestionsPage = ({ isLogin, limit, totalPosts}) => {
               {data.map((item) => (
                 <div style={{ width: '100%' }} key={item.id}>
                   <QuestionCard activeTime={item.active} calculatedTime={calculatedTime} item={item}/>
-                  {console.log(answerData)}
                 </div>
               ))}
             </div>
 
             <GlobalDiv>
-              {console.log(`id:${id},page:${page},offset:${offset}`)}
               <Button onClick={toPrevPage}>&lt;</Button>
               {Array(numPages).fill().map((_, el) => (
                   <Button

@@ -44,11 +44,6 @@ const LogInPage = ({
         <>
           <div>login success</div>
           {setTimeout(function () {
-            // const userInfo = parseJwt(jwtToken);
-            // const answer = { questionId, contents: answerContents, userName };
-            // const userInfo = { username: parseJwt(jwtToken).username, email: parseJwt(jwtToken).email };
-            // // console.log(userInfo.email, userInfo.username);
-            // localStorage.setItem('username', JSON.stringify(userInfo));
             navigate('/questionspage');
           }, 1)}
         </>
