@@ -1,12 +1,7 @@
-import axios from 'axios';
 import styled from 'styled-components';
-import NotFoundPage from './NotFoundPage';
+import PleaseLoginPage from './PleaseLoginPage';
 
-export default function Mypage({ userInfo, setIsLogin, setUserInfo, isLogin }) {
-  const logoutHandler = () => {
-    //cli에서 처리
-  };
-
+export default function Mypage({ userInfo, isLogin, logoutHandler }) {
   return (
     <>
       {isLogin ? (
@@ -30,7 +25,7 @@ export default function Mypage({ userInfo, setIsLogin, setUserInfo, isLogin }) {
           </div>
         </LoginGlobalStyle>
       ) : (
-        <NotFoundPage />
+        <PleaseLoginPage />
       )}
     </>
   );

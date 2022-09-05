@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react';
 
 import styled from 'styled-components';
 import axios from 'axios';
-import { useJwt } from 'react-jwt';
 import Navbar from './Components/Navbar';
 import LeftSidebar from './Components/LeftSidebar';
 
@@ -18,21 +17,19 @@ import EditPage from './Pages/EditPage';
 import MyPage from './Pages/MyPage';
 import AnswerEditPage from './Pages/AnswerEditPage';
 
-// const token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJjb3Mgand0IHRva2VuIiwiaWQiOjEsImV4cCI6MTY2MjExMzQxMiwiZW1haWwiOiJhYmNAZ21haWwuY29tIiwidXNlcm5hbWUiOiJhYmMifQ.42iN6om2ZiK3IQvkjqMeLZ5Q7qS-dW77LA0BJWTzw-3a8hybENK3oZVh2gqfajY_xAUTB3P3TtdhKch89tjF1A"
-
 axios.defaults.withCredentials = true;
 
 function App() {
   const url = `/question?page=1`;
   const loginUrl = '/login';
 
-  // const {decodedToken, isExpired} = useJwt(token);
   const [data, setData] = useState([]);
 
   //JOIN
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
+  const [totalPages, setTotalPages] = useState(1);
 
   const usernameHandler = (event) => {
     setUsername(event.target.value);
@@ -48,21 +45,7 @@ function App() {
   const [isLogin, setIsLogin] = useState(false);
   const [userInfo, setUserInfo] = useState(null);
   const [jwtToken, setJwtToken] = useState('');
-
-  // const authHandler = () => { //check
-  //   axios
-  //     .get('https://localhost:4000/userinfo')
-  //     .then((res) => {
-  //       setIsLogin(true);
-  //       setUserInfo(res.data);
-  //     })
-  //     .catch((err) => {
-  //       if (err.response.status === 401) {
-  //         console.log(err.response.data);
-  //       }
-  //     });
-  // };
-  //login request
+  const [userName, setUserName] = useState('new comer');
 
   //Auth: Login
   const [loginInfo, setLoginInfo] = useState({ email: '', password: '' });
@@ -92,53 +75,56 @@ function App() {
     } else {
       setErrorMessage('');
     }
-
-    await axios
-      .post(loginUrl, { email, password })
-      .then((res) => {
+    try {
+      await axios.post(loginUrl, { email, password }).then((res) => {
         localStorage.setItem('login-token', res.headers.authorization);
         const token = localStorage.getItem('login-token');
         const resolved = parseJwt(token);
         setJwtToken(token);
         setUserInfo({ email: resolved.email, username: resolved.username });
-        setIsLogin(true);
-      })
-      .catch((err) => {
-        if (err.response.data.status === 401) {
-          setErrorMessage('로그인에 실패함');
+        localStorage.setItem('user-name', userInfo.username);
+        if (userInfo) {
+          setUserName(JSON.parse(JSON.stringify(userInfo.username)));
         }
+        setIsLogin(true);
       });
+    } catch (err) {
+      if (err.response) {
+        alert(err);
+      }
+    }
+    // .catch((err) => {
+    //   if (err.response.data.status === 401) {
+    //     setErrorMessage('로그인에 실패함');
+    //   }
+    // });
   };
 
   const getValidToken = async () => {
-    await axios
-      .post(loginUrl, { email, password })
-      .then((res) => {
+    //아마 필요없을듯
+    localStorage.removeItem('login-token');
+    localStorage.removeItem('user-name');
+    try {
+      await axios.post(loginUrl, { email, password }).then((res) => {
         localStorage.setItem('login-token', res.headers.authorization);
         const token = localStorage.getItem('login-token');
         const resolved = parseJwt(token);
         setJwtToken(token);
         setUserInfo({ email: resolved.email, username: resolved.username });
         setIsLogin(true);
-      })
-      .catch((err) => {
-        if (err.response.data.status === 401) {
-          setErrorMessage('로그인에 실패함');
-        }
       });
+    } catch (err) {
+      if (err.response) {
+        alert(err);
+      }
+    }
   };
 
   const logoutHandler = () => {
-    //로그아웃 구현-> client에서 처리 + 토큰 삭제
-    return axios
-      .post('https://localhost:4000/logout')
-      .then((res) => {
-        setUserInfo(null);
-        setIsLogin(false);
-      })
-      .catch((err) => {
-        alert(err);
-      });
+    localStorage.removeItem('login-token');
+    localStorage.removeItem('user-name');
+    setUserInfo(null);
+    setIsLogin(false);
   };
 
   //pagination
@@ -147,16 +133,31 @@ function App() {
 
   //GET
   const getData = async () => {
+    localStorage.getItem('login-token');
+    if (localStorage.getItem('login-token')) {
+      const token = localStorage.getItem('login-token');
+      const resolved = parseJwt(token);
+      setJwtToken(token);
+      setUserInfo({ email: resolved.email, username: resolved.username });
+      if (userInfo) {
+        setUserName(JSON.parse(JSON.stringify(userInfo.username)));
+        localStorage.setItem('user-name', userName);
+      }
+      setIsLogin(true);
+    }
+    if (!localStorage.getItem('login-token')) {
+      setIsLogin(false);
+    }
+
     const getResponse = await axios(url);
     setData(getResponse.data);
     setTotalPosts(getResponse.data.totalElements);
+    setTotalPages(getResponse.data.totalPages);
   };
 
   useEffect(() => {
     getData();
   }, []);
-
-  // {console.log(data.first)}
 
   return (
     <BrowserRouter>
@@ -180,6 +181,8 @@ function App() {
                     isLogin={isLogin}
                     limit={limit}
                     totalPosts={totalPosts}
+                    userName={userName}
+                    totalPages={totalPages}
                   />
                 }
               />
@@ -191,6 +194,7 @@ function App() {
                     jwtToken={jwtToken}
                     userInfo={userInfo}
                     getValidToken={getValidToken}
+                    setIsLogin={setIsLogin}
                   />
                 }
               />
@@ -231,32 +235,44 @@ function App() {
                 element={
                   <MyPage
                     userInfo={userInfo}
-                    setIsLogin={setIsLogin}
-                    setUserInfo={setUserInfo}
                     isLogin={isLogin}
+                    logoutHandler={logoutHandler}
                   />
                 }
               />
 
-              <Route path="/posts/:id" element={
-              <ReadQuestionPage 
-              jwtToken={jwtToken}
-              userInfo={userInfo}
-              getValidToken={getValidToken}
-              />} />
+              <Route
+                path="/posts/:id"
+                element={
+                  <ReadQuestionPage
+                    jwtToken={jwtToken}
+                    isLogin={isLogin}
+                    userName={userName}
+                    setUserName={setUserName}
+                    setIsLogin={setIsLogin}
+                  />
+                }
+              />
 
-              <Route path="/answer/edit/:id" element={<AnswerEditPage jwtToken={jwtToken}/>} />
+              <Route
+                path="/answer/edit/:id"
+                element={
+                  <AnswerEditPage jwtToken={jwtToken} setIsLogin={setIsLogin} />
+                }
+              />
 
               <Route path="/posts/:id" element={<NotFoundPage />} />
 
               <Route
                 path="/posts/edit/:id"
                 element={
-                <EditPage 
-                jwtToken={jwtToken}
-                userInfo={userInfo}
-                getValidToken={getValidToken}
-                />}
+                  <EditPage
+                    jwtToken={jwtToken}
+                    userInfo={userInfo}
+                    getValidToken={getValidToken}
+                    setIsLogin={setIsLogin}
+                  />
+                }
               />
             </Routes>
           </RoutesWrapper>

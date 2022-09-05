@@ -1,9 +1,6 @@
 import styled from 'styled-components';
-import { useState } from 'react';
-import { useJwt } from 'react-jwt';
 import { useNavigate } from 'react-router-dom';
 import { ReactComponent as Logo } from '../assets/LogoGlyphMd.svg';
-import axios from 'axios';
 
 const LogInPage = ({
   isLogin,
@@ -85,7 +82,7 @@ const LogInPage = ({
                     {' 로그인 상태 유지하기'}
                   </label>
 
-                  <button onClick={loginRQHandler}>Log in</button>
+                  <button onClick={loginRQHandler} style={{cursor: 'pointer'}}>Log in</button>
                   {errorMessage ? (
                     <div id="alert-message" data-testid="alert-message">
                       {errorMessage}

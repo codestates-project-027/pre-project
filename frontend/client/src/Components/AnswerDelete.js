@@ -1,20 +1,30 @@
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
-const AnswerDelete = ({ deleteUrl, dataEl, jwtToken }) => {
+const AnswerDelete = ({ deleteUrl, dataEl, jwtToken, isLogin, setIsLogin }) => {
+  const navigate = useNavigate();
 
   const deleteAnswer = async () => {
-    const headers = { headers: { Authorization: `Bearer ${jwtToken}` } };
-    const answer = { contents: dataEl.contents };
-    // await axios.delete(deleteUrl + dataEl.id, { data: answer }, headers);
-    await axios.delete(deleteUrl + dataEl.id, headers);
-    // window.location.reload();
+    try {
+      const headers = { headers: { Authorization: `Bearer ${jwtToken}` } };
+      await axios.delete(deleteUrl + dataEl.id, headers);
+      window.location.reload();
+    } catch (err) {
+      if (err.response) {
+        alert(`만료된 토큰입니다. 다시 로그인해주세요`);
+        setIsLogin(false);
+        navigate('/login');
+      }
+    }
   };
 
   return (
     <>
-      <button style={style} onClick={deleteAnswer}>
-        Delete
-      </button>
+      {dataEl.userName === localStorage.getItem('user-name') ? (
+        <button style={style} onClick={deleteAnswer}>
+          Delete
+        </button>
+      ) : null}
     </>
   );
 };

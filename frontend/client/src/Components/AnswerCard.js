@@ -4,7 +4,15 @@ import styled from 'styled-components';
 import AnswerDelete from './AnswerDelete';
 import CommentBtn from './CommentBtn';
 
-const AnswerCard = ({ answerData, jwtToken, headers, userName }) => {
+const AnswerCard = ({
+  answerData,
+  jwtToken,
+  headers,
+  userName,
+  setUserName,
+  isLogin,
+  setIsLogin,
+}) => {
   const deleteAnswerUrl = '/answer/';
   const { id } = useParams();
 
@@ -16,20 +24,27 @@ const AnswerCard = ({ answerData, jwtToken, headers, userName }) => {
             ? answerData.map((el) => (
                 <div key={el.id}>
                   <div className="answers--content">{el.contents}</div>
+                  {localStorage.setItem('edit-answer', el.contents)}
                   <div className="answers--edit--delete--author">
                     <div className="one">
                       <div className="answers--edit--delete">
-                        {/* {localStorage.setItem('answer', el.contents)} */}
-                        <Link
-                          to={`/answer/edit/${id}`}
-                          style={{ textDecoration: 'none' }}
-                          className="edit"
-                          state={{ el }}
-                        >
-                          Edit
-                        </Link>
+                        {el.userName === localStorage.getItem('user-name') ? (
+                          <Link
+                            to={`/answer/edit/${id}`}
+                            style={{ textDecoration: 'none' }}
+                            className="edit"
+                            state={{ el }}
+                          >
+                            Edit
+                          </Link>
+                        ) : null}
 
-                        <AnswerDelete deleteUrl={deleteAnswerUrl} dataEl={el} jwtToken={jwtToken} />
+                        <AnswerDelete
+                          deleteUrl={deleteAnswerUrl}
+                          dataEl={el}
+                          jwtToken={jwtToken}
+                          setIsLogin={setIsLogin}
+                        />
                       </div>
 
                       <div className="author--date">
@@ -39,8 +54,23 @@ const AnswerCard = ({ answerData, jwtToken, headers, userName }) => {
                     </div>
                     <div className="two">
                       <div className="comment--wrapper">
-                        <CommentCard commentData={el.commentList} headers={headers} userName={userName} />
-                        <CommentBtn style={CommentBtnStyle} id={el.id} headers={headers} userName={userName}  />
+                        <CommentCard
+                          commentData={el.commentList}
+                          headers={headers}
+                          userName={userName}
+                          isLogin={isLogin}
+                          setIsLogin={setIsLogin}
+                        />
+                        {isLogin ? (
+                          <CommentBtn
+                            style={CommentBtnStyle}
+                            id={el.id}
+                            headers={headers}
+                            userName={userName}
+                            setUserName={setUserName}
+                            setIsLogin={setIsLogin}
+                          />
+                        ) : null}
                       </div>
                     </div>
                   </div>

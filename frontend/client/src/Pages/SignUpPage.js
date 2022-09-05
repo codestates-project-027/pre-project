@@ -17,6 +17,7 @@ const SignUpPage = ({
   const url = '/join'; //서버경로 수정
   const navigate = useNavigate();
   const [click, setClick] = useState(false);
+  const [checked, setChecked] = useState(false);
 
   const regex =
     /([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
@@ -35,9 +36,9 @@ const SignUpPage = ({
     ) {
       await axios
         .post(url, joinInfo)
-        .then(() => alert('환영합니다!')).then(() => navigate('/questionspage'))
-        .catch((err) => alert('이미 가입한 회원정보입니다.'))
-        
+        .then(() => alert('환영합니다!'))
+        .then(() => navigate('/questionspage'))
+        .catch((err) => alert('이미 가입한 회원정보입니다.'));
     } else if (regex.test(email) === false || email.length === 0) {
       alert('이메일을 다시 입력해주세요');
     } else if (regex.test(email) === true && username.length < 8) {
@@ -45,6 +46,12 @@ const SignUpPage = ({
     } else {
       alert('비밀번호는 8자리 이상이여야 합니다');
     }
+  };
+
+  const checkHandler = (e) => {
+    if (e.target.checked) {
+      setChecked(true);
+    } else setChecked(false);
   };
   return (
     <SignUpCSS>
@@ -116,9 +123,16 @@ const SignUpPage = ({
             </div>
             <div className="signup-submit">
               <div>
-                <input type="checkbox" required className="opt--description" />
+                <input
+                  type="checkbox"
+                  onChange={checkHandler}
+                  className="opt--description"
+                />
                 Opt-in to receive occasional product updates, user research
                 invitations, company announcements, and digests.
+                {click && checked === false ? (
+                  <div className="signup-error">필수 체크항목입니다.</div>
+                ) : null}
               </div>
               <div>
                 <button onClick={submitHandler}>Sign up</button>

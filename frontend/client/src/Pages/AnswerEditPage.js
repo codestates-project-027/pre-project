@@ -4,15 +4,15 @@ import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
 
-const AnswerEditPage = ({jwtToken}) => {
+const AnswerEditPage = ({ jwtToken, setIsLogin }) => {
   const navigate = useNavigate();
   const headers = { headers: { Authorization: `Bearer ${jwtToken}` } };
-  
+
   const url = '/question/';
   const patchUrl = '/answer/';
 
   const [answerData, setAnswerData] = useState([]);
-  const [contents, setContents] = useState('');
+  const [contents, setContents] = useState(localStorage.getItem('edit-answer'));
   const { id } = useParams();
   const location = useLocation();
   const data = location.state.el;
@@ -22,17 +22,27 @@ const AnswerEditPage = ({jwtToken}) => {
     setAnswerData(getResponse.data.answerList);
   };
 
-  //   const prevAnswer = localStorage.getItem('answer');
-
   useEffect(() => {
     getData();
   }, []);
 
   const updatePost = async () => {
-    const updateAnswer = { contents };
-    await axios.patch(patchUrl + data.id, updateAnswer, headers).then(() => {
-      navigate(-1);
-    });
+    if (contents === '') {
+      alert(`내용을 입력하세요`);
+      return;
+    }
+    try {
+      const updateAnswer = { contents };
+      await axios.patch(patchUrl + data.id, updateAnswer, headers).then(() => {
+        navigate(-1);
+      });
+    } catch (err) {
+      if (err.response) {
+        alert(`만료된 토큰입니다. 다시 로그인해주세요`);
+        setIsLogin(false);
+        navigate('/login');
+      }
+    }
   };
 
   const goBack = () => {

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const AskQuestionForm = ({ jwtToken, userInfoUserName, getValidToken }) => {
+const AskQuestionForm = ({ jwtToken, userInfoUserName, setIsLogin }) => {
   const url = '/question';
   const [userName, setUsername] = useState(userInfoUserName);
 
@@ -14,9 +14,13 @@ const AskQuestionForm = ({ jwtToken, userInfoUserName, getValidToken }) => {
   const navigate = useNavigate();
 
   const postData = async (e) => {
+    e.preventDefault();
+    if (title === '' || contents === '' || tags === '') {
+      alert(`내용을 입력하세요`);
+      return;
+    }
     try {
       const headers = { headers: { Authorization: `Bearer ${jwtToken}` } };
-      e.preventDefault();
       const post = {
         title,
         contents,
@@ -26,13 +30,15 @@ const AskQuestionForm = ({ jwtToken, userInfoUserName, getValidToken }) => {
 
       await axios.post(url, post, headers).then(() => {
         navigate('/questionspage');
+        window.location.reload();
       });
     } catch (err) {
       if (err.response) {
-        console.log(err);
+        alert(`만료된 토큰입니다. 다시 로그인해주세요`);
+        setIsLogin(false);
+        navigate('/login');
       }
     }
-    //토큰 만료시 getValidToken 실행+ReadQuestionPage+
   };
 
   return (
@@ -47,6 +53,7 @@ const AskQuestionForm = ({ jwtToken, userInfoUserName, getValidToken }) => {
             className="main"
             type="text"
             value={title}
+            required
             onChange={(e) => setTitle(e.target.value)}
             placeholder="e.g. is there an R function for finding the index of an element in a vector?"
           />
@@ -63,6 +70,7 @@ const AskQuestionForm = ({ jwtToken, userInfoUserName, getValidToken }) => {
             className="main"
             type="text"
             value={contents}
+            required
             onChange={(e) => setContents(e.target.value)}
           />
         </div>
@@ -78,6 +86,7 @@ const AskQuestionForm = ({ jwtToken, userInfoUserName, getValidToken }) => {
             type="text"
             value={tags}
             onChange={(e) => setTags(e.target.value)}
+            required
             placeholder="e.g. (iphone android sql)"
           />
 
