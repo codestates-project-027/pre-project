@@ -90,7 +90,7 @@ function App() {
       });
     } catch (err) {
       if (err.response) {
-        alert(err);
+        alert(`등록되지 않은 회원정보입니다.`);
       }
     }
     // .catch((err) => {
