@@ -42,7 +42,7 @@ const LoginGlobalStyle = styled.div`
   justify-content: center;
   align-items: center;
   .logout-btn {
-    margin-top : 20px;
+    margin-top: 20px;
     cursor: pointer;
   }
 `;

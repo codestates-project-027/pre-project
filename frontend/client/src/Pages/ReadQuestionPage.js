@@ -13,7 +13,6 @@ import {
 import { TiCancel } from 'react-icons/ti';
 import TagBlank from '../Components/TagBlank';
 
-
 const ReadQuestionPage = ({
   jwtToken,
   isLogin,
@@ -38,7 +37,7 @@ const ReadQuestionPage = ({
   const headers = { headers: { Authorization: `Bearer ${jwtToken}` } };
 
   //TagBlock handler
-  
+
   //Question
   const getData = async () => {
     const getResponse = await axios(url + id);
@@ -123,10 +122,14 @@ const ReadQuestionPage = ({
       setVotedDown(true);
       setVotedUp(false);
       setVoteCanceled(false);
-      // window.location.reload();
+      window.location.reload();
 
-      {console.log(down)}
-      {console.log(headers)}
+      {
+        console.log(down);
+      }
+      {
+        console.log(headers);
+      }
     } catch (err) {
       if (err.response) {
         if (err.response.status === 409) {
@@ -150,39 +153,46 @@ const ReadQuestionPage = ({
       //     data: {
       //       questionId: id,
       //       userName: localStorage.getItem('user-name'),
-      //     }, 
+      //     },
       //     headers
       //   });
-      const cancel = { questionId: id, userName: localStorage.getItem('user-name')};
-      // await axios.delete(voteUrl, { data: cancel }, headers);
-      await axios.delete(voteUrl)
-      {console.log(cancel)}
-      {console.log(headers)}
-
-      
+      const cancel = {
+        questionId: id,
+        userName: localStorage.getItem('user-name'),
+      };
+      await axios.delete(voteUrl, { data: cancel }, headers);
+      // await axios.delete(voteUrl, { data:
+      //   {questionId: id, userName: localStorage.getItem('user-name')},
+      //   headers: {
+      //     'Authorization': 'Bearer ' + localStorage.getItem('login-token')
+      //   }
+      // })
+      // {console.log(cancel)}
+      // {console.log(headers)}
+      console.log(3);
 
       setVoteCanceled(true);
       setVotedUp(false);
       setVotedDown(false);
       // window.location.reload();
-    // } catch (err) {
-    //   if (err.response) {
-    //     if (err.response.status === 409) {
-    //       alert(`Already canceled`);
-    //     } else {
-    //       alert(`만료된 토큰입니다. 다시 로그인해주세요`);
-    //       setIsLogin(false);
-    //       navigate('/login');
-    //     }
-    //   }
-    // }
+      // } catch (err) {
+      //   if (err.response) {
+      //     if (err.response.status === 409) {
+      //       alert(`Already canceled`);
+      //     } else {
+      //       alert(`만료된 토큰입니다. 다시 로그인해주세요`);
+      //       setIsLogin(false);
+      //       navigate('/login');
+      //     }
+      //   }
+      // }
     } catch (err) {
-    if (err.response) {
-      if (err.response.status === 403) {
-        console.log(err.response.data);
-      } 
+      if (err.response) {
+        if (err.response.status === 403) {
+          console.log(err.response.data);
+        }
+      }
     }
-  }
   };
 
   useEffect(() => {
@@ -240,9 +250,10 @@ const ReadQuestionPage = ({
             <div className="content--comment--answer">
               <pre className="content">{data.contents}</pre>
               <div className="tags--edit--delete">
-                <div className="tags">{localStorage.setItem('tags-block',data.tags)}
-                <TagBlank tags={localStorage.getItem('tags-block')}/>
-                  </div>
+                <div className="tags">
+                  {localStorage.setItem('tags-block', data.tags)}
+                  <TagBlank tags={localStorage.getItem('tags-block')} />
+                </div>
 
                 <div className="edit--delete">
                   <div className="edit">
@@ -385,9 +396,9 @@ const Div = styled.div`
     margin-top: 30px;
   }
   .tags {
-   display: flex;
-   justify-content: left;
-   align-items : center;
+    display: flex;
+    justify-content: left;
+    align-items: center;
   }
   .edit--delete {
     display: flex;

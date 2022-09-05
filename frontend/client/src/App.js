@@ -100,25 +100,25 @@ function App() {
     // });
   };
 
-  const getValidToken = async () => {
-    //아마 필요없을듯
-    localStorage.removeItem('login-token');
-    localStorage.removeItem('user-name');
-    try {
-      await axios.post(loginUrl, { email, password }).then((res) => {
-        localStorage.setItem('login-token', res.headers.authorization);
-        const token = localStorage.getItem('login-token');
-        const resolved = parseJwt(token);
-        setJwtToken(token);
-        setUserInfo({ email: resolved.email, username: resolved.username });
-        setIsLogin(true);
-      });
-    } catch (err) {
-      if (err.response) {
-        alert(err);
-      }
-    }
-  };
+  // const getValidToken = async () => {
+  //   //아마 필요없을듯
+  //   localStorage.removeItem('login-token');
+  //   localStorage.removeItem('user-name');
+  //   try {
+  //     await axios.post(loginUrl, { email, password }).then((res) => {
+  //       localStorage.setItem('login-token', res.headers.authorization);
+  //       const token = localStorage.getItem('login-token');
+  //       const resolved = parseJwt(token);
+  //       setJwtToken(token);
+  //       setUserInfo({ email: resolved.email, username: resolved.username });
+  //       setIsLogin(true);
+  //     });
+  //   } catch (err) {
+  //     if (err.response) {
+  //       alert(err);
+  //     }
+  //   }
+  // };
 
   const logoutHandler = () => {
     localStorage.removeItem('login-token');
@@ -130,7 +130,6 @@ function App() {
   //pagination
   const [limit, setLimit] = useState(10);
   const [totalPosts, setTotalPosts] = useState(0);
- 
 
   //GET
   const getData = async () => {
@@ -182,7 +181,6 @@ function App() {
                     isLogin={isLogin}
                     limit={limit}
                     totalPosts={totalPosts}
-                    totalPages={totalPages}
                   />
                 }
               />
@@ -193,7 +191,6 @@ function App() {
                   <AskQuestionPage
                     jwtToken={jwtToken}
                     userInfo={userInfo}
-                    getValidToken={getValidToken}
                     setIsLogin={setIsLogin}
                   />
                 }
@@ -203,10 +200,7 @@ function App() {
                 path="/login"
                 element={
                   <LogInPage
-                    jwtToken={jwtToken}
                     isLogin={isLogin}
-                    setJwtToken={setJwtToken}
-                    setIsLogin={setIsLogin}
                     loginRQHandler={loginRQHandler}
                     setLoginInfo={setLoginInfo}
                     loginInfo={loginInfo}
@@ -266,12 +260,7 @@ function App() {
               <Route
                 path="/posts/edit/:id"
                 element={
-                  <EditPage
-                    jwtToken={jwtToken}
-                    userInfo={userInfo}
-                    getValidToken={getValidToken}
-                    setIsLogin={setIsLogin}
-                  />
+                  <EditPage jwtToken={jwtToken} setIsLogin={setIsLogin} />
                 }
               />
             </Routes>

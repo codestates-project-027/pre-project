@@ -1,7 +1,8 @@
 import styled from 'styled-components';
 import TagBlock2 from './TagBlock2';
 
-const TagBlock = ({ tags }) => { //tags=['1,2,3,4,5']
+const TagBlock = ({ tags }) => {
+  //tags=['1,2,3,4,5']
   return (
     <>
       <TagBlockCSS>

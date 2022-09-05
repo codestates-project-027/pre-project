@@ -3,10 +3,9 @@ import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
 
-const EditPage = ({ jwtToken, userInfo, getValidToken, setIsLogin }) => {
+const EditPage = ({ jwtToken, setIsLogin }) => {
   localStorage.removeItem('edit-answer');
   localStorage.removeItem('tags-block');
-
 
   const url = '/question/';
   const { id } = useParams();

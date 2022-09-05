@@ -19,7 +19,7 @@ const SignUpPage = ({
   localStorage.removeItem('edit-answer');
   localStorage.removeItem('tags-block');
   localStorage.removeItem('tags');
-  
+
   const url = '/join'; //서버경로 수정
   const navigate = useNavigate();
   const [click, setClick] = useState(false);

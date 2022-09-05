@@ -11,7 +11,7 @@ const CommentBtn = ({ id, headers, userName, setUserName, setIsLogin }) => {
   const commentHandler = () => {
     setAddComment(!addComment);
   };
-  
+
   const postComment = async () => {
     if (contents.length === 0) {
       alert(`내용을 입력하세요`);

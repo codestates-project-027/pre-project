@@ -7,34 +7,38 @@ import AskButton from '../Components/AskButton';
 import QuestionCard from '../Components/QuestionCard';
 import MoreTab from '../Components/MoreTab';
 
-const QuestionsPage = ({ isLogin, limit, totalPosts, currentPage, setCurrentPage}) => {
+const QuestionsPage = ({ isLogin, limit, totalPosts }) => {
   localStorage.removeItem('title');
   localStorage.removeItem('body');
   localStorage.removeItem('edit-answer');
   localStorage.removeItem('tags-block');
   localStorage.removeItem('tags');
 
-  
-  const calculatedTime = () => { //2022.09.04 10:00
+  const calculatedTime = () => {
+    //2022.09.04 10:00
     const createdAt = new Date();
     const year = createdAt.getFullYear();
-    const month = 
-    createdAt.getMonth()<=8? 
-    ('0' + (createdAt.getMonth()+1)): (createdAt.getMonth()+1);
-    const day = 
-    createdAt.getDate()<=9?
-    ('0'+ (createdAt.getDate())): (createdAt.getDate());
+    const month =
+      createdAt.getMonth() <= 8
+        ? '0' + (createdAt.getMonth() + 1)
+        : createdAt.getMonth() + 1;
+    const day =
+      createdAt.getDate() <= 9
+        ? '0' + createdAt.getDate()
+        : createdAt.getDate();
 
-    const hour = 
-    createdAt.getHours()<=9?
-    ('0'+ (createdAt.getHours())): (createdAt.getHours());
+    const hour =
+      createdAt.getHours() <= 9
+        ? '0' + createdAt.getHours()
+        : createdAt.getHours();
 
-    const minute = 
-    createdAt.getMinutes()<=9?
-    ('0'+ (createdAt.getMinutes())): (createdAt.getMinutes());
+    const minute =
+      createdAt.getMinutes() <= 9
+        ? '0' + createdAt.getMinutes()
+        : createdAt.getMinutes();
 
-    return `${year}-${month}-${day} ${hour}:${minute}`
-  }
+    return `${year}-${month}-${day} ${hour}:${minute}`;
+  };
 
   const pageUrl = '/question?page=';
   const [data, setData] = useState([]);
@@ -54,17 +58,17 @@ const QuestionsPage = ({ isLogin, limit, totalPosts, currentPage, setCurrentPage
       setId(id - 1);
     }
   };
-  {console.log(currentPage)}
+
   const toNextPage = () => {
     if (id !== numPages) {
       setId(id + 1);
     }
   };
-  
+
   //Date calculations
   const newlyDated = () => {
     // calculatedTime
-  }
+  };
 
   //GET questions
   //Newest
@@ -75,87 +79,99 @@ const QuestionsPage = ({ isLogin, limit, totalPosts, currentPage, setCurrentPage
   };
   //Oldest
   const getOldestData = async () => {
-    const getResponse = await axios(pageUrl + id+'&sort=min');
+    const getResponse = await axios(pageUrl + id + '&sort=min');
     setData(getResponse.data.content);
     setAnswerData(getResponse.data.answerList);
-  }
+  };
   //Active
   const getActiveData = async () => {
-    const getResponse = await axios(pageUrl + id+'&sortValue=active');
+    const getResponse = await axios(pageUrl + id + '&sortValue=active');
     setData(getResponse.data.content);
     setAnswerData(getResponse.data.answerList);
-  }
+  };
   //MoreTab
   const mostViews = async () => {
-    const getResponse = await axios(pageUrl + id+'&sortValue=views');
+    const getResponse = await axios(pageUrl + id + '&sortValue=views');
     setData(getResponse.data.content);
     setAnswerData(getResponse.data.answerList);
-  }
+  };
 
   const mostVotes = async () => {
-    const getResponse = await axios(pageUrl + id+'&sortValue=votes');
+    const getResponse = await axios(pageUrl + id + '&sortValue=votes');
     setData(getResponse.data.content);
     setAnswerData(getResponse.data.answerList);
-  }
+  };
 
   const mostAnswers = async () => {
-    const getResponse = await axios(pageUrl + id+'&sortValue=answers');
+    const getResponse = await axios(pageUrl + id + '&sortValue=answers');
     setData(getResponse.data.content);
     setAnswerData(getResponse.data.answerList);
-  }
+  };
 
   const leastViews = async () => {
-    const getResponse = await axios(pageUrl + id+'&sortValue=views&sort=min');
+    const getResponse = await axios(pageUrl + id + '&sortValue=views&sort=min');
     setData(getResponse.data.content);
     setAnswerData(getResponse.data.answerList);
-  }
+  };
 
   const leastVotes = async () => {
-    const getResponse = await axios(pageUrl + id+'&sortValue=votes&sort=min');
+    const getResponse = await axios(pageUrl + id + '&sortValue=votes&sort=min');
     setData(getResponse.data.content);
     setAnswerData(getResponse.data.answerList);
-  }
+  };
 
   const leastAnswers = async () => {
-    const getResponse = await axios(pageUrl + id+'&sortValue=answers&sort=min');
+    const getResponse = await axios(
+      pageUrl + id + '&sortValue=answers&sort=min'
+    );
     setData(getResponse.data.content);
     setAnswerData(getResponse.data.answerList);
-  }
-
-
-
-
-
-
-
-
-
-  
+  };
 
   useEffect(() => {
-    getData(); 
+    getData();
   }, [id]);
 
   //tab 메뉴 관련
   const [currentTab, setCurrentTab] = useState(0);
-  const [menuArr, setMenuArr] = useState([{ name: 'Newest' }, { name: 'Active' }, { name: 'Bountied' }, { name: 'Unanswered' },    { name: 'More' }])
- 
-  const selectMenuHandler = (index,el) => {
+  const [menuArr, setMenuArr] = useState([
+    { name: 'Newest' },
+    { name: 'Active' },
+    { name: 'Bountied' },
+    { name: 'Unanswered' },
+    { name: 'More' },
+  ]);
+
+  const selectMenuHandler = (index, el) => {
     setCurrentTab(index);
-    if(index === 0 && el.name ==='Newest'){ //Oldest로 토글되게 div 띄우기
-      setMenuArr([{ name: 'Oldest' }, { name: 'Active' }, { name: 'Bountied' }, { name: 'Unanswered' },    { name: 'More' }])
+    if (index === 0 && el.name === 'Newest') {
+      //Oldest로 토글되게 div 띄우기
+      setMenuArr([
+        { name: 'Oldest' },
+        { name: 'Active' },
+        { name: 'Bountied' },
+        { name: 'Unanswered' },
+        { name: 'More' },
+      ]);
       getOldestData();
     }
-    if (index === 0 && el.name ==='Oldest'){
-      setMenuArr([{ name: 'Newest' }, { name: 'Active' }, { name: 'Bountied' }, { name: 'Unanswered' },    { name: 'More' }])
+    if (index === 0 && el.name === 'Oldest') {
+      setMenuArr([
+        { name: 'Newest' },
+        { name: 'Active' },
+        { name: 'Bountied' },
+        { name: 'Unanswered' },
+        { name: 'More' },
+      ]);
       getData();
     }
-    if (index === 1){ //Active
+    if (index === 1) {
+      //Active
       getActiveData();
     }
 
-    if (index ===4){
-     setOpen(!open);
+    if (index === 4) {
+      setOpen(!open);
     }
   };
 
@@ -197,31 +213,47 @@ const QuestionsPage = ({ isLogin, limit, totalPosts, currentPage, setCurrentPage
                       </li>
                     );
                   })}
-                 
                 </TabMenu>
                 <Filter>Filter</Filter>
               </div>
-              
             </div>
-            {currentTab === 4 ? (<MoreTab mostViews={mostViews} mostVotes={mostVotes} mostAnswers={mostAnswers}
-            leastViews={leastViews} leastVotes={leastVotes} leastAnswers={leastAnswers} open={open}/>):null}
+            {currentTab === 4 ? (
+              <MoreTab
+                mostViews={mostViews}
+                mostVotes={mostVotes}
+                mostAnswers={mostAnswers}
+                leastViews={leastViews}
+                leastVotes={leastVotes}
+                leastAnswers={leastAnswers}
+                open={open}
+              />
+            ) : null}
 
             <div className="questions-wrapper">
               {data.map((item) => (
                 <div style={{ width: '100%' }} key={item.id}>
-                  <QuestionCard activeTime={item.active} calculatedTime={calculatedTime} item={item}/>
+                  <QuestionCard
+                    activeTime={item.active}
+                    calculatedTime={calculatedTime}
+                    item={item}
+                  />
                 </div>
               ))}
             </div>
 
             <GlobalDiv>
               <Button onClick={toPrevPage}>&lt;</Button>
-              {Array(numPages).fill().map((_, el) => (
+              {Array(numPages)
+                .fill()
+                .map((_, el) => (
                   <Button
                     className="page--btn"
                     key={el + 1}
-                    onClick={() => { selectPage(el);}}
-                    aria-current={id === el + 1 ? 'page' : null}>
+                    onClick={() => {
+                      selectPage(el);
+                    }}
+                    aria-current={id === el + 1 ? 'page' : null}
+                  >
                     {el + 1} {/*setPage */}
                   </Button>
                 ))}
@@ -292,7 +324,6 @@ const Div = styled.div`
     align-items: center;
   }
 `;
-
 
 const TabMenu = styled.ul`
   display: flex;

@@ -2,16 +2,14 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import TagBlock from './TagBlock';
 
-const QuestionCard = ({ activeTime, calculatedTime, item}) => {
+const QuestionCard = ({ activeTime, calculatedTime, item }) => {
   return (
     <>
       <QuestionCardCSS>
         <div className="question--wrapper">
           <div className="sidequestion--wrapper">
             <div className="vote">{item.votes} votes</div>
-            <div className="answerview">
-              {item.answers} answers
-            </div>
+            <div className="answerview">{item.answers} answers</div>
             <div className="answerview">{item.views} views</div>
           </div>
           <div className="mainquestion--wrapper">

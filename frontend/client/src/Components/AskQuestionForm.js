@@ -13,6 +13,12 @@ const AskQuestionForm = ({ jwtToken, userInfoUserName, setIsLogin }) => {
 
   const navigate = useNavigate();
 
+  const discard = () => {
+    setTitle('');
+    setContents('');
+    setTags('');
+  };
+
   const postData = async (e) => {
     e.preventDefault();
     if (title === '' || contents === '' || tags === '') {
@@ -33,10 +39,9 @@ const AskQuestionForm = ({ jwtToken, userInfoUserName, setIsLogin }) => {
         window.location.reload();
       });
     } catch (err) {
-      if (err.response.status===400){
-        alert(`내용을 입력하세요`)
-      }
-      else if (err.response.status===403) {
+      if (err.response.status === 400) {
+        alert(`내용을 입력하세요`);
+      } else if (err.response.status === 403) {
         alert(`만료된 토큰입니다. 다시 로그인해주세요`);
         setIsLogin(false);
         navigate('/login');
@@ -95,7 +100,7 @@ const AskQuestionForm = ({ jwtToken, userInfoUserName, setIsLogin }) => {
 
           <div className="wrapper-button">
             <Button1 onClick={postData}>Review your question</Button1>
-            <Button2>Discard draft</Button2>
+            <Button2 onClick={discard}>Discard draft</Button2>
           </div>
         </div>
       </div>
