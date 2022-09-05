@@ -46,7 +46,6 @@ const ReadQuestionPage = ({
     setAnswerData(getResponse.data.answerList);
     setCommentData(answerData.commentList);
     setUserName(localStorage.getItem('user-name'));
-    localStorage.setItem('tags-block',getResponse.data.tags);
   };
 
   const deleteData = async () => {
@@ -217,7 +216,7 @@ const ReadQuestionPage = ({
             <div className="content--comment--answer">
               <pre className="content">{data.contents}</pre>
               <div className="tags--edit--delete">
-                <div className="tags">
+                <div className="tags">{localStorage.setItem('tags-block',data.tags)}
                 <TagBlank tags={localStorage.getItem('tags-block')}/>
                   </div>
 
