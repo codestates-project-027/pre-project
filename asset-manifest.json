@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/seb027-stackoverflow-clone/static/css/main.e6c13ad2.css",
-    "main.js": "/seb027-stackoverflow-clone/static/js/main.a0a50011.js",
-    "static/media/landingScroll.png": "/seb027-stackoverflow-clone/static/media/landingScroll.95970b93d310dbc6ea00.png",
-    "static/media/overflowblog.png": "/seb027-stackoverflow-clone/static/media/overflowblog.7220ec77d925f68bf4b2.png",
-    "index.html": "/seb027-stackoverflow-clone/index.html",
-    "static/media/LogoGlyphMd.svg": "/seb027-stackoverflow-clone/static/media/LogoGlyphMd.c5b7134cdd957ba760a8e6a5691b4421.svg",
-    "main.e6c13ad2.css.map": "/seb027-stackoverflow-clone/static/css/main.e6c13ad2.css.map",
-    "main.a0a50011.js.map": "/seb027-stackoverflow-clone/static/js/main.a0a50011.js.map"
+    "main.css": "/pre-project/static/css/main.e6c13ad2.css",
+    "main.js": "/pre-project/static/js/main.0329a772.js",
+    "static/media/landingScroll.png": "/pre-project/static/media/landingScroll.95970b93d310dbc6ea00.png",
+    "static/media/overflowblog.png": "/pre-project/static/media/overflowblog.7220ec77d925f68bf4b2.png",
+    "index.html": "/pre-project/index.html",
+    "static/media/LogoGlyphMd.svg": "/pre-project/static/media/LogoGlyphMd.c5b7134cdd957ba760a8e6a5691b4421.svg",
+    "main.e6c13ad2.css.map": "/pre-project/static/css/main.e6c13ad2.css.map",
+    "main.0329a772.js.map": "/pre-project/static/js/main.0329a772.js.map"
   },
   "entrypoints": [
     "static/css/main.e6c13ad2.css",
-    "static/js/main.a0a50011.js"
+    "static/js/main.0329a772.js"
   ]
 }
