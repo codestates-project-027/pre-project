@@ -18,7 +18,7 @@ const EditPage = ({ jwtToken, setIsLogin }) => {
   const [tags, setTags] = useState(prevTags.split(','));
 
   const updatePost = async (e) => {
-    if (title === '' || contents === '' || tags === '') {
+    if (title === '' || contents === '' || tags.length===0) {
       alert(`내용을 입력하세요`);
       return;
     }

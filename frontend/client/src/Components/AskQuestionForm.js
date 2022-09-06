@@ -39,9 +39,10 @@ const AskQuestionForm = ({ jwtToken, userInfoUserName, setIsLogin }) => {
     setTags('');
   };
 
+  console.log(tags)
   const postData = async (e) => {
     e.preventDefault();
-    if (title === '' || contents === '' || tags === '') {
+    if (title === '' || contents === '' || tags.length===0) {
       alert(`내용을 입력하세요`);
       return;
     }
@@ -71,8 +72,6 @@ const AskQuestionForm = ({ jwtToken, userInfoUserName, setIsLogin }) => {
     }
   };
 
-  
-console.log(typeof tags.join(','))
   return (
     <Test>
       <div className="form">
