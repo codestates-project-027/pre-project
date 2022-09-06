@@ -13,6 +13,25 @@ const AskQuestionForm = ({ jwtToken, userInfoUserName, setIsLogin }) => {
 
   const navigate = useNavigate();
 
+  const removeTags = (indexToRemove) => {
+    setTags(tags.filter((_, index) => index !== indexToRemove));
+  };
+
+  const addTags = (event) => {
+    const filtered = tags.filter((el) => el === event.target.value);
+    if (event.target.value !== '' && filtered.length === 0) {
+      setTags([...tags, event.target.value]);
+      event.target.value = '';
+    }
+  };
+
+  const handleKeyUp = (event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      addTags(event);
+    }
+  };
+
   const discard = () => {
     setTitle('');
     setContents('');
@@ -86,18 +105,33 @@ const AskQuestionForm = ({ jwtToken, userInfoUserName, setIsLogin }) => {
         <div className="wrapper">
           <div className="main-first">Tag</div>
           <div className="main">
-            Add up to 5 tags to describe what your question in about
+              Add up to 5 tags to describe what your question in about
           </div>
 
-          <input
-            className="main"
-            type="text"
-            value={tags}
-            onChange={(e) => setTags(e.target.value)}
-            required
-            placeholder="e.g. (iphone android sql)"
-          />
-
+          <TagsInput>
+            <span id="tags">
+              {tags.map((tag, index) => (
+                <li key={index} className="tag">
+                  <span className="tag-title">{tag}</span>
+                  <span
+                    className="tag-close-icon"
+                    onClick={() => removeTags(index)}
+                  >
+                    &times;
+                  </span>
+                </li>
+              ))}
+            </span>
+            <span className="tag--wrapper">
+            <input
+              className="tag-input"
+              type="text"
+              onKeyUp={handleKeyUp}
+              placeholder="e.g. (iphone android sql)"
+            />
+            </span>
+            
+          </TagsInput>
           <div className="wrapper-button">
             <Button1 onClick={postData}>Review your question</Button1>
             <Button2 onClick={discard}>Discard draft</Button2>
@@ -143,6 +177,13 @@ const Test = styled.div`
           justify-content: flex-start;
           font-weight: bold;
         }
+        :focus {
+        outline: transparent;
+        &:focus-within {
+        border: 1px solid rgb(140, 186, 229);
+        box-shadow: 5px 5px 5px rgb(218, 232, 241);
+  }
+    }
       }
     }
 
@@ -214,4 +255,69 @@ const Button2 = styled.button`
   height: 40px;
   color: rgb(180, 59, 57);
   cursor: pointer;
+`;
+
+const TagsInput = styled.div`
+  margin: 10px;
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  min-height: 48px;
+  width: 570px;
+  padding: 0 8px;
+  border: 1px solid lightgrey;
+  border-radius: 6px;
+  margin-left: 20px;
+  #tags {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0;
+    margin: 8px 0 0 0;
+    > .tag {
+      width: auto;
+      display: flex;
+      height : 30px;
+      align-items: center;
+      justify-content: center;
+      color: rgb(57, 104, 146);
+      padding: 0px 8px;
+      list-style: none;
+      border-radius: 6px;
+      margin: 0 8px 8px 0;
+      background: rgb(218, 232, 241);
+      > .tag-close-icon {
+        display: block;
+        width: 16px; height: 16px;
+        line-height: 13px;
+        text-align: center;
+        margin-left: 8px;
+        color: white;
+        border-radius: 50%;
+        background: rgb(57, 104, 146);
+        cursor: pointer;
+      }
+    }
+  }
+
+  .tag--wrapper{
+    padding-bottom : 3px;
+    .tag-input {
+    display:flex;
+    flex: 1;
+    margin-left: 3px;
+    border: none;
+    width: 200px; 
+    margin-top: 8px;
+    margin-bottom: 8px;
+    padding: 4px 0 0 0;
+    :focus {
+      outline: transparent;
+    }
+  }
+  }
+ 
+  &:focus-within {
+    border: 1px solid rgb(140, 186, 229);
+    box-shadow: 5px 5px 5px rgb(218, 232, 241);
+  }
 `;

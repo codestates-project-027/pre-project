@@ -138,7 +138,6 @@ const ReadQuestionPage = ({
 
   const voteCancel = async () => {
     const cancelUrl = `/vote/question/${id}/${userName}`
-
     try {
       await axios.delete(cancelUrl, headers).then((res)=>console.log(res))
       setVoteCanceled(true);
