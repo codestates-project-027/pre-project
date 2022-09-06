@@ -1,7 +1,7 @@
 //글 들어가지는지 확인하기!
 import axios from 'axios';
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import OverflowBlog from '../assets/overflowblog.png';
 import AskButton from '../Components/AskButton';
@@ -14,6 +14,8 @@ const TagsPage = ({ limit, totalPosts, tagChecked }) => {
   localStorage.removeItem('edit-answer');
   localStorage.removeItem('tags-block');
   localStorage.removeItem('tags');
+
+  const navigate = useNavigate();
 
   const tagUrl = `/tag/${tagChecked}?page=`
   const [data, setData] = useState([]);
@@ -41,8 +43,15 @@ const TagsPage = ({ limit, totalPosts, tagChecked }) => {
   //GET questions
   //Newest
   const getData = async () => {
-    const getResponse = await axios(tagUrl + id)
-    setData(getResponse.data.content);
+      try { const getResponse = await axios(tagUrl + id)
+        setData(getResponse.data.content);}
+        catch (err){
+            if (err){
+                alert(`유효하지 않은 태그입니다.`) //a, ab, 숫자 등의 태그는 입력되지 않음
+                navigate('/questionspage')
+            }
+        }
+   
   };
   //Oldest
   const getOldestData = async () => {
@@ -183,7 +192,7 @@ const TagsPage = ({ limit, totalPosts, tagChecked }) => {
             <div className="questions-wrapper">
               {data.map((item) => (
                 <div style={{ width: '100%' }} key={item.id}>
-                  <QuestionCard key={item.id}
+                  <QuestionCard
                     item={item.question}
                   />
                 </div>
