@@ -53,7 +53,7 @@ public class QuestionVoteService {
             QuestionVote questionVote = questionVoteRepository.findByQuestionAndUserName(question, userName);
             questionVoteRepository.deleteById(questionVote.getId());
             if (questionVote.getVote()) question.subVoteCount();
-            else question.addAnswerCount();
+            else question.addVoteCount();
             questionRepository.save(question);
         } catch (Exception e){
             throw new CustomException(ErrorMessage.VOTE_NOT_FOUND);
