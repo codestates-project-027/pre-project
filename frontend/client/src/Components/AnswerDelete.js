@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-const AnswerDelete = ({ deleteUrl, dataEl, jwtToken, isLogin, setIsLogin }) => {
+const AnswerDelete = ({ deleteUrl, dataEl, jwtToken, setIsLogin }) => {
   const navigate = useNavigate();
 
   const deleteAnswer = async () => {

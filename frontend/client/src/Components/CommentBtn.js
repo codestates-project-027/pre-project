@@ -11,9 +11,7 @@ const CommentBtn = ({ id, headers, userName, setUserName, setIsLogin }) => {
   const commentHandler = () => {
     setAddComment(!addComment);
   };
-  {
-    console.log(contents);
-  }
+
   const postComment = async () => {
     if (contents.length === 0) {
       alert(`내용을 입력하세요`);
@@ -78,6 +76,13 @@ const CommentInputCSS = styled.div`
     textarea {
       width: 550px;
       line-height: 1.15384615;
+      :focus {
+        outline: transparent;
+        &:focus-within {
+          border: 1px solid rgb(140, 186, 229);
+          box-shadow: 5px 5px 5px rgb(218, 232, 241);
+        }
+      }
     }
     .choice--wrapper {
       display: flex;

@@ -2,6 +2,11 @@ import styled from 'styled-components';
 import PleaseLoginPage from './PleaseLoginPage';
 
 export default function Mypage({ userInfo, isLogin, logoutHandler }) {
+  localStorage.removeItem('title');
+  localStorage.removeItem('body');
+  localStorage.removeItem('edit-answer');
+  localStorage.removeItem('tags-block');
+  localStorage.removeItem('tags');
   return (
     <>
       {isLogin ? (
@@ -36,4 +41,8 @@ const LoginGlobalStyle = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  .logout-btn {
+    margin-top: 20px;
+    cursor: pointer;
+  }
 `;

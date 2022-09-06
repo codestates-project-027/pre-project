@@ -163,6 +163,13 @@ const EditGlobal = styled.div`
     background-color: #fff;
     color: #0c0d0e;
     line-height: 1.15384615;
+    :focus {
+      outline: transparent;
+      &:focus-within {
+        border: 1px solid rgb(140, 186, 229);
+        box-shadow: 5px 5px 5px rgb(218, 232, 241);
+      }
+    }
   }
 `;
 const Button1 = styled.button`

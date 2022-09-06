@@ -10,23 +10,14 @@ const LogInPage = ({
   setKeepLogin,
   keepLogin,
   errorMessage,
-  jwtToken,
 }) => {
+  localStorage.removeItem('title');
+  localStorage.removeItem('body');
+  localStorage.removeItem('edit-answer');
+  localStorage.removeItem('tags-block');
+  localStorage.removeItem('tags');
+
   const navigate = useNavigate();
-  const parseJwt = (token) => {
-    var base64Url = token.split('.')[1];
-    var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    var jsonPayload = decodeURIComponent(
-      window
-        .atob(base64)
-        .split('')
-        .map(function (c) {
-          return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-        })
-        .join('')
-    );
-    return JSON.parse(jsonPayload);
-  };
 
   const handleInputValue = (key) => (e) => {
     setLoginInfo({ ...loginInfo, [key]: e.target.value });
@@ -38,11 +29,6 @@ const LogInPage = ({
         <>
           <div>login success</div>
           {setTimeout(function () {
-            // const userInfo = parseJwt(jwtToken);
-            // const answer = { questionId, contents: answerContents, userName };
-            // const userInfo = { username: parseJwt(jwtToken).username, email: parseJwt(jwtToken).email };
-            // // console.log(userInfo.email, userInfo.username);
-            // localStorage.setItem('username', JSON.stringify(userInfo));
             navigate('/questionspage');
           }, 1)}
         </>
@@ -82,7 +68,12 @@ const LogInPage = ({
                     {' 로그인 상태 유지하기'}
                   </label>
 
-                  <button onClick={loginRQHandler} style={{cursor: 'pointer'}}>Log in</button>
+                  <button
+                    onClick={loginRQHandler}
+                    style={{ cursor: 'pointer' }}
+                  >
+                    Log in
+                  </button>
                   {errorMessage ? (
                     <div id="alert-message" data-testid="alert-message">
                       {errorMessage}

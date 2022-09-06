@@ -1,12 +1,15 @@
 import styled from 'styled-components';
-// import img from '../assets/landingimg.png';
 import img from '../assets/landingScroll.png';
 
 const LandingPage = () => {
+  localStorage.removeItem('title');
+  localStorage.removeItem('body');
+  localStorage.removeItem('edit-answer');
+  localStorage.removeItem('tags-block');
+  localStorage.removeItem('tags');
   return (
     <div className="landingpage-container">
       <Div>
-        {/* <img className="landing_img" alt="landingimg" src={img} /> */}
         <img className="landing_img" alt="landing img" src={img} />
       </Div>
     </div>

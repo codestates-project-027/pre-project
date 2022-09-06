@@ -2,16 +2,14 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import TagBlock from './TagBlock';
 
-const QuestionCard = ({ activeTime, calculatedTime, item, answerData }) => {
+const QuestionCard = ({ activeTime, calculatedTime, item, setTagChecked }) => {
   return (
     <>
       <QuestionCardCSS>
         <div className="question--wrapper">
           <div className="sidequestion--wrapper">
             <div className="vote">{item.votes} votes</div>
-            <div className="answerview">
-              {answerData ? answerData.length : 0} answers
-            </div>
+            <div className="answerview">{item.answers} answers</div>
             <div className="answerview">{item.views} views</div>
           </div>
           <div className="mainquestion--wrapper">
@@ -21,7 +19,7 @@ const QuestionCard = ({ activeTime, calculatedTime, item, answerData }) => {
             <div className="body">{item.contents}</div>
 
             <div className="mainquestion--bottom--wrapper">
-              <TagBlock tags={item.tags} />
+              <TagBlock tags={item.tags} setTagChecked={setTagChecked} />
               <div className="author--and--time">
                 <p className="author">{item.userName}</p>{' '}
                 <p className="createdAt"> asked {item.createdAt}</p>

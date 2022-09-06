@@ -2,6 +2,11 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 const PleaseLoginPage = () => {
+  localStorage.removeItem('title');
+  localStorage.removeItem('body');
+  localStorage.removeItem('edit-answer');
+  localStorage.removeItem('tags-block');
+  localStorage.removeItem('tags');
   return (
     <>
       <PlzLoginCSS>

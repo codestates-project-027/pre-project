@@ -2,7 +2,13 @@ import styled from 'styled-components';
 import AskQuestionForm from '../Components/AskQuestionForm';
 import QSidebar from '../Components/QSidebar';
 
-const AskQuestionPage = ({ jwtToken, userInfo, getValidToken, setIsLogin }) => {
+const AskQuestionPage = ({ jwtToken, userInfo, setIsLogin }) => {
+  localStorage.removeItem('title');
+  localStorage.removeItem('body');
+  localStorage.removeItem('edit-answer');
+  localStorage.removeItem('tags-block');
+  localStorage.removeItem('tags');
+
   return (
     <>
       <Title>Ask Question</Title>
@@ -10,7 +16,6 @@ const AskQuestionPage = ({ jwtToken, userInfo, getValidToken, setIsLogin }) => {
         <AskQuestionForm
           jwtToken={jwtToken}
           userInfoUserName={JSON.parse(JSON.stringify(userInfo.username))}
-          getValidToken={getValidToken}
           setIsLogin={setIsLogin}
         />
         {/* {console.log(

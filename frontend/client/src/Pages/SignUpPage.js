@@ -14,6 +14,12 @@ const SignUpPage = ({
   emailHandler,
   passwordHandler,
 }) => {
+  localStorage.removeItem('title');
+  localStorage.removeItem('body');
+  localStorage.removeItem('edit-answer');
+  localStorage.removeItem('tags-block');
+  localStorage.removeItem('tags');
+
   const url = '/join'; //서버경로 수정
   const navigate = useNavigate();
   const [click, setClick] = useState(false);
@@ -130,9 +136,7 @@ const SignUpPage = ({
                 />
                 Opt-in to receive occasional product updates, user research
                 invitations, company announcements, and digests.
-                {click && checked === false ? (
-                  <div className="signup-error">필수 체크항목입니다.</div>
-                ) : null}
+                {/* {click && checked === false ? ( <div className="signup-error">필수 체크항목입니다.</div> ) : null} */}
               </div>
               <div>
                 <button onClick={submitHandler}>Sign up</button>

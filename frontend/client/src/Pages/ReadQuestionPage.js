@@ -11,7 +11,7 @@ import {
   BsFillBookmarkStarFill,
 } from 'react-icons/bs';
 import { TiCancel } from 'react-icons/ti';
-
+import TagBlank from '../Components/TagBlank';
 
 const ReadQuestionPage = ({
   jwtToken,
@@ -26,7 +26,6 @@ const ReadQuestionPage = ({
   const { id } = useParams();
   const navigate = useNavigate();
   const [data, setData] = useState([]);
-  const [tags, setTags] = useState('');
   const [answerData, setAnswerData] = useState([]); //불러온 answer data
   const [commentData, setCommentData] = useState([]);
   const [questionId, setQuestionId] = useState(id);
@@ -38,9 +37,7 @@ const ReadQuestionPage = ({
   const headers = { headers: { Authorization: `Bearer ${jwtToken}` } };
 
   //TagBlock handler
-  const tagBlockHandler = (tags) => {
-    if (tags!==[]){setTags(tags)}
-  }
+
   //Question
   const getData = async () => {
     const getResponse = await axios(url + id);
@@ -121,7 +118,7 @@ const ReadQuestionPage = ({
         userName: localStorage.getItem('user-name'),
         vote: false,
       };
-      await axios.post(voteUrl, down, headers);
+      await axios.post(voteUrl, down, headers).then((res) => console.log(res));
       setVotedDown(true);
       setVotedUp(false);
       setVoteCanceled(false);
@@ -140,24 +137,25 @@ const ReadQuestionPage = ({
   };
 
   const voteCancel = async () => {
+    const cancelUrl = `/vote/question/${id}/${userName}`;
     try {
-      const reset = {
-        questionId: id,
-        userName: localStorage.getItem('user-name'),
-      };
-      await axios.delete(voteUrl, reset, headers);
+      await axios.delete(cancelUrl, headers).then((res) => console.log(res));
       setVoteCanceled(true);
       setVotedUp(false);
       setVotedDown(false);
       window.location.reload();
     } catch (err) {
       if (err.response) {
-        if (err.response.status === 409) {
+        if (err.response.status === 404) {
           alert(`Already canceled`);
-        } else {
+        } else if (err.response === 403) {
           alert(`만료된 토큰입니다. 다시 로그인해주세요`);
           setIsLogin(false);
           navigate('/login');
+        } else {
+          if (err.response) {
+            alert(err);
+          }
         }
       }
     }
@@ -218,10 +216,10 @@ const ReadQuestionPage = ({
             <div className="content--comment--answer">
               <pre className="content">{data.contents}</pre>
               <div className="tags--edit--delete">
-                <div className="tags">{data.tags}
-               
-                  </div>
-
+                <div className="tags">
+                  {localStorage.setItem('tags-block', data.tags)}
+                  <TagBlank tags={localStorage.getItem('tags-block')} />
+                </div>
 
                 <div className="edit--delete">
                   <div className="edit">
@@ -262,6 +260,7 @@ const ReadQuestionPage = ({
 
                 <textarea
                   type="text"
+                  className="post--answer"
                   onChange={(e) => setAnswerContents(e.target.value)}
                 />
               </div>
@@ -364,14 +363,9 @@ const Div = styled.div`
     margin-top: 30px;
   }
   .tags {
-    width: fit-content;
-    background-color: rgb(227, 236, 243);
-    color: rgb(72, 114, 153);
-    border-radius: 5px;
-    padding: 4px;
-    padding-left: 7px;
-    padding-right: 7px;
-    cursor: pointer;
+    display: flex;
+    justify-content: left;
+    align-items: center;
   }
   .edit--delete {
     display: flex;
@@ -388,6 +382,15 @@ const Div = styled.div`
   .answer--wrapper {
     display: flex;
     flex-direction: column;
+    .post--answer {
+      :focus {
+        outline: transparent;
+        &:focus-within {
+          border: 1px solid rgb(140, 186, 229);
+          box-shadow: 5px 5px 5px rgb(218, 232, 241);
+        }
+      }
+    }
   }
   .read--answer--wrapper {
     display: flex;

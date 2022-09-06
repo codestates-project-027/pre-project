@@ -8,6 +8,7 @@ import LeftSidebar from './Components/LeftSidebar';
 
 import LandingPage from './Pages/LandingPage';
 import QuestionsPage from './Pages/QuestionsPage';
+import TagsPage from './Pages/TagsPage';
 import AskQuestionPage from './Pages/AskQuestionPage';
 import ReadQuestionPage from './Pages/ReadQuestionPage';
 import SignUpPage from './Pages/SignUpPage';
@@ -90,32 +91,7 @@ function App() {
       });
     } catch (err) {
       if (err.response) {
-        alert(err);
-      }
-    }
-    // .catch((err) => {
-    //   if (err.response.data.status === 401) {
-    //     setErrorMessage('로그인에 실패함');
-    //   }
-    // });
-  };
-
-  const getValidToken = async () => {
-    //아마 필요없을듯
-    localStorage.removeItem('login-token');
-    localStorage.removeItem('user-name');
-    try {
-      await axios.post(loginUrl, { email, password }).then((res) => {
-        localStorage.setItem('login-token', res.headers.authorization);
-        const token = localStorage.getItem('login-token');
-        const resolved = parseJwt(token);
-        setJwtToken(token);
-        setUserInfo({ email: resolved.email, username: resolved.username });
-        setIsLogin(true);
-      });
-    } catch (err) {
-      if (err.response) {
-        alert(err);
+        alert(`등록되지 않은 회원정보입니다.`);
       }
     }
   };
@@ -155,6 +131,9 @@ function App() {
     setTotalPages(getResponse.data.totalPages);
   };
 
+  //GET Tag Pages
+  const [tagChecked, setTagChecked] = useState('');
+
   useEffect(() => {
     getData();
   }, []);
@@ -181,8 +160,19 @@ function App() {
                     isLogin={isLogin}
                     limit={limit}
                     totalPosts={totalPosts}
-                    userName={userName}
-                    totalPages={totalPages}
+                    setTagChecked={setTagChecked}
+                  />
+                }
+              />
+
+              <Route
+                path="/tagspage"
+                element={
+                  <TagsPage
+                    isLogin={isLogin}
+                    limit={limit}
+                    totalPosts={totalPosts}
+                    tagChecked={tagChecked}
                   />
                 }
               />
@@ -193,7 +183,6 @@ function App() {
                   <AskQuestionPage
                     jwtToken={jwtToken}
                     userInfo={userInfo}
-                    getValidToken={getValidToken}
                     setIsLogin={setIsLogin}
                   />
                 }
@@ -203,10 +192,7 @@ function App() {
                 path="/login"
                 element={
                   <LogInPage
-                    jwtToken={jwtToken}
                     isLogin={isLogin}
-                    setJwtToken={setJwtToken}
-                    setIsLogin={setIsLogin}
                     loginRQHandler={loginRQHandler}
                     setLoginInfo={setLoginInfo}
                     loginInfo={loginInfo}
@@ -266,12 +252,7 @@ function App() {
               <Route
                 path="/posts/edit/:id"
                 element={
-                  <EditPage
-                    jwtToken={jwtToken}
-                    userInfo={userInfo}
-                    getValidToken={getValidToken}
-                    setIsLogin={setIsLogin}
-                  />
+                  <EditPage jwtToken={jwtToken} setIsLogin={setIsLogin} />
                 }
               />
             </Routes>

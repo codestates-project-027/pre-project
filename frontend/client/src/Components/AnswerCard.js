@@ -57,8 +57,6 @@ const AnswerCard = ({
                         <CommentCard
                           commentData={el.commentList}
                           headers={headers}
-                          userName={userName}
-                          isLogin={isLogin}
                           setIsLogin={setIsLogin}
                         />
                         {isLogin ? (
