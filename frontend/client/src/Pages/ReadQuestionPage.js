@@ -118,18 +118,11 @@ const ReadQuestionPage = ({
         userName: localStorage.getItem('user-name'),
         vote: false,
       };
-      await axios.post(voteUrl, down, headers);
+      await axios.post(voteUrl, down, headers).then((res)=>console.log(res))
       setVotedDown(true);
       setVotedUp(false);
       setVoteCanceled(false);
       window.location.reload();
-
-      {
-        console.log(down);
-      }
-      {
-        console.log(headers);
-      }
     } catch (err) {
       if (err.response) {
         if (err.response.status === 409) {
@@ -144,55 +137,31 @@ const ReadQuestionPage = ({
   };
 
   const voteCancel = async () => {
-    try {
-      // const cancel = {
-      //   questionId: id,
-      //   userName: localStorage.getItem('user-name'),
-      // };
-      // await axios.delete(voteUrl, {
-      //     data: {
-      //       questionId: id,
-      //       userName: localStorage.getItem('user-name'),
-      //     },
-      //     headers
-      //   });
-      const cancel = {
-        questionId: id,
-        userName: localStorage.getItem('user-name'),
-      };
-      await axios.delete(voteUrl, { data: cancel }, headers);
-      // await axios.delete(voteUrl, { data:
-      //   {questionId: id, userName: localStorage.getItem('user-name')},
-      //   headers: {
-      //     'Authorization': 'Bearer ' + localStorage.getItem('login-token')
-      //   }
-      // })
-      // {console.log(cancel)}
-      // {console.log(headers)}
-      console.log(3);
+    const cancelUrl = `/vote/question/${id}/${userName}`
 
+    try {
+
+      // await axios.delete(deleteUrl + dataEl.id, headers);
+      await axios.delete(cancelUrl, headers).then((res)=>console.log(res))
       setVoteCanceled(true);
       setVotedUp(false);
       setVotedDown(false);
-      // window.location.reload();
-      // } catch (err) {
-      //   if (err.response) {
-      //     if (err.response.status === 409) {
-      //       alert(`Already canceled`);
-      //     } else {
-      //       alert(`만료된 토큰입니다. 다시 로그인해주세요`);
-      //       setIsLogin(false);
-      //       navigate('/login');
-      //     }
-      //   }
-      // }
-    } catch (err) {
-      if (err.response) {
-        if (err.response.status === 403) {
-          console.log(err.response.data);
+      window.location.reload();
+      } catch (err) {
+        if (err.response) {
+          if (err.response.status === 409) {
+            alert(`Already canceled`);
+          } 
+         else if (err.response === 403) {
+            alert(`만료된 토큰입니다. 다시 로그인해주세요`);
+            setIsLogin(false);
+            navigate('/login');
+          }
+          else {
+            if (err.response){alert(err)}
+          }
         }
       }
-    }
   };
 
   useEffect(() => {
