@@ -13,6 +13,7 @@ const AskQuestionForm = ({ jwtToken, userInfoUserName, setIsLogin }) => {
 
   const navigate = useNavigate();
 
+  //tag blocks
   const removeTags = (indexToRemove) => {
     setTags(tags.filter((_, index) => index !== indexToRemove));
   };
@@ -46,11 +47,13 @@ const AskQuestionForm = ({ jwtToken, userInfoUserName, setIsLogin }) => {
     }
     try {
       const headers = { headers: { Authorization: `Bearer ${jwtToken}` } };
+      const tagsResolved = tags.join(',') // ['1,2,3,4'] 꼴로 파싱 
       const post = {
         title,
         contents,
         userName,
-        tags: [JSON.parse(JSON.stringify(tags))],
+        // tags: [JSON.parse(JSON.stringify(tags))],
+        tags: [JSON.parse(JSON.stringify(tagsResolved))],
       };
 
       await axios.post(url, post, headers).then(() => {
@@ -68,6 +71,8 @@ const AskQuestionForm = ({ jwtToken, userInfoUserName, setIsLogin }) => {
     }
   };
 
+  
+console.log(typeof tags.join(','))
   return (
     <Test>
       <div className="form">

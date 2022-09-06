@@ -76,6 +76,11 @@ const CommentInputCSS = styled.div`
     textarea {
       width: 550px;
       line-height: 1.15384615;
+      :focus {
+        outline: transparent;
+        &:focus-within {
+        border: 1px solid rgb(140, 186, 229);
+        box-shadow: 5px 5px 5px rgb(218, 232, 241);}}
     }
     .choice--wrapper {
       display: flex;
