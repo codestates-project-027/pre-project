@@ -17,7 +17,7 @@ const TagsPage = ({ limit, totalPosts, tagChecked }) => {
 
   const navigate = useNavigate();
 
-  const tagUrl = `/tag/${tagChecked}?page=`
+  const tagUrl = `/tag/${tagChecked}?page=`;
   const [data, setData] = useState([]);
   const [id, setId] = useState(1);
   const [open, setOpen] = useState(false);
@@ -43,15 +43,15 @@ const TagsPage = ({ limit, totalPosts, tagChecked }) => {
   //GET questions
   //Newest
   const getData = async () => {
-      try { const getResponse = await axios(tagUrl + id)
-        setData(getResponse.data.content);}
-        catch (err){
-            if (err){
-                alert(`유효하지 않은 태그입니다.`) //a, ab, 숫자 등의 태그는 입력되지 않음
-                navigate('/questionspage')
-            }
-        }
-   
+    try {
+      const getResponse = await axios(tagUrl + id);
+      setData(getResponse.data.content);
+    } catch (err) {
+      if (err) {
+        alert(`유효하지 않은 태그입니다.`); //a, ab, 숫자 등의 태그는 입력되지 않음
+        navigate('/questionspage');
+      }
+    }
   };
   //Oldest
   const getOldestData = async () => {
@@ -91,7 +91,7 @@ const TagsPage = ({ limit, totalPosts, tagChecked }) => {
 
   const leastAnswers = async () => {
     const getResponse = await axios(
-        tagUrl + id + '&sortValue=answers&sort=min'
+      tagUrl + id + '&sortValue=answers&sort=min'
     );
     setData(getResponse.data.content);
   };
@@ -143,15 +143,12 @@ const TagsPage = ({ limit, totalPosts, tagChecked }) => {
     }
   };
 
-
   return (
     <>
       <Div>
         <div className="main--wrapper">
           <div className="head--wrapper">
-            <div className="head">
-              Tags
-            </div>
+            <div className="head">Tags</div>
           </div>
 
           <div className="innerquestions--wrapper">
@@ -192,9 +189,7 @@ const TagsPage = ({ limit, totalPosts, tagChecked }) => {
             <div className="questions-wrapper">
               {data.map((item) => (
                 <div style={{ width: '100%' }} key={item.id}>
-                  <QuestionCard
-                    item={item.question}
-                  />
+                  <QuestionCard item={item.question} />
                 </div>
               ))}
             </div>
@@ -212,7 +207,7 @@ const TagsPage = ({ limit, totalPosts, tagChecked }) => {
                     }}
                     aria-current={id === el + 1 ? 'page' : null}
                   >
-                    {el + 1} 
+                    {el + 1}
                   </Button>
                 ))}
               <Button onClick={toNextPage}>&gt;</Button>

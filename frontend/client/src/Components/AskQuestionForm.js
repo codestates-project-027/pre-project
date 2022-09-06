@@ -39,16 +39,16 @@ const AskQuestionForm = ({ jwtToken, userInfoUserName, setIsLogin }) => {
     setTags('');
   };
 
-  console.log(tags)
+  console.log(tags);
   const postData = async (e) => {
     e.preventDefault();
-    if (title === '' || contents === '' || tags.length===0) {
+    if (title === '' || contents === '' || tags.length === 0) {
       alert(`내용을 입력하세요`);
       return;
     }
     try {
       const headers = { headers: { Authorization: `Bearer ${jwtToken}` } };
-      const tagsResolved = tags.join(',') // ['1,2,3,4'] 꼴로 파싱 
+      const tagsResolved = tags.join(','); // ['1,2,3,4'] 꼴로 파싱
       const post = {
         title,
         contents,
@@ -108,7 +108,7 @@ const AskQuestionForm = ({ jwtToken, userInfoUserName, setIsLogin }) => {
         <div className="wrapper">
           <div className="main-first">Tag</div>
           <div className="main">
-              Add up to 5 tags to describe what your question in about
+            Add up to 5 tags to describe what your question in about
           </div>
 
           <TagsInput>
@@ -126,14 +126,13 @@ const AskQuestionForm = ({ jwtToken, userInfoUserName, setIsLogin }) => {
               ))}
             </span>
             <span className="tag--wrapper">
-            <input
-              className="tag-input"
-              type="text"
-              onKeyUp={handleKeyUp}
-              placeholder="e.g. (iphone android sql)"
-            />
+              <input
+                className="tag-input"
+                type="text"
+                onKeyUp={handleKeyUp}
+                placeholder="e.g. (iphone android sql)"
+              />
             </span>
-            
           </TagsInput>
           <div className="wrapper-button">
             <Button1 onClick={postData}>Review your question</Button1>
@@ -181,12 +180,12 @@ const Test = styled.div`
           font-weight: bold;
         }
         :focus {
-        outline: transparent;
-        &:focus-within {
-        border: 1px solid rgb(140, 186, 229);
-        box-shadow: 5px 5px 5px rgb(218, 232, 241);
-  }
-    }
+          outline: transparent;
+          &:focus-within {
+            border: 1px solid rgb(140, 186, 229);
+            box-shadow: 5px 5px 5px rgb(218, 232, 241);
+          }
+        }
       }
     }
 
@@ -279,7 +278,7 @@ export const TagsInput = styled.div`
     > .tag {
       width: auto;
       display: flex;
-      height : 30px;
+      height: 30px;
       align-items: center;
       justify-content: center;
       color: rgb(57, 104, 146);
@@ -290,7 +289,8 @@ export const TagsInput = styled.div`
       background: rgb(218, 232, 241);
       > .tag-close-icon {
         display: block;
-        width: 16px; height: 16px;
+        width: 16px;
+        height: 16px;
         line-height: 13px;
         text-align: center;
         margin-left: 8px;
@@ -302,23 +302,23 @@ export const TagsInput = styled.div`
     }
   }
 
-  .tag--wrapper{
-    padding-bottom : 3px;
+  .tag--wrapper {
+    padding-bottom: 3px;
     .tag-input {
-    display:flex;
-    flex: 1;
-    margin-left: 3px;
-    border: none;
-    width: 200px; 
-    margin-top: 8px;
-    margin-bottom: 8px;
-    padding: 4px 0 0 0;
-    :focus {
-      outline: transparent;
+      display: flex;
+      flex: 1;
+      margin-left: 3px;
+      border: none;
+      width: 200px;
+      margin-top: 8px;
+      margin-bottom: 8px;
+      padding: 4px 0 0 0;
+      :focus {
+        outline: transparent;
+      }
     }
   }
-  }
- 
+
   &:focus-within {
     border: 1px solid rgb(140, 186, 229);
     box-shadow: 5px 5px 5px rgb(218, 232, 241);

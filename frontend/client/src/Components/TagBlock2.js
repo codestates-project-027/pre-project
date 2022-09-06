@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const TagBlock2 = ({ tag, setTagChecked }) => {
   const newArr = tag.split(',');
@@ -7,10 +7,17 @@ const TagBlock2 = ({ tag, setTagChecked }) => {
     <>
       <TagBlockCSS2>
         {newArr.map((el, idx) => (
-          <Link style={{textDecoration:'none'}} key={idx} to="/tagspage">
-          <span key={idx} value={el} className="block" onClick={()=>{setTagChecked(el)}}>
-            {el}
-          </span>
+          <Link style={{ textDecoration: 'none' }} key={idx} to="/tagspage">
+            <span
+              key={idx}
+              value={el}
+              className="block"
+              onClick={() => {
+                setTagChecked(el);
+              }}
+            >
+              {el}
+            </span>
           </Link>
         ))}
       </TagBlockCSS2>

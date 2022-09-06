@@ -79,8 +79,10 @@ const CommentInputCSS = styled.div`
       :focus {
         outline: transparent;
         &:focus-within {
-        border: 1px solid rgb(140, 186, 229);
-        box-shadow: 5px 5px 5px rgb(218, 232, 241);}}
+          border: 1px solid rgb(140, 186, 229);
+          box-shadow: 5px 5px 5px rgb(218, 232, 241);
+        }
+      }
     }
     .choice--wrapper {
       display: flex;

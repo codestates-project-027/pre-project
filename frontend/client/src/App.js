@@ -94,9 +94,7 @@ function App() {
         alert(`등록되지 않은 회원정보입니다.`);
       }
     }
-
   };
-
 
   const logoutHandler = () => {
     localStorage.removeItem('login-token');

@@ -118,7 +118,7 @@ const ReadQuestionPage = ({
         userName: localStorage.getItem('user-name'),
         vote: false,
       };
-      await axios.post(voteUrl, down, headers).then((res)=>console.log(res))
+      await axios.post(voteUrl, down, headers).then((res) => console.log(res));
       setVotedDown(true);
       setVotedUp(false);
       setVoteCanceled(false);
@@ -137,28 +137,28 @@ const ReadQuestionPage = ({
   };
 
   const voteCancel = async () => {
-    const cancelUrl = `/vote/question/${id}/${userName}`
+    const cancelUrl = `/vote/question/${id}/${userName}`;
     try {
-      await axios.delete(cancelUrl, headers).then((res)=>console.log(res))
+      await axios.delete(cancelUrl, headers).then((res) => console.log(res));
       setVoteCanceled(true);
       setVotedUp(false);
       setVotedDown(false);
       window.location.reload();
-      } catch (err) {
-        if (err.response) {
-          if (err.response.status === 404) {
-            alert(`Already canceled`);
-          } 
-         else if (err.response === 403) {
-            alert(`만료된 토큰입니다. 다시 로그인해주세요`);
-            setIsLogin(false);
-            navigate('/login');
-          }
-          else {
-            if (err.response){alert(err)}
+    } catch (err) {
+      if (err.response) {
+        if (err.response.status === 404) {
+          alert(`Already canceled`);
+        } else if (err.response === 403) {
+          alert(`만료된 토큰입니다. 다시 로그인해주세요`);
+          setIsLogin(false);
+          navigate('/login');
+        } else {
+          if (err.response) {
+            alert(err);
           }
         }
       }
+    }
   };
 
   useEffect(() => {
@@ -382,12 +382,14 @@ const Div = styled.div`
   .answer--wrapper {
     display: flex;
     flex-direction: column;
-    .post--answer{
+    .post--answer {
       :focus {
         outline: transparent;
         &:focus-within {
-        border: 1px solid rgb(140, 186, 229);
-        box-shadow: 5px 5px 5px rgb(218, 232, 241);}}
+          border: 1px solid rgb(140, 186, 229);
+          box-shadow: 5px 5px 5px rgb(218, 232, 241);
+        }
+      }
     }
   }
   .read--answer--wrapper {

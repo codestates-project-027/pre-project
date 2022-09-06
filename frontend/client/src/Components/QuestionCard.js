@@ -19,7 +19,7 @@ const QuestionCard = ({ activeTime, calculatedTime, item, setTagChecked }) => {
             <div className="body">{item.contents}</div>
 
             <div className="mainquestion--bottom--wrapper">
-              <TagBlock tags={item.tags} setTagChecked={setTagChecked}/>
+              <TagBlock tags={item.tags} setTagChecked={setTagChecked} />
               <div className="author--and--time">
                 <p className="author">{item.userName}</p>{' '}
                 <p className="createdAt"> asked {item.createdAt}</p>

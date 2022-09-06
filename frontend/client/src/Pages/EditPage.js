@@ -18,14 +18,14 @@ const EditPage = ({ jwtToken, setIsLogin }) => {
   const [tags, setTags] = useState(prevTags.split(','));
 
   const updatePost = async (e) => {
-    if (title === '' || contents === '' || tags.length===0) {
+    if (title === '' || contents === '' || tags.length === 0) {
       alert(`내용을 입력하세요`);
       return;
     }
     try {
       const headers = { headers: { Authorization: `Bearer ${jwtToken}` } };
       e.preventDefault();
-      const tagsResolved = tags.join(',')
+      const tagsResolved = tags.join(',');
       const updatePost = {
         title,
         contents,
@@ -94,29 +94,28 @@ const EditPage = ({ jwtToken, setIsLogin }) => {
 
             <div className="main-first">Tag</div>
             <TagsInput>
-            <span id="tags">
-              {tags.map((tag, index) => (
-                <li key={index} className="tag">
-                  <span className="tag-title">{tag}</span>
-                  <span
-                    className="tag-close-icon"
-                    onClick={() => removeTags(index)}
-                  >
-                    &times;
-                  </span>
-                </li>
-              ))}
-            </span>
-            <span className="tag--wrapper">
-            <input
-              className="tag-input"
-              type="text"
-              onKeyUp={handleKeyUp}
-              placeholder="e.g. (iphone android sql)"
-            />
-            </span>
-            
-          </TagsInput>
+              <span id="tags">
+                {tags.map((tag, index) => (
+                  <li key={index} className="tag">
+                    <span className="tag-title">{tag}</span>
+                    <span
+                      className="tag-close-icon"
+                      onClick={() => removeTags(index)}
+                    >
+                      &times;
+                    </span>
+                  </li>
+                ))}
+              </span>
+              <span className="tag--wrapper">
+                <input
+                  className="tag-input"
+                  type="text"
+                  onKeyUp={handleKeyUp}
+                  placeholder="e.g. (iphone android sql)"
+                />
+              </span>
+            </TagsInput>
 
             <div className="wrapper-button">
               <Button1 onClick={updatePost}>Review your question</Button1>
@@ -179,8 +178,10 @@ const EditGlobal = styled.div`
       :focus {
         outline: transparent;
         &:focus-within {
-        border: 1px solid rgb(140, 186, 229);
-        box-shadow: 5px 5px 5px rgb(218, 232, 241);}}
+          border: 1px solid rgb(140, 186, 229);
+          box-shadow: 5px 5px 5px rgb(218, 232, 241);
+        }
+      }
     }
   }
 
@@ -270,7 +271,7 @@ const TagsInput = styled.div`
     > .tag {
       width: auto;
       display: flex;
-      height : 30px;
+      height: 30px;
       align-items: center;
       justify-content: center;
       color: rgb(57, 104, 146);
@@ -281,7 +282,8 @@ const TagsInput = styled.div`
       background: rgb(218, 232, 241);
       > .tag-close-icon {
         display: block;
-        width: 16px; height: 16px;
+        width: 16px;
+        height: 16px;
         line-height: 13px;
         text-align: center;
         margin-left: 8px;
@@ -293,23 +295,23 @@ const TagsInput = styled.div`
     }
   }
 
-  .tag--wrapper{
-    padding-bottom : 3px;
+  .tag--wrapper {
+    padding-bottom: 3px;
     .tag-input {
-    display:flex;
-    flex: 1;
-    margin-left: 3px;
-    border: none;
-    width: 200px; 
-    margin-top: 8px;
-    margin-bottom: 8px;
-    padding: 4px 0 0 0;
-    :focus {
-      outline: transparent;
+      display: flex;
+      flex: 1;
+      margin-left: 3px;
+      border: none;
+      width: 200px;
+      margin-top: 8px;
+      margin-bottom: 8px;
+      padding: 4px 0 0 0;
+      :focus {
+        outline: transparent;
+      }
     }
   }
-  }
- 
+
   &:focus-within {
     border: 1px solid rgb(140, 186, 229);
     box-shadow: 5px 5px 5px rgb(218, 232, 241);
