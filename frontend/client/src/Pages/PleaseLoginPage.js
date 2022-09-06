@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-const NotFoundPage = () => {
+const PleaseLoginPage = () => {
   localStorage.removeItem('title');
   localStorage.removeItem('body');
   localStorage.removeItem('edit-answer');
@@ -9,20 +9,20 @@ const NotFoundPage = () => {
   localStorage.removeItem('tags');
   return (
     <>
-      <NotFoundCSS>
+      <PlzLoginCSS>
         <div>
           <h2>Sorry</h2>
-          <p>PAGE NOT FOUND</p>
-          <Link to="/">Back to Home..</Link>
+          <p>PAGE NOT FOUND : you need login</p>
+          <Link to="/login">Click to login...</Link>
         </div>
-      </NotFoundCSS>
+      </PlzLoginCSS>
     </>
   );
 };
 
-export default NotFoundPage;
+export default PleaseLoginPage;
 
-const NotFoundCSS = styled.div`
+const PlzLoginCSS = styled.div`
   width: 100%;
   margin-top: 100px;
   display: flex;

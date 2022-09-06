@@ -1,50 +1,25 @@
+//글 들어가지는지 확인하기!
 import axios from 'axios';
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import OverflowBlog from '../assets/overflowblog.png';
 import AskButton from '../Components/AskButton';
 import QuestionCard from '../Components/QuestionCard';
 import MoreTab from '../Components/MoreTab';
 
-const QuestionsPage = ({ isLogin, limit, totalPosts, setTagChecked }) => {
+const TagsPage = ({ limit, totalPosts, tagChecked }) => {
   localStorage.removeItem('title');
   localStorage.removeItem('body');
   localStorage.removeItem('edit-answer');
   localStorage.removeItem('tags-block');
   localStorage.removeItem('tags');
 
-  const calculatedTime = () => {
-    //2022.09.04 10:00
-    const createdAt = new Date();
-    const year = createdAt.getFullYear();
-    const month =
-      createdAt.getMonth() <= 8
-        ? '0' + (createdAt.getMonth() + 1)
-        : createdAt.getMonth() + 1;
-    const day =
-      createdAt.getDate() <= 9
-        ? '0' + createdAt.getDate()
-        : createdAt.getDate();
+  const navigate = useNavigate();
 
-    const hour =
-      createdAt.getHours() <= 9
-        ? '0' + createdAt.getHours()
-        : createdAt.getHours();
-
-    const minute =
-      createdAt.getMinutes() <= 9
-        ? '0' + createdAt.getMinutes()
-        : createdAt.getMinutes();
-
-    return `${year}-${month}-${day} ${hour}:${minute}`;
-  };
-
-  const pageUrl = '/question?page=';
+  const tagUrl = `/tag/${tagChecked}?page=`;
   const [data, setData] = useState([]);
-  const [answerData, setAnswerData] = useState([]);
   const [id, setId] = useState(1);
-  const [currentTime, setCurrentTime] = useState(calculatedTime);
   const [open, setOpen] = useState(false);
 
   //Pagination
@@ -65,67 +40,60 @@ const QuestionsPage = ({ isLogin, limit, totalPosts, setTagChecked }) => {
     }
   };
 
-  //Date calculations
-  const newlyDated = () => {
-    // calculatedTime
-  };
-
   //GET questions
   //Newest
   const getData = async () => {
-    const getResponse = await axios(pageUrl + id);
-    setData(getResponse.data.content);
-    setAnswerData(getResponse.data.answerList);
+    try {
+      const getResponse = await axios(tagUrl + id);
+      setData(getResponse.data.content);
+    } catch (err) {
+      if (err) {
+        alert(`유효하지 않은 태그입니다.`); //a, ab, 숫자 등의 태그는 입력되지 않음
+        navigate('/questionspage');
+      }
+    }
   };
   //Oldest
   const getOldestData = async () => {
-    const getResponse = await axios(pageUrl + id + '&sort=min');
+    const getResponse = await axios(tagUrl + id + '&sort=min');
     setData(getResponse.data.content);
-    setAnswerData(getResponse.data.answerList);
   };
   //Active
   const getActiveData = async () => {
-    const getResponse = await axios(pageUrl + id + '&sortValue=active');
+    const getResponse = await axios(tagUrl + id + '&sortValue=active');
     setData(getResponse.data.content);
-    setAnswerData(getResponse.data.answerList);
   };
   //MoreTab
   const mostViews = async () => {
-    const getResponse = await axios(pageUrl + id + '&sortValue=views');
+    const getResponse = await axios(tagUrl + id + '&sortValue=views');
     setData(getResponse.data.content);
-    setAnswerData(getResponse.data.answerList);
   };
 
   const mostVotes = async () => {
-    const getResponse = await axios(pageUrl + id + '&sortValue=votes');
+    const getResponse = await axios(tagUrl + id + '&sortValue=votes');
     setData(getResponse.data.content);
-    setAnswerData(getResponse.data.answerList);
   };
 
   const mostAnswers = async () => {
-    const getResponse = await axios(pageUrl + id + '&sortValue=answers');
+    const getResponse = await axios(tagUrl + id + '&sortValue=answers');
     setData(getResponse.data.content);
-    setAnswerData(getResponse.data.answerList);
   };
 
   const leastViews = async () => {
-    const getResponse = await axios(pageUrl + id + '&sortValue=views&sort=min');
+    const getResponse = await axios(tagUrl + id + '&sortValue=views&sort=min');
     setData(getResponse.data.content);
-    setAnswerData(getResponse.data.answerList);
   };
 
   const leastVotes = async () => {
-    const getResponse = await axios(pageUrl + id + '&sortValue=votes&sort=min');
+    const getResponse = await axios(tagUrl + id + '&sortValue=votes&sort=min');
     setData(getResponse.data.content);
-    setAnswerData(getResponse.data.answerList);
   };
 
   const leastAnswers = async () => {
     const getResponse = await axios(
-      pageUrl + id + '&sortValue=answers&sort=min'
+      tagUrl + id + '&sortValue=answers&sort=min'
     );
     setData(getResponse.data.content);
-    setAnswerData(getResponse.data.answerList);
   };
 
   useEffect(() => {
@@ -180,18 +148,7 @@ const QuestionsPage = ({ isLogin, limit, totalPosts, setTagChecked }) => {
       <Div>
         <div className="main--wrapper">
           <div className="head--wrapper">
-            <div className="head">
-              All Questions
-              {isLogin ? (
-                <Link to="/askquestionpage">
-                  <AskButton>Ask Question</AskButton>
-                </Link>
-              ) : (
-                <Link to="/login">
-                  <LoginDesc>you can use after login</LoginDesc>
-                </Link>
-              )}
-            </div>
+            <div className="head">Tags</div>
           </div>
 
           <div className="innerquestions--wrapper">
@@ -232,12 +189,7 @@ const QuestionsPage = ({ isLogin, limit, totalPosts, setTagChecked }) => {
             <div className="questions-wrapper">
               {data.map((item) => (
                 <div style={{ width: '100%' }} key={item.id}>
-                  <QuestionCard
-                    activeTime={item.active}
-                    calculatedTime={calculatedTime}
-                    item={item}
-                    setTagChecked={setTagChecked}
-                  />
+                  <QuestionCard item={item.question} />
                 </div>
               ))}
             </div>
@@ -255,7 +207,7 @@ const QuestionsPage = ({ isLogin, limit, totalPosts, setTagChecked }) => {
                     }}
                     aria-current={id === el + 1 ? 'page' : null}
                   >
-                    {el + 1} {/*setPage */}
+                    {el + 1}
                   </Button>
                 ))}
               <Button onClick={toNextPage}>&gt;</Button>
@@ -271,7 +223,7 @@ const QuestionsPage = ({ isLogin, limit, totalPosts, setTagChecked }) => {
   );
 };
 
-export default QuestionsPage;
+export default TagsPage;
 
 const Div = styled.div`
   display: flex;
