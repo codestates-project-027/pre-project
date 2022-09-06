@@ -53,7 +53,6 @@ const AskQuestionForm = ({ jwtToken, userInfoUserName, setIsLogin }) => {
         title,
         contents,
         userName,
-        // tags: [JSON.parse(JSON.stringify(tags))],
         tags: [JSON.parse(JSON.stringify(tagsResolved))],
       };
 

@@ -7,7 +7,7 @@ import AskButton from '../Components/AskButton';
 import QuestionCard from '../Components/QuestionCard';
 import MoreTab from '../Components/MoreTab';
 
-const QuestionsPage = ({ isLogin, limit, totalPosts }) => {
+const QuestionsPage = ({ isLogin, limit, totalPosts, setTagChecked }) => {
   localStorage.removeItem('title');
   localStorage.removeItem('body');
   localStorage.removeItem('edit-answer');
@@ -236,6 +236,7 @@ const QuestionsPage = ({ isLogin, limit, totalPosts }) => {
                     activeTime={item.active}
                     calculatedTime={calculatedTime}
                     item={item}
+                    setTagChecked={setTagChecked}
                   />
                 </div>
               ))}

@@ -133,6 +133,9 @@ function App() {
     setTotalPages(getResponse.data.totalPages);
   };
 
+  //GET Tag Pages
+  const [tagChecked, setTagChecked] = useState('');
+
   useEffect(() => {
     getData();
   }, []);
@@ -159,20 +162,22 @@ function App() {
                     isLogin={isLogin}
                     limit={limit}
                     totalPosts={totalPosts}
+                    setTagChecked={setTagChecked}
                   />
                 }
               />
 
-              {/* <Route
+              <Route
                 path="/tagspage"
                 element={
                   <TagsPage
                     isLogin={isLogin}
                     limit={limit}
                     totalPosts={totalPosts}
+                    tagChecked={tagChecked}
                   />
                 }
-              /> */}
+              />
 
               <Route
                 path="/askquestionpage"
