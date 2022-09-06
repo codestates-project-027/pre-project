@@ -18,7 +18,9 @@
     "styled-components": "^5.3.5",
     "web-vitals": "^2.1.4"
   },
-  "proxy": "http://localhost:8080",
+  "proxy": "https://e8c7-58-141-212-239.jp.ngrok.io",
+  "homepage": "https://codestates-project-027.github.io/seb027-stackoverflow-clone",
+
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

@@ -21,6 +21,7 @@ import AnswerEditPage from './Pages/AnswerEditPage';
 axios.defaults.withCredentials = true;
 
 function App() {
+  const mockBaseUrl =`https://e8c7-58-141-212-239.jp.ngrok.io`
   const url = `/question?page=1`;
   const loginUrl = '/login';
 
@@ -213,6 +214,7 @@ function App() {
                     usernameHandler={usernameHandler}
                     emailHandler={emailHandler}
                     passwordHandler={passwordHandler}
+                    mockBaseUrl={mockBaseUrl}
                   />
                 }
               />

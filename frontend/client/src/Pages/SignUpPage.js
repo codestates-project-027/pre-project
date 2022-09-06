@@ -13,6 +13,7 @@ const SignUpPage = ({
   usernameHandler,
   emailHandler,
   passwordHandler,
+  mockBaseUrl
 }) => {
   localStorage.removeItem('title');
   localStorage.removeItem('body');
@@ -41,7 +42,7 @@ const SignUpPage = ({
       regex.test(email) === true
     ) {
       await axios
-        .post(url, joinInfo)
+        .post(mockBaseUrl+url, joinInfo)
         .then(() => alert('환영합니다!'))
         .then(() => navigate('/questionspage'))
         .catch((err) => alert('이미 가입한 회원정보입니다.'));
