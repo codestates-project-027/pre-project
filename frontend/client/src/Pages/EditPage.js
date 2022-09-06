@@ -15,7 +15,7 @@ const EditPage = ({ jwtToken, setIsLogin }) => {
   const prevTags = localStorage.getItem('tags');
   const [title, setTitle] = useState(prevTitle);
   const [contents, setContents] = useState(prevBody);
-  const [tags, setTags] = useState([`${prevTags.split(',')}`]);
+  const [tags, setTags] = useState(prevTags.split(','));
 
   const updatePost = async (e) => {
     if (title === '' || contents === '' || tags === '') {
@@ -25,10 +25,11 @@ const EditPage = ({ jwtToken, setIsLogin }) => {
     try {
       const headers = { headers: { Authorization: `Bearer ${jwtToken}` } };
       e.preventDefault();
+      const tagsResolved = tags.join(',')
       const updatePost = {
         title,
         contents,
-        tags: [JSON.parse(JSON.stringify(tags))],
+        tags: [JSON.parse(JSON.stringify(tagsResolved))],
       };
       await axios.patch(url + id, updatePost, headers).then(() => {
         navigate('/questionspage');
