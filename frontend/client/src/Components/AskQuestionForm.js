@@ -257,7 +257,7 @@ const Button2 = styled.button`
   cursor: pointer;
 `;
 
-const TagsInput = styled.div`
+export const TagsInput = styled.div`
   margin: 10px;
   display: flex;
   align-items: flex-start;

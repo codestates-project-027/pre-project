@@ -260,6 +260,7 @@ const ReadQuestionPage = ({
 
                 <textarea
                   type="text"
+                  className="post--answer"
                   onChange={(e) => setAnswerContents(e.target.value)}
                 />
               </div>
@@ -381,6 +382,13 @@ const Div = styled.div`
   .answer--wrapper {
     display: flex;
     flex-direction: column;
+    .post--answer{
+      :focus {
+        outline: transparent;
+        &:focus-within {
+        border: 1px solid rgb(140, 186, 229);
+        box-shadow: 5px 5px 5px rgb(218, 232, 241);}}
+    }
   }
   .read--answer--wrapper {
     display: flex;

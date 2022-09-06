@@ -139,6 +139,11 @@ const EditGlobal = styled.div`
         justify-content: flex-start;
         font-weight: bold;
       }
+      :focus {
+        outline: transparent;
+        &:focus-within {
+        border: 1px solid rgb(140, 186, 229);
+        box-shadow: 5px 5px 5px rgb(218, 232, 241);}}
     }
   }
 
