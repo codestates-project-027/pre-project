@@ -140,8 +140,6 @@ const ReadQuestionPage = ({
     const cancelUrl = `/vote/question/${id}/${userName}`
 
     try {
-
-      // await axios.delete(deleteUrl + dataEl.id, headers);
       await axios.delete(cancelUrl, headers).then((res)=>console.log(res))
       setVoteCanceled(true);
       setVotedUp(false);
@@ -149,7 +147,7 @@ const ReadQuestionPage = ({
       window.location.reload();
       } catch (err) {
         if (err.response) {
-          if (err.response.status === 409) {
+          if (err.response.status === 404) {
             alert(`Already canceled`);
           } 
          else if (err.response === 403) {

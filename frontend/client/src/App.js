@@ -8,6 +8,7 @@ import LeftSidebar from './Components/LeftSidebar';
 
 import LandingPage from './Pages/LandingPage';
 import QuestionsPage from './Pages/QuestionsPage';
+import TagsPage from './Pages/TagsPage';
 import AskQuestionPage from './Pages/AskQuestionPage';
 import ReadQuestionPage from './Pages/ReadQuestionPage';
 import SignUpPage from './Pages/SignUpPage';
@@ -93,32 +94,9 @@ function App() {
         alert(`등록되지 않은 회원정보입니다.`);
       }
     }
-    // .catch((err) => {
-    //   if (err.response.data.status === 401) {
-    //     setErrorMessage('로그인에 실패함');
-    //   }
-    // });
+
   };
 
-  // const getValidToken = async () => {
-  //   //아마 필요없을듯
-  //   localStorage.removeItem('login-token');
-  //   localStorage.removeItem('user-name');
-  //   try {
-  //     await axios.post(loginUrl, { email, password }).then((res) => {
-  //       localStorage.setItem('login-token', res.headers.authorization);
-  //       const token = localStorage.getItem('login-token');
-  //       const resolved = parseJwt(token);
-  //       setJwtToken(token);
-  //       setUserInfo({ email: resolved.email, username: resolved.username });
-  //       setIsLogin(true);
-  //     });
-  //   } catch (err) {
-  //     if (err.response) {
-  //       alert(err);
-  //     }
-  //   }
-  // };
 
   const logoutHandler = () => {
     localStorage.removeItem('login-token');
@@ -184,6 +162,17 @@ function App() {
                   />
                 }
               />
+
+              {/* <Route
+                path="/tagspage"
+                element={
+                  <TagsPage
+                    isLogin={isLogin}
+                    limit={limit}
+                    totalPosts={totalPosts}
+                  />
+                }
+              /> */}
 
               <Route
                 path="/askquestionpage"
