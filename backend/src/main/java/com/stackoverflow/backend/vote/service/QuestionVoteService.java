@@ -45,12 +45,12 @@ public class QuestionVoteService {
         }
     }
 
-    public void voteQuestionCancel(QuestionVoteDTO.Cancel questionVoteDTO, String UserName) {
-        checkAuth(questionVoteDTO.getUserName(), UserName);
-        Question question = questionRepository.findById(questionVoteDTO.getQuestionId())
+    public void voteQuestionCancel(Long questionId, String userName, String UserName) {
+        checkAuth(userName, UserName);
+        Question question = questionRepository.findById(questionId)
                 .orElseThrow(()->new CustomException(ErrorMessage.QUESTION_NOT_FOUND));
         try{
-            QuestionVote questionVote = questionVoteRepository.findByQuestionAndUserName(question, questionVoteDTO.getUserName());
+            QuestionVote questionVote = questionVoteRepository.findByQuestionAndUserName(question, userName);
             questionVoteRepository.deleteById(questionVote.getId());
             if (questionVote.getVote()) question.subVoteCount();
             else question.addAnswerCount();

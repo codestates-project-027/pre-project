@@ -25,10 +25,11 @@ public class QuestionVoteController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/question")
-    private ResponseEntity voteQuestionCancel(@Valid @RequestBody QuestionVoteDTO.Cancel questionVoteDTO,
-                                              @AuthenticationPrincipal PrincipalDetails principalDetails){
-        questionVoteService.voteQuestionCancel(questionVoteDTO, principalDetails.getUserName());
+    @DeleteMapping("/question/{questionId}/{userName}")
+    private ResponseEntity voteQuestionCancel(@AuthenticationPrincipal PrincipalDetails principalDetails,
+                                              @PathVariable Long questionId,
+                                              @PathVariable String userName){
+        questionVoteService.voteQuestionCancel(questionId, userName, principalDetails.getUserName());
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
